@@ -31,8 +31,7 @@
                         class="flex items-center gap-2 px-4 py-2 rounded-full border border-border-dark hover:bg-primary/10 transition-colors mt-2"
                         title="{% if is_favorite %}Remove from Trail{% else %}Add to Trail{% endif %}">
                         <span
-                            class="material-symbols-outlined {% if is_favorite %}text-secondary{% else %}text-text-dark-muted{% endif %}"
-                            style="font-variation-settings: 'FILL' {% if is_favorite %}1{% else %}0{% endif %};">favorite</span>
+                            class="material-symbols-outlined {% if is_favorite %}text-secondary material-symbols-filled{% else %}text-text-dark-muted{% endif %}">favorite</span>
                     </a>
                     {% endif %}
                 </div>

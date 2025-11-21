@@ -61,23 +61,23 @@ TasteLocal{% endblock %} {% block content %}
 
         {% if favorites %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {% for fav in favorites %}
+          {% for listing in favorites %}
           <a
-            href="{% url 'listing_detail' fav.listing.pk %}"
+            href="{% url 'listing_detail' listing.pk %}"
             class="flex flex-col overflow-hidden rounded-lg bg-background-dark border border-border-dark hover:border-primary transition-colors group"
           >
             <div class="h-40 w-full overflow-hidden relative">
-              {% if fav.listing.image %}
+              {% if listing.image %}
               <img
                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                src="{{ fav.listing.image.url }}"
-                alt="{{ fav.listing.title }}"
+                src="{{ listing.image.url }}"
+                alt="{{ listing.title }}"
               />
               {% else %}
               <img
                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                src="https://source.unsplash.com/800x600/?food,singapore,{{ fav.listing.pk }}"
-                alt="{{ fav.listing.title }}"
+                src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
+                alt="{{ listing.title }}"
               />
               {% endif %}
               <div class="absolute top-2 right-2 bg-black/50 rounded-full p-1">
@@ -90,13 +90,13 @@ TasteLocal{% endblock %} {% block content %}
             </div>
             <div class="p-4">
               <h3 class="font-bold text-lg truncate">
-                {{ fav.listing.title }}
+                {{ listing.title }}
               </h3>
               <p class="text-sm text-text-dark-muted truncate">
-                {{ fav.listing.vendor.business_name }}
+                {{ listing.vendor.business_name }}
               </p>
               <p class="mt-2 font-bold text-primary">
-                ${{ fav.listing.price }}
+                ${{ listing.price }}
               </p>
             </div>
           </a>

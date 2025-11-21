@@ -118,8 +118,14 @@ def booking_confirmation(request, pk):
 @login_required
 def profile(request):
     bookings = Booking.objects.filter(user=request.user).order_by('-date')
-    favorites = Favorite.objects.filter(user=request.user).select_related('listing')
-    return render(request, 'core/profile.html', {'bookings': bookings, 'favorites': favorites})
+
+    # Get favorite listings
+    favorite_listings = Listing.objects.filter(favorite__user=request.user)
+
+    return render(request, 'core/profile.html', {
+        'bookings': bookings,
+        'favorites': favorite_listings
+    })
 
 def register(request):
     if request.method == 'POST':
