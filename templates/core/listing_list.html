@@ -45,69 +45,85 @@
                     style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
             </div>
 
-            Filters</button>
-    </div>
-    </form>
-</div>
-
-<!-- Map View Toggle -->
-<div style="margin-bottom: 1rem; text-align: right;">
-    <button id="toggleMapBtn" class="btn btn-secondary" onclick="toggleMap()">Show Map View</button>
-</div>
-
-<!-- Map Container (Hidden by default) -->
-<div id="mapContainer"
-    style="display: none; height: 400px; width: 100%; margin-bottom: 2rem; border-radius: 10px; z-index: 1;"></div>
-
-<!-- Listings Grid -->
-<div id="listingsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-    {% for listing in listings %}
-    <div class="listing-card" data-lat="{{ listing.vendor.latitude }}" data-lng="{{ listing.vendor.longitude }}"
-        data-title="{{ listing.title }}" data-url="{% url 'listing_detail' listing.pk %}"
-        style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;">
-        <div style="height: 200px; overflow: hidden;">
-            {% if listing.image %}
-            <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
-                style="width: 100%; height: 100%; object-fit: cover;">
-            {% else %}
-            <img src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}" alt="{{ listing.title }}"
-                style="width: 100%; height: 100%; object-fit: cover;">
-            {% endif %}
-        </div>
-        <div style="padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                <h3 style="font-size: 1.2rem; margin: 0;"><a href="{% url 'listing_detail' listing.pk %}"
-                        style="text-decoration: none; color: #333;">{{ listing.title }}</a></h3>
-                <span style="background: #eee; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.8rem;">{{
-                    listing.vendor.location }}</span>
+            <!-- Min Rating -->
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Min Rating</label>
+                <select name="min_rating"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="">Any Rating</option>
+                    <option value="4" {% if request.GET.min_rating == '4' %}selected{% endif %}>4+ Stars</option>
+                    <option value="3" {% if request.GET.min_rating == '3' %}selected{% endif %}>3+ Stars</option>
+                    <option value="2" {% if request.GET.min_rating == '2' %}selected{% endif %}>2+ Stars</option>
+                </select>
             </div>
-            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">by {{ listing.vendor.business_name }}
-            </p>
 
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    {% if listing.discount_price %}
-                    <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">${{ listing.price
-                        }}</span>
-                    <span style="color: #e74c3c; font-weight: bold; font-size: 1.1rem;">${{ listing.discount_price
-                        }}</span>
-                    {% else %}
-                    <span style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">${{
-                        listing.price }}</span>
-                    {% endif %}
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem;">Apply
+                    Filters</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Map View Toggle -->
+    <div style="margin-bottom: 1rem; text-align: right;">
+        <button id="toggleMapBtn" class="btn btn-secondary" onclick="toggleMap()">Show Map View</button>
+    </div>
+
+    <!-- Map Container (Hidden by default) -->
+    <div id="mapContainer"
+        style="display: none; height: 400px; width: 100%; margin-bottom: 2rem; border-radius: 10px; z-index: 1;"></div>
+
+    <!-- Listings Grid -->
+    <div id="listingsGrid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        {% for listing in listings %}
+        <div class="listing-card" data-lat="{{ listing.vendor.latitude }}" data-lng="{{ listing.vendor.longitude }}"
+            data-title="{{ listing.title }}" data-url="{% url 'listing_detail' listing.pk %}"
+            style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <div style="height: 200px; overflow: hidden;">
+                {% if listing.image %}
+                <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                <img src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
+                    alt="{{ listing.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% endif %}
+            </div>
+            <div style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <h3 style="font-size: 1.2rem; margin: 0;"><a href="{% url 'listing_detail' listing.pk %}"
+                            style="text-decoration: none; color: #333;">{{ listing.title }}</a></h3>
+                    <span style="background: #eee; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.8rem;">{{
+                        listing.vendor.location }}</span>
                 </div>
-                <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-secondary"
-                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">by {{ listing.vendor.business_name }}
+                </p>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        {% if listing.discount_price %}
+                        <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">${{ listing.price
+                            }}</span>
+                        <span style="color: #e74c3c; font-weight: bold; font-size: 1.1rem;">${{ listing.discount_price
+                            }}</span>
+                        {% else %}
+                        <span style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">${{
+                            listing.price }}</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-secondary"
+                        style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+            <p style="font-size: 1.2rem; color: #666;">No experiences found matching your criteria.</p>
+            <a href="{% url 'listing_list' %}" class="btn btn-link">Clear Filters</a>
+        </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-        <p style="font-size: 1.2rem; color: #666;">No experiences found matching your criteria.</p>
-        <a href="{% url 'listing_list' %}" class="btn btn-link">Clear Filters</a>
-    </div>
-    {% endfor %}
-</div>
 </div>
 
 <script>
