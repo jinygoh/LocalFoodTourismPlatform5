@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TasteLocal - Vendor Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F7B84B", // Turmeric Yellow
+                        "secondary": "#D9534F", // Chili Red
+                        "accent": "#6A994E", // Pandan Green
+                        "background-dark": "#3B2F2F", // Dark Soy Sauce Brown
+                        "card-dark": "#493838", // Lighter Brown
+                        "border-dark": "#5A4C4C", // Muted Border
+                        "text-dark": "#F5EBE0", // Light Cream Text
+                        "text-dark-muted": "#D6CFCB", // Muted Cream Text
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-text-dark">
+<div class="flex min-h-screen">
+<aside class="w-64 flex-shrink-0 bg-card-dark/50 border-r border-border-dark flex flex-col">
+<div class="flex h-20 items-center gap-3 px-6 border-b border-border-dark">
+<div class="text-primary size-7">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</div>
+<h1 class="text-2xl font-bold">TasteLocal</h1>
+</div>
+<nav class="flex-grow p-4">
+<ul class="space-y-2">
+<li><a class="flex items-center gap-3 rounded-lg bg-primary/20 px-4 py-3 text-primary font-semibold transition-colors" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">storefront</span>My Listings</a></li>
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">calendar_month</span>Bookings</a></li>
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">reviews</span>Reviews</a></li>
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">insights</span>Analytics</a></li>
+</ul>
+</nav>
+<div class="p-6 border-t border-border-dark">
+<ul class="space-y-2">
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">settings</span>Settings</a></li>
+<li><a class="flex items-center gap-3 rounded-lg px-4 py-3 text-text-dark-muted hover:bg-border-dark/50 hover:text-text-dark transition-colors" href="#"><span class="material-symbols-outlined">logout</span>Log Out</a></li>
+</ul>
+</div>
+</aside>
+<div class="flex-1 flex flex-col">
+<header class="sticky top-0 z-40 bg-background-dark/80 backdrop-blur-sm border-b border-border-dark flex items-center h-20 px-6">
+<div class="flex-1">
+<h1 class="text-2xl font-bold text-text-dark">Welcome, Hawker Chan!</h1>
+<p class="text-sm text-text-dark-muted">Here's your business overview.</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative rounded-full p-2 hover:bg-card-dark transition-colors">
+<span class="material-symbols-outlined text-text-dark-muted">notifications</span>
+<span class="absolute top-1 right-1 flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+</span>
+</button>
+<div class="flex items-center gap-3">
+<img alt="Vendor profile picture" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApEto8F4-ovFmfLvnQB3ZvS5ACz5FXk87ycNHEjC75kznz0kHE11Be1bFIz3kuS_7Gj1ZhKHS2zII-uWuI8GLrJVPQTE1gHqvZwAJlqU9l25BdA3cBGBKtQacDv0AQ8IWHDuOdN83dc9bz_Iaze5tG0cEzUJx2AaOgmhiBKNqUwh90x-662UMl9ANbGwNaJUi1snk1eWFlXAj4TkPlVO8w7kHVWQCckDMRcAJnXbZEowRuofUBlGQvS3tcYXvH5a1QxEdXcbAPIlE"/>
+<div>
+<p class="font-semibold text-sm">Chan Hon Meng</p>
+<p class="text-xs text-text-dark-muted">Hawker Chan</p>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow p-8 overflow-y-auto">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2">
+<div class="bg-card-dark p-6 rounded-xl border border-border-dark">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-xl font-bold">My Business Profile</h2>
+<p class="text-text-dark-muted mt-1">Manage your public-facing information.</p>
+</div>
+<button class="flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-full border border-border-dark hover:bg-border-dark/60 transition-colors">
+<span class="material-symbols-outlined !text-base">edit</span>
+                                Edit Profile
+                           </button>
+</div>
+<div class="mt-6 border-t border-border-dark pt-6">
+<form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+<div>
+<label class="block text-sm font-medium text-text-dark-muted mb-1" for="stall-name">Stall Name</label>
+<input class="w-full bg-background-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary" id="stall-name" readonly="" type="text" value="Hawker Chan Soya Sauce Chicken Rice &amp; Noodle"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-dark-muted mb-1" for="stall-owner">Owner Name</label>
+<input class="w-full bg-background-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary" id="stall-owner" readonly="" type="text" value="Chan Hon Meng"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-dark-muted mb-1" for="location">Location</label>
+<input class="w-full bg-background-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary" id="location" readonly="" type="text" value="Chinatown Complex Market &amp; Food Centre"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-text-dark-muted mb-1" for="cuisine-type">Cuisine Type</label>
+<input class="w-full bg-background-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary" id="cuisine-type" readonly="" type="text" value="Singaporean, Chinese"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-text-dark-muted mb-1" for="description">Description</label>
+<textarea class="w-full bg-background-dark border-border-dark rounded-lg focus:ring-primary focus:border-primary" id="description" readonly="" rows="4">The world's first Michelin-starred street food stall, famous for its succulent soya sauce chicken rice and noodle dishes. A taste of Singaporean heritage.</textarea>
+</div>
+</form>
+</div>
+</div>
+<div class="bg-card-dark p-6 rounded-xl border border-border-dark mt-6">
+<div class="flex justify-between items-center">
+<h2 class="text-xl font-bold">Manage Food Listings</h2>
+<button class="flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-full bg-accent text-white hover:bg-opacity-90 transition-opacity">
+<span class="material-symbols-outlined !text-base">add</span>
+                                Add New Item
+                           </button>
+</div>
+<div class="mt-6 flow-root">
+<div class="-mx-6 -my-2 overflow-x-auto">
+<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+<table class="min-w-full divide-y divide-border-dark">
+<thead>
+<tr>
+<th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-0" scope="col">Item</th>
+<th class="px-3 py-3.5 text-left text-sm font-semibold" scope="col">Price</th>
+<th class="px-3 py-3.5 text-left text-sm font-semibold" scope="col">Status</th>
+<th class="relative py-3.5 pl-3 pr-4 sm:pr-0" scope="col">
+<span class="sr-only">Edit</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<tr>
+<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">Soya Sauce Chicken Rice</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted">S$5.80</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted"><span class="inline-flex items-center rounded-full bg-accent/20 px-2 py-1 text-xs font-medium text-accent">Available</span></td>
+<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"><a class="text-primary hover:text-primary/80" href="#">Edit</a></td>
+</tr>
+<tr>
+<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">Soya Sauce Chicken Noodle</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted">S$6.80</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted"><span class="inline-flex items-center rounded-full bg-accent/20 px-2 py-1 text-xs font-medium text-accent">Available</span></td>
+<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"><a class="text-primary hover:text-primary/80" href="#">Edit</a></td>
+</tr>
+<tr>
+<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">Char Siew Rice</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted">S$6.00</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted"><span class="inline-flex items-center rounded-full bg-secondary/20 px-2 py-1 text-xs font-medium text-secondary">Sold Out</span></td>
+<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"><a class="text-primary hover:text-primary/80" href="#">Edit</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-card-dark p-6 rounded-xl border border-border-dark">
+<h2 class="text-xl font-bold">Quick Stats</h2>
+<p class="text-text-dark-muted mt-1">Performance this month.</p>
+<div class="mt-6 space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-background-dark">
+<div class="p-3 rounded-full bg-primary/20">
+<span class="material-symbols-outlined text-primary">shopping_cart</span>
+</div>
+<div>
+<p class="text-2xl font-bold">312</p>
+<p class="text-sm text-text-dark-muted">Total Bookings</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-background-dark">
+<div class="p-3 rounded-full bg-accent/20">
+<span class="material-symbols-outlined text-accent">visibility</span>
+</div>
+<div>
+<p class="text-2xl font-bold">12.4k</p>
+<p class="text-sm text-text-dark-muted">Profile Views</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-background-dark">
+<div class="p-3 rounded-full bg-secondary/20">
+<span class="material-symbols-outlined text-secondary">reviews</span>
+</div>
+<div>
+<p class="text-2xl font-bold">4.9 <span class="text-lg text-text-dark-muted">(1.2k)</span></p>
+<p class="text-sm text-text-dark-muted">Average Rating</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-card-dark p-6 rounded-xl border border-border-dark mt-6">
+<h2 class="text-xl font-bold">Need Help?</h2>
+<p class="text-text-dark-muted mt-2">Our support team is here to assist you with any questions or issues.</p>
+<button class="mt-4 w-full flex-none min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 px-6 bg-primary text-background-dark text-base font-bold hover:bg-opacity-90 transition-opacity inline-flex">
+                            Contact Support
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

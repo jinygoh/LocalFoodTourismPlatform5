@@ -1,66 +1,168 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %}My Profile |
+TasteLocal{% endblock %} {% block content %}
+<div class="container mx-auto px-4 py-12 sm:py-16">
+  <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-8">My Profile</h1>
 
-{% block title %}My Profile | TasteLocal{% endblock %}
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Sidebar Navigation -->
+    <aside class="lg:col-span-1">
+      <div class="bg-card-dark rounded-xl border border-border-dark p-6">
+        <div class="flex flex-col items-center text-center mb-6">
+          <div
+            class="h-24 w-24 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl font-bold mb-4"
+          >
+            {{ user.username|make_list|first|upper }}
+          </div>
+          <h2 class="text-xl font-bold">{{ user.username }}</h2>
+          <p class="text-text-dark-muted">{{ user.email }}</p>
+        </div>
 
-{% block content %}
-<div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
-    <h2 style="margin-bottom: 2rem;">My Profile</h2>
+        <nav class="space-y-2">
+          <a
+            href="#"
+            class="flex items-center gap-3 rounded-lg bg-primary/10 px-4 py-3 text-sm font-bold text-primary border-l-4 border-primary"
+          >
+            <span class="material-symbols-outlined">person</span>
+            <span>Profile Overview</span>
+          </a>
+          {% if user.is_vendor %}
+          <a
+            href="{% url 'vendor_dashboard' %}"
+            class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-dark-muted hover:bg-background-dark hover:text-text-dark transition-colors"
+          >
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Vendor Dashboard</span>
+          </a>
+          {% endif %}
+          <form action="{% url 'logout' %}" method="post" class="block w-full">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="w-full flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-secondary hover:bg-background-dark transition-colors"
+            >
+              <span class="material-symbols-outlined">logout</span>
+              <span>Log Out</span>
+            </button>
+          </form>
+        </nav>
+      </div>
+    </aside>
 
-    <div
-        style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 3rem;">
-        <h3>Account Details</h3>
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Role:</strong> {% if user.is_vendor %}Vendor{% else %}Tourist{% endif %}</p>
-    </div>
+    <!-- Main Content Area -->
+    <div class="lg:col-span-2 space-y-8">
+      <!-- Favorite Listings / Wishlist -->
+      <section
+        class="rounded-xl border border-border-dark bg-card-dark p-6 md:p-8"
+      >
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary">favorite</span>
+          My Food Trail
+        </h2>
 
-    <h3 style="margin-bottom: 1.5rem;">My Bookings</h3>
-    {% if bookings %}
-    <div style="display: grid; gap: 1.5rem;">
-        {% for booking in bookings %}
-        <div
-            style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h4 style="margin-bottom: 0.5rem;">{{ booking.listing.title }}</h4>
-                <p style="color: #666; font-size: 0.9rem;">Date: {{ booking.date }} | Guests: {{ booking.guests }}</p>
-                <p style="color: #666; font-size: 0.9rem;">Vendor: {{ booking.listing.vendor.business_name }}</p>
-            </div>
-            <div>
+        {% if favorites %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {% for fav in favorites %}
+          <a
+            href="{% url 'listing_detail' fav.listing.pk %}"
+            class="flex flex-col overflow-hidden rounded-lg bg-background-dark border border-border-dark hover:border-primary transition-colors group"
+          >
+            <div class="h-40 w-full overflow-hidden relative">
+              {% if fav.listing.image %}
+              <img
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="{{ fav.listing.image.url }}"
+                alt="{{ fav.listing.title }}"
+              />
+              {% else %}
+              <img
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://source.unsplash.com/800x600/?food,singapore,{{ fav.listing.pk }}"
+                alt="{{ fav.listing.title }}"
+              />
+              {% endif %}
+              <div class="absolute top-2 right-2 bg-black/50 rounded-full p-1">
                 <span
-                    style="padding: 0.5rem 1rem; border-radius: 20px; background-color: #e6fffa; color: #00b894; font-weight: bold; font-size: 0.9rem;">{{
-                    booking.get_status_display }}</span>
+                  class="material-symbols-outlined text-secondary !text-lg"
+                  style="font-variation-settings: 'FILL' 1"
+                  >favorite</span
+                >
+              </div>
             </div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg truncate">
+                {{ fav.listing.title }}
+              </h3>
+              <p class="text-sm text-text-dark-muted truncate">
+                {{ fav.listing.vendor.business_name }}
+              </p>
+              <p class="mt-2 font-bold text-primary">
+                ${{ fav.listing.price }}
+              </p>
+            </div>
+          </a>
+          {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p>You haven't booked any experiences yet.</p>
-    {% endif %}
+        {% else %}
+        <div
+          class="text-center py-8 bg-background-dark rounded-lg border border-border-dark border-dashed"
+        >
+          <span
+            class="material-symbols-outlined text-4xl text-text-dark-muted mb-2"
+            >favorite_border</span
+          >
+          <p class="text-text-dark-muted">
+            You haven't added any experiences to your trail yet.
+          </p>
+          <a
+            href="{% url 'listing_list' %}"
+            class="text-primary hover:underline mt-2 inline-block"
+            >Explore Experiences</a
+          >
+        </div>
+        {% endif %}
+      </section>
 
-    <h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">My Food Trail</h3>
-    {% if favorites %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
-        {% for fav in favorites %}
-        <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <div style="height: 150px; overflow: hidden;">
-                {% if fav.listing.image %}
-                <img src="{{ fav.listing.image.url }}" alt="{{ fav.listing.title }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
-                {% else %}
-                <img src="https://source.unsplash.com/800x600/?food,singapore,{{ fav.listing.pk }}"
-                    alt="{{ fav.listing.title }}" style="width: 100%; height: 100%; object-fit: cover;">
-                {% endif %}
+      <!-- Booking History -->
+      <section
+        class="rounded-xl border border-border-dark bg-card-dark p-6 md:p-8"
+      >
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">history</span>
+          Booking History
+        </h2>
+
+        {% if bookings %}
+        <div class="space-y-4">
+          {% for booking in bookings %}
+          <div
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 rounded-lg bg-background-dark border border-border-dark"
+          >
+            <div>
+              <h3 class="font-bold">{{ booking.listing.title }}</h3>
+              <p class="text-sm text-text-dark-muted">
+                {{ booking.date }} • {{ booking.guests }} Guests
+              </p>
             </div>
-            <div style="padding: 1rem;">
-                <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">{{ fav.listing.title }}</h4>
-                <a href="{% url 'listing_detail' fav.listing.pk %}" class="btn btn-secondary"
-                    style="font-size: 0.8rem; display: block; text-align: center;">View Details</a>
+            <div class="mt-2 sm:mt-0 flex items-center gap-3">
+              <span
+                class="px-2 py-1 rounded text-xs font-bold uppercase {% if booking.status == 'confirmed' %}bg-accent/20 text-accent {% elif booking.status == 'pending' %}bg-primary/20 text-primary {% else %}bg-secondary/20 text-secondary{% endif %}"
+              >
+                {{ booking.status }}
+              </span>
+              <a
+                href="{% url 'listing_detail' booking.listing.pk %}"
+                class="text-sm text-text-dark-muted hover:text-text-dark underline"
+                >View Again</a
+              >
             </div>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
+        {% else %}
+        <p class="text-text-dark-muted">No bookings found.</p>
+        {% endif %}
+      </section>
     </div>
-    {% else %}
-    <p>You haven't saved any experiences yet.</p>
-    {% endif %}
+  </div>
 </div>
 {% endblock %}

@@ -100,15 +100,20 @@ def process_payment(request, pk):
         date = request.POST.get('date')
         guests = request.POST.get('guests')
         # Simulate payment processing... Success!
-        Booking.objects.create(
+        booking = Booking.objects.create(
             user=request.user,
             listing=listing,
             date=date,
             guests=guests,
             status='confirmed'
         )
-        return redirect('profile')
+        return redirect('booking_confirmation', pk=booking.pk)
     return redirect('listing_detail', pk=pk)
+
+@login_required
+def booking_confirmation(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    return render(request, 'core/booking_confirmation.html', {'booking': booking})
 
 @login_required
 def profile(request):

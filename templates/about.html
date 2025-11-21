@@ -1,34 +1,81 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}About Us | TasteLocal{% endblock %}
 
 {% block content %}
-<div class="container" style="margin-top: 3rem; margin-bottom: 4rem; max-width: 800px;">
-    <h1 style="margin-bottom: 1.5rem;">About TasteLocal</h1>
-    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-        TasteLocal is Singapore's premier platform for connecting food lovers with authentic local culinary experiences.
-        We believe that the best way to understand a culture is through its food, and there is no better place to
-        experience this than Singapore, a melting pot of flavors and traditions.
-    </p>
+<div class="container mx-auto px-4 py-12 sm:py-16">
+    <div class="mx-auto max-w-4xl">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-6">About TasteLocal</h1>
+            <p class="text-xl text-text-dark-muted leading-relaxed max-w-2xl mx-auto">
+                Singapore's premier platform for connecting food lovers with authentic local culinary experiences.
+            </p>
+        </div>
 
-    <h2 style="margin-bottom: 1rem;">Our Mission</h2>
-    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-        Our mission is to empower local hawkers, chefs, and food artisans by providing them with a digital platform to
-        showcase their craft to a global audience.
-        For tourists and locals alike, we offer a curated selection of the best food experiences the city has to offer.
-    </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+            <div class="space-y-6">
+                <h2 class="text-2xl font-bold text-primary">Our Mission</h2>
+                <p class="text-lg text-text-dark-muted leading-relaxed">
+                    We believe that the best way to understand a culture is through its food. Our mission is to empower
+                    local hawkers, chefs, and food artisans by providing them with a digital platform to showcase their
+                    craft to a global audience.
+                </p>
+                <p class="text-lg text-text-dark-muted leading-relaxed">
+                    For tourists and locals alike, we offer a curated selection of the best food experiences the city
+                    has to offer, from hidden hawker gems to Michelin-starred street food.
+                </p>
+            </div>
+            <div class="rounded-xl overflow-hidden shadow-lg border border-border-dark">
+                <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    alt="Singapore Hawker Food" class="w-full h-full object-cover">
+            </div>
+        </div>
 
-    <h2 style="margin-bottom: 1rem;">Why Choose Us?</h2>
-    <ul style="list-style-type: disc; margin-left: 1.5rem; margin-bottom: 2rem; line-height: 1.8;">
-        <li><strong>Authenticity:</strong> We verify every vendor to ensure you get the real Singaporean taste.</li>
-        <li><strong>Convenience:</strong> Book your food adventures seamlessly online.</li>
-        <li><strong>Community:</strong> Support local businesses and preserve culinary heritage.</li>
-    </ul>
+        <div class="bg-card-dark rounded-xl border border-border-dark p-8 md:p-12 mb-16">
+            <h2 class="text-2xl font-bold mb-8 text-center">Why Choose Us?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 text-primary mb-4">
+                        <span class="material-symbols-outlined !text-3xl">verified</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Authenticity</h3>
+                    <p class="text-text-dark-muted">We verify every vendor to ensure you get the real Singaporean taste.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/20 text-accent mb-4">
+                        <span class="material-symbols-outlined !text-3xl">touch_app</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Convenience</h3>
+                    <p class="text-text-dark-muted">Book your food adventures seamlessly online with instant
+                        confirmation.</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/20 text-secondary mb-4">
+                        <span class="material-symbols-outlined !text-3xl">diversity_3</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Community</h3>
+                    <p class="text-text-dark-muted">Support local businesses and help preserve our unique culinary
+                        heritage.</p>
+                </div>
+            </div>
+        </div>
 
-    <h2 style="margin-bottom: 1rem;">Contact Us</h2>
-    <p style="font-size: 1.1rem; line-height: 1.8;">
-        Have questions or want to partner with us? Reach out at <a href="mailto:hello@tastelocal.sg"
-            style="color: var(--primary-color);">hello@tastelocal.sg</a>.
-    </p>
+        <div class="text-center">
+            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+            <p class="text-lg text-text-dark-muted mb-6">
+                Have questions or want to partner with us? We'd love to hear from you.
+            </p>
+            <a href="mailto:hello@tastelocal.sg"
+                class="inline-flex items-center gap-2 text-primary font-bold hover:underline text-lg">
+                <span class="material-symbols-outlined">mail</span>
+                hello@tastelocal.sg
+            </a>
+        </div>
+    </div>
 </div>
 {% endblock %}

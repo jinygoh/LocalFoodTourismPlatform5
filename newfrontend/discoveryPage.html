@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TasteLocal - Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F7B84B", // Turmeric Yellow
+                        "secondary": "#D9534F", // Chili Red
+                        "accent": "#6A994E", // Pandan Green
+                        "background-dark": "#3B2F2F", // Dark Soy Sauce Brown
+                        "card-dark": "#493838", // Lighter Brown
+                        "border-dark": "#5A4C4C", // Muted Border
+                        "text-dark": "#F5EBE0", // Light Cream Text
+                        "text-dark-muted": "#D6CFCB", // Muted Cream Text
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-text-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="sticky top-0 z-50 bg-background-dark/80 backdrop-blur-sm border-b border-border-dark">
+<div class="container mx-auto px-4">
+<div class="flex h-20 items-center justify-between">
+<div class="flex items-center gap-4 text-text-dark">
+<div class="text-primary size-7">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</div>
+<h1 class="text-2xl font-bold">TasteLocal</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors text-primary" href="#">Explore</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">For Businesses</a>
+</nav>
+<div class="flex items-center gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-transparent text-sm font-bold border border-border-dark hover:bg-primary/10 transition-colors">
+<span class="truncate">Log In</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-secondary text-white text-sm font-bold hover:bg-opacity-90 transition-opacity">
+<span class="truncate">Sign Up</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<section class="py-12">
+<div class="container mx-auto px-4">
+<div class="w-full max-w-3xl mx-auto">
+<label class="flex flex-col rounded-full bg-card-dark p-2 shadow-lg border border-border-dark">
+<div class="flex w-full items-stretch">
+<div class="flex items-center pl-4 pr-2">
+<span class="material-symbols-outlined text-text-dark-muted">search</span>
+</div>
+<input class="form-input w-full flex-1 resize-none overflow-hidden bg-transparent text-text-dark placeholder:text-text-dark-muted focus:outline-none focus:ring-0 border-0 text-base" placeholder="Search for food, experiences, or locations" value="Hainanese Chicken Rice"/>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity">
+<span class="truncate">Search</span>
+</button>
+</div>
+</label>
+</div>
+</div>
+</section>
+<section class="pb-16 sm:pb-24">
+<div class="container mx-auto px-4">
+<div class="flex flex-col lg:flex-row gap-8">
+<aside class="w-full lg:w-1/4 xl:w-1/5">
+<div class="sticky top-28">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-2xl font-bold">Filters</h2>
+<button class="text-sm font-medium text-primary hover:underline">Clear all</button>
+</div>
+<div class="space-y-6">
+<div>
+<h3 class="text-lg font-semibold mb-3">Categories</h3>
+<div class="space-y-2">
+<label class="flex items-center space-x-2 cursor-pointer">
+<input checked="" class="form-checkbox h-5 w-5 rounded bg-card-dark border-border-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-text-dark">Hawker Tours</span>
+</label>
+<label class="flex items-center space-x-2 cursor-pointer">
+<input class="form-checkbox h-5 w-5 rounded bg-card-dark border-border-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-text-dark">Cooking Classes</span>
+</label>
+<label class="flex items-center space-x-2 cursor-pointer">
+<input class="form-checkbox h-5 w-5 rounded bg-card-dark border-border-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-text-dark">Street Food</span>
+</label>
+<label class="flex items-center space-x-2 cursor-pointer">
+<input class="form-checkbox h-5 w-5 rounded bg-card-dark border-border-dark text-primary focus:ring-primary/50" type="checkbox"/>
+<span class="text-text-dark">Fine Dining</span>
+</label>
+</div>
+</div>
+<div class="border-t border-border-dark"></div>
+<div>
+<h3 class="text-lg font-semibold mb-3">Price Range</h3>
+<div class="space-y-2">
+<label class="flex items-center space-x-2 cursor-pointer">
+<input class="form-radio h-5 w-5 bg-card-dark border-border-dark text-primary focus:ring-primary/50" name="price" type="radio"/>
+<span class="text-text-dark">$ (Under S$20)</span>
+</label>
+<label class="flex items-center space-x-2 cursor-pointer">
+<input checked="" class="form-radio h-5 w-5 bg-card-dark border-border-dark text-primary focus:ring-primary/50" name="price" type="radio"/>
+<span class="text-text-dark">$$ (S$20 - S$50)</span>
+</label>
+<label class="flex items-center space-x-2 cursor-pointer">
+<input class="form-radio h-5 w-5 bg-card-dark border-border-dark text-primary focus:ring-primary/50" name="price" type="radio"/>
+<span class="text-text-dark">$$$ (Over S$50)</span>
+</label>
+</div>
+</div>
+<div class="border-t border-border-dark"></div>
+<div>
+<h3 class="text-lg font-semibold mb-3">Rating</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined !text-2xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined !text-2xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined !text-2xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined !text-2xl cursor-pointer" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined !text-2xl cursor-pointer text-text-dark-muted/50">star</span>
+<span class="text-sm ml-1 text-text-dark-muted">4 &amp; up</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<div class="w-full lg:w-3/4 xl:w-4/5">
+<div class="flex flex-col sm:flex-row justify-between items-baseline mb-6">
+<h2 class="text-2xl font-bold">Showing 12 results for "Hainanese Chicken Rice"</h2>
+<div class="flex items-center gap-2 mt-4 sm:mt-0">
+<span class="text-sm font-medium text-text-dark-muted">Sort by:</span>
+<select class="form-select text-sm rounded-lg bg-card-dark border-border-dark focus:border-primary focus:ring-primary/50">
+<option>Relevance</option>
+<option>Top Rated</option>
+<option>Price (Low to High)</option>
+<option>Price (High to Low)</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="Tian Tian Hainanese Chicken Rice stall in a bustling hawker centre" class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-T2HVVziKaXZTB5E5becjlt4YNMUv1vJrY_pR35l7At_wLdPk9ZZH0Ft412SJ7HwFQ_DogBlrVIGFFEIoJk4KL2_7jSSTKTzjPcFOTnbY6bNYy7XdDce7nUFwiWry_HwOxKnUoRT8e-Hzlv4PMi4myhouM4iJ-4rRtAtU4piDAqB4V8cZHoQ0kcktdpN_3nuactHZMSXMTtZr4j3tExRjihGgbvuXHWT5JOMEDIgf4bZeMSmVQayl6wdzoBplo4OXgx0YE7LjZ8E"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Tian Tian Hainanese Chicken Rice</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Michelin Bib Gourmand recipient, famous for its fragrant rice and tender chicken.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Maxwell Food Centre</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.8</span>
+<span class="text-sm text-text-dark-muted/80">(2,304)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="A beautifully plated dish of Boon Tong Kee chicken rice with dipping sauces." class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAowSx1h2qOLZrXpiiOyCOQPHgdJlwPfLvXYKTIsqJRHS2Q2rXtWt-aYd9Lcu56gP40yUVJfqyhRY60LJ44BLykNkJTaNeAk2d9rYlPNkkB55ojNh8iEtH6t4H_24S3firo1lhGBPbgDDo3LzCY-SGYmF08FAjsFrrZbDZYboY81FTfwzqlJ0Ja_XvuKaEy-D_cc67fgKw0VRgzQEJfAnVAEAXAYEe5YT5NjZKqQB8RwpvHnjYmF0ZN6aB6zNF5YnzJQyZf24Bd3iE"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Boon Tong Kee Chicken Rice</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">A beloved institution known for its silky smooth chicken and classic zi char dishes.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Balestier Road</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.5</span>
+<span class="text-sm text-text-dark-muted/80">(1,892)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="A modern cooking class where participants learn to make Hainanese Chicken Rice." class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNLwEeOPJ5OYDsanTpu7Ymi5Gfk4d0GVS_Zsqxcf2VbUhyMKjk8xwqa_s6PZWRjw_0VA8cdCsum4F8SyzvVAAqH6UTjwQfqrslCN4vmHsw9yIfLxJpWyX_gtkAZG92ntcvzAMeZF47rtPzBsud3beKzA3-a1GXubzvkwQfpbkk2eZl01fED4J0qjz36ODacRTU_P3TjO1xAr5hX9fMg8BxuTdF7GoziOwQPE9fzABDouEsF9rfo6MLXM9Q1kOBK4Rfilq5-FP-FsA"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Ultimate Chicken Rice Cooking Class</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Learn the secrets to perfecting this iconic Singaporean dish from a local chef.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Central Kitchen Studio</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">5.0</span>
+<span class="text-sm text-text-dark-muted/80">(156)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="A traditional coffee shop setting with a plate of chicken rice." class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa-HUqlxj8S0kWWjZMeZrm7Kqetksjk_eDmHGYZcTiYDhVqpFSfH7aouxg-rHaljKBEt9E6r8vS1NTVYB0u5dzBCQL2f2Y7EPCE8oaAKv4Fnvl44m1CXRH_dTg6_iNqxR4amLRAbU09kL3gwzOAdRidcGMJq_yyWhZpl5gqhVrjr5wmWPLmuzgBVBLzs35X1PbF-mphEwWmm5_A_XvRzGCQTLskxg6bLheJBdEdzXiWH7b8OHfjx2Dhd-qejOIXPsAwi1BMB5ilT0"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Loy Kee Best Chicken Rice</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Serving nostalgic, traditional-style chicken rice since 1953 in a charming setting.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Balestier Road</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.4</span>
+<span class="text-sm text-text-dark-muted/80">(987)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="A close up shot of succulent chicken from Wee Nam Kee." class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeIumC8AXVJ0Y-1lSZcq1-uzOdHddRTbB7p-GyAiNYlS6SS0SO5Z7RB6c-DCp-6zg4ylQ5zpbPhRQRBFEmRZywtwv7joVIhPluSL1vlKHyfpqAFmQobdr-CiTKK3_VrSUcj0kTzmZikmo22Y63KmhXXniKbD5Bng52CVTugCq_zdLI76ZSLNuAeYTdKSkPzbVSdzODqwb8Cy-g6EL2xTIqW6hpNr-IOc25I42OKKLp1rqWHHMZuJKcw2lNQiCSS0axDKfi2Mc92sU"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Wee Nam Kee Chicken Rice</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Offering a choice of steamed, roasted, or soya sauce chicken to satisfy all palates.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">United Square</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.3</span>
+<span class="text-sm text-text-dark-muted/80">(1,120)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img alt="A guided tour group sampling chicken rice at a hawker centre." class="h-60 w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4R0M99c-RNzuaFuGVWot7jLcL2b3DxwsWa-Iv601Lb2rEG8HQ5L5-FKzOr00KsHEle-T2DvXXghFeG6IAEqcwYeVCo4kdIck7FeNH8FsYcuGKF-vbjQ5FGpgWhrJbzN8ZrtSL-aqnfO3yd8V_vkecUyfHEXmyPPxVb_i8b9g6DxcQXjkPMFmd_dTPVk7W0q2gXmxLsEvDlKm5Akh4tkhchS5oMe--kQwJWFAg6iqPeBUWxkg6z9QZO4OnBbJwbQI_d91vluo_1Xo"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Hawker Legends: Chicken Rice Tour</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">A guided tour to sample and compare the top 3 chicken rice stalls in Singapore.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Multiple Locations</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.9</span>
+<span class="text-sm text-text-dark-muted/80">(211)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<nav class="flex items-center space-x-2">
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-card-dark border border-border-dark text-text-dark-muted hover:bg-border-dark transition-colors" href="#">
+<span class="material-symbols-outlined">chevron_left</span>
+</a>
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-background-dark border border-primary font-bold" href="#">1</a>
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-card-dark border border-border-dark hover:bg-border-dark transition-colors" href="#">2</a>
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-card-dark border border-border-dark text-text-dark-muted" href="#">...</a>
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-card-dark border border-border-dark hover:bg-border-dark transition-colors" href="#">5</a>
+<a class="flex items-center justify-center h-10 w-10 rounded-full bg-card-dark border border-border-dark text-text-dark-muted hover:bg-border-dark transition-colors" href="#">
+<span class="material-symbols-outlined">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-card-dark border-t border-border-dark">
+<div class="container mx-auto px-4 py-12">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+<div class="col-span-2 lg:col-span-1">
+<div class="flex items-center gap-2">
+<div class="text-primary size-6">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold">TasteLocal</h2>
+</div>
+<p class="mt-4 text-sm text-text-dark-muted">Connecting food lovers with authentic local experiences.</p>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Company</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Support</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Legal</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-12 border-t border-border-dark pt-8 flex flex-col md:flex-row items-center justify-between">
+<p class="text-sm text-text-dark-muted/80">© 2024 TasteLocal. All rights reserved.</p>
+<div class="flex items-center space-x-4 mt-4 md:mt-0">
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+</svg>
+</a>
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.129 2.183 7.74 5.378 9.695.1.021.218.033.332.033.117 0 .237-.012.353-.037.117-.025.228-.063.332-.11.104-.047.2-.107.284-.179.085-.072.158-.155.217-.247a.998.998 0 00.155-.32l.082-.365c.012-.05.023-.1.03-.149.008-.05.013-.1.018-.15a.72.72 0 00.003-.122c-.003-.092-.008-.18-.016-.265a2.53 2.53 0 01-.03-1.071c.063-.59.22-1.168.45-1.71.228-.542.53-1.03.882-1.442.35-.41.74-.74 1.15-.972.41-.23.83-.348 1.25-.348.42 0 .84.118 1.25.348.41.232.8.562 1.15.972.35.412.65.899.88 1.442.23.542.39.112.45 1.71a2.53 2.53 0 01-.03 1.071c-.008.085-.013.173-.016.265a.719.719 0 00.003.122c.005.05.01.1.018.15.007.05.018.1.03.149l.082.365a.998.998 0 00.155.32c.06.092.13.175.217.247.085.072.18.132.284.179.1.047.21.085.332.11.116.025.236.037.353.037.114 0 .232-.012.332-.033C19.817 19.753 22 16.142 22 12.014 22 6.477 17.523 2 12 2zm-1.01 14.116a1.31 1.31 0 01-1.29-1.313c0-.724.586-1.31 1.29-1.31s1.29.586 1.29 1.31c0 .727-.585 1.313-1.29 1.313zm2.02-5.026c0 .724-.586 1.31-1.29 1.31s-1.29-.586-1.29-1.31V9.083c0-.724.586-1.31 1.29-1.31s1.29.586 1.29 1.31v2.007z" fill-rule="evenodd"></path>
+</svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

@@ -1,41 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Sign Up | TasteLocal{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 400px; margin-top: 4rem; margin-bottom: 4rem;">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Create an Account</h2>
-    <form method="post"
-        style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        {% csrf_token %}
-        {% for field in form %}
-        <div style="margin-bottom: 1rem;">
-            <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 0.5rem;">{{ field.label
-                }}</label>
-            {{ field }}
-            {% if field.help_text %}
-            <small style="color: #666;">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-            <p style="color: red; font-size: 0.9rem;">{{ error }}</p>
-            {% endfor %}
-        </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary" style="width: 100%; border: none; cursor: pointer;">Sign
-            Up</button>
-    </form>
-    <p style="text-align: center; margin-top: 1rem;">Already have an account? <a href="{% url 'login' %}">Login</a></p>
-</div>
+<div class="container mx-auto px-4 py-16 flex items-center justify-center min-h-[calc(100vh-200px)]">
+    <div class="w-full max-w-md">
+        <div class="bg-card-dark rounded-xl border border-border-dark p-8 shadow-lg">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold">Create an Account</h1>
+                <p class="text-text-dark-muted mt-2">Join our community of food lovers</p>
+            </div>
 
-<style>
-    /* Quick fix for form styling since we are rendering form fields manually/loop */
-    input[type="text"],
-    input[type="password"],
-    input[type="email"] {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-</style>
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-text-dark-muted mb-2">{{
+                        field.label }}</label>
+
+                    {% if field.field.widget.input_type == 'checkbox' %}
+                    <div class="flex items-center gap-2">
+                        {{ field }}
+                        <span class="text-sm text-text-dark-muted">{{ field.help_text }}</span>
+                    </div>
+                    {% else %}
+                    <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}"
+                        id="{{ field.id_for_label }}"
+                        class="form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary"
+                        {% if field.field.required %}required{% endif %}>
+                    {% endif %}
+
+                    {% if field.help_text and field.field.widget.input_type != 'checkbox' %}
+                    <p class="mt-1 text-xs text-text-dark-muted">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                    <p class="mt-1 text-sm text-secondary">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <button type="submit"
+                    class="w-full flex items-center justify-center rounded-full h-12 px-8 bg-primary text-background-dark text-base font-bold hover:bg-opacity-90 transition-opacity">
+                    Sign Up
+                </button>
+            </form>
+
+            <div class="mt-8 text-center text-sm text-text-dark-muted">
+                Already have an account? <a href="{% url 'login' %}" class="text-primary font-bold hover:underline">Log
+                    in</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

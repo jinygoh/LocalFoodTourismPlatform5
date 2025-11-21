@@ -1,44 +1,173 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Home | TasteLocal{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
-        <h1>Discover Authentic Local Flavors</h1>
-        <p>Connect with local chefs, explore hidden gems, and book unique food experiences.</p>
-        <a href="{% url 'listing_list' %}" class="btn btn-primary">Explore Experiences</a>
+<section class="relative">
+    <div class="absolute inset-0 bg-cover bg-center"
+        data-alt="A vibrant overhead shot of various Singaporean street food dishes like satay, laksa, and chicken rice."
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOtcjXX-pkLAfXNylQv1DwK46mjMhYnBo3GEt0WFW1IFHsIONWrtaDU_cgHpUZAQ1Qrp-PcYwA62I9WjGU35Q6l6BvXlOrJO6KiuKiOFL3ld1l21vZ9hFg-JB4-EVPQ8p8oPh5krx4-LXsH-23CV4IIkSeCPzSsLQU48fFJ9cED4EkavB98LSu2HoSs4-hdqtSo43H4YUzioxMKhkbHFNAz2__GM5reus9Z7O1oZuU7_1Eh5XzHhjys9WWjtsNl245XzRK8CjCtnE');">
+    </div>
+    <div class="absolute inset-0 bg-background-dark/70"></div>
+    <div
+        class="relative container mx-auto flex min-h-[550px] flex-col items-center justify-center px-4 py-20 text-center text-white">
+        <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tighter">Savour the Flavours of Singapore</h1>
+        <h2 class="mt-4 max-w-2xl text-lg font-light text-text-dark/90">Discover and book unique culinary experiences
+            with local food heroes.</h2>
+        <div class="mt-10 w-full max-w-2xl">
+            <form action="{% url 'listing_list' %}" method="get">
+                <label
+                    class="flex flex-col rounded-full bg-card-dark/80 backdrop-blur-sm p-2 shadow-lg border border-border-dark">
+                    <div class="flex w-full items-stretch">
+                        <div class="flex items-center pl-4 pr-2">
+                            <span class="material-symbols-outlined text-text-dark-muted">search</span>
+                        </div>
+                        <input name="q"
+                            class="form-input w-full flex-1 resize-none overflow-hidden bg-transparent text-text-dark placeholder:text-text-dark-muted focus:outline-none focus:ring-0 border-0 text-base"
+                            placeholder="Try 'Hainanese Chicken Rice' or 'Laksa'" value="" />
+                        <button type="submit"
+                            class="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity">
+                            <span class="truncate">Search</span>
+                        </button>
+                    </div>
+                </label>
+            </form>
+        </div>
     </div>
 </section>
 
-<section class="container" style="margin-top: 3rem; margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 1.5rem;">Featured Experiences</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-        {% for listing in featured_listings %}
-        <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-            <div style="height: 200px; overflow: hidden;">
-                {% if listing.image %}
-                <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
-                {% else %}
-                <img src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
-                    alt="{{ listing.title }}" style="width: 100%; height: 100%; object-fit: cover;">
-                {% endif %}
-            </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">{{ listing.title }}</h3>
-                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">{{ listing.vendor.business_name }}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold; color: var(--primary-color); font-size: 1.1rem;">${{ listing.price
-                        }}</span>
-                    <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-secondary"
-                        style="font-size: 0.8rem;">View Details</a>
+<section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Explore by Experience</h2>
+        <div
+            class="mt-12 flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div class="mx-auto flex items-stretch justify-center gap-4 md:gap-6">
+                <div
+                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                        data-alt="A bustling Singaporean hawker centre with many food stalls and people eating."
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrCK_stgNyu2Fct-bsfpOEyzpHJDKK9xnjhR9-tmjVo-27E8j1yzuHXC_ufwu6ep2WINDsrlU8eZqVtBlDLJJoJMrDAk_1EcIkniVENdQAIpBr5x82yoLGVpSgKSP5qR0lEEwlAXjsyVAPKCNfoXkMwVgwGXQO9F4MN1Dj5kaccNlsNgg_ziVA15Z4I2fTJU3Fwfi4WkooZ33JreIk_h-MOiHbfo5B8u16fjc90S1G1qkdeIbzVguXM-LevrRh8sDBmwVJTM9Xc4g");'>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">Hawker Centre Tours</p>
+                        <p class="text-sm font-normal text-text-dark-muted">Taste the nation's best street food</p>
+                    </div>
+                </div>
+                <div
+                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                        data-alt="Colorful Peranakan tiles and a traditional Nyonya dish."
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBKKqjf5yC6-fl9H575tfu5RycGKk_aVwIKGKJ2fLIqRt3AWpOGQvnI4PWVchMNQd32Wnq3wIx75ihDFTdhxuQubnZkFAh8IjHgwleCQcaYpC0Oyu7gBw1jxhKFVgay9jVAQkUWZ31xgcDkKS9bjaHJLXMu8Oetsdx41s82p-8LXs4ij6XWQZXdI5QPs8SEAzCH_tXoyYVjgvdwRONcj14MF-6bebrJ5wLErbME5r2VPyukdWO09IQCwPVjolWZUg1uU_a6nu8_8O4");'>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">Peranakan Cuisine Workshops</p>
+                        <p class="text-sm font-normal text-text-dark-muted">Discover unique Nyonya flavours</p>
+                    </div>
+                </div>
+                <div
+                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                        data-alt="A chef meticulously plating a dish at a Michelin-starred street food stall."
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZwMJfVwW3aM_Cq8ZgjulaofUiibTkHrusEkYTpD0sC3UFTKhhZwmeWedrtDh_XbsSr1H3ZRULz9ZMleHjSbGJ2dd6FjM3sR2VSs1NlYHaP5YASEsyAFZDyrg05pw-v2S2z_JnCAJZpYAQMtQBMkyR6FUOAw2jsz3jKmkniXhFrsPETr6BvRb--azG_cGpf_Y8ouljQjEGgPM7ry1NL40AltZWv0xPxkd492BdJlK2WEq6S8Kn_U32R5qggyg5tG4Ua92k-qgMxcY");'>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">Michelin-Starred Street Food</p>
+                        <p class="text-sm font-normal text-text-dark-muted">World-class dining, hawker prices</p>
+                    </div>
+                </div>
+                <div
+                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                        data-alt="A table laden with various dim sum baskets in a traditional setting."
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVujnI_PJCFvYeUFX9Cx4MN48XQfVN7omImB7oazKoTGVR7xcegTMHMBZH1e5EJI8jJyRgcW3TTad_yGfbMBE8vjNGKwOVvD9lBylI5awSxC_fM9nqsmIci2JaRrofnlVT5ymlSrkY9x7aov2IfIkYt9-7j7jcq4ZsJ36K7_iTMOqCJicsP636bSVwDhNqe8GUfxVL2Ss7K_ldiHh0FkPcI800tapNIxUJ6MwpkZEevQa35by4ypsLmuBKrwR4zNMKfjYZM_iRI-Y");'>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">Local Breakfast (Kopi & Kaya)</p>
+                        <p class="text-sm font-normal text-text-dark-muted">Start your day like a true local</p>
+                    </div>
+                </div>
+                <div
+                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                        data-alt="A colourful spread of seafood dishes, including chilli crab."
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYW36w_W9iqmVRmbD0BBH7phlhISUfHcCzer3ddxKXTWzn_OUqMcVCpRj-lcGqICkqKsEM_vwZ4lMN7AQiK0PVsQUTrYy7-Z5-9q_bo2PnW2IyWbU7OaQiBPVMFYkBS2U4AFta8z4ECjDRnv2bzW8lSGTvBTHZDcXqOhzlsV4bTMwVI_oFhzfUgth8kI6YNLE32V1hyS3gZ_V-ITuORxTIDWUHvKjo56AsDk4lDpIK9ZnJCqmTjMW2eJ7zs_PWoLdwPp7w6HfdLEA");'>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold">Seafood Feasts</p>
+                        <p class="text-sm font-normal text-text-dark-muted">From chilli crab to sambal stingray</p>
+                    </div>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p>No featured experiences yet.</p>
-        {% endfor %}
+    </div>
+</section>
+
+<section class="py-16 sm:py-24" style="background-color: rgba(0,0,0,0.15)">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Featured Experiences</h2>
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for listing in featured_listings %}
+            <a href="{% url 'listing_detail' listing.pk %}"
+                class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
+                <div class="h-60 w-full overflow-hidden">
+                    {% if listing.image %}
+                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        src="{{ listing.image.url }}" alt="{{ listing.title }}" />
+                    {% else %}
+                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
+                        alt="{{ listing.title }}" />
+                    {% endif %}
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ listing.title }}</h3>
+                    <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ listing.vendor.business_name }}</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-accent !text-xl">place</span>
+                            <span class="text-sm font-medium">Singapore</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-lg font-bold text-primary">${{ listing.price }}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="col-span-full text-center text-text-dark-muted">
+                <p>No featured experiences yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Discover Culinary Spots Nearby</h2>
+        <p class="mt-4 max-w-2xl mx-auto text-center text-text-dark-muted">Explore hawker centres, restaurants, and
+            workshops around you. Your next food adventure is just around the corner.</p>
+        <div class="mt-12 h-[500px] w-full overflow-hidden rounded-xl border border-border-dark">
+            <img class="h-full w-full object-cover"
+                data-alt="An interactive map showing pins for various culinary locations in a stylized map of Singapore."
+                data-location="Singapore"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlg2wb7ZasCHvNJUCFtQSeTeZJQRnbJ-2020OnVmLGoKho1Wj1gnvdu7LqH7GzI6MyRH-cXgC2Ftsg7E_CpVy6YcNA6wJ67E2kRxQHkGGb2XwHLMHBnGKP-dIBOfwnlwW7NQRVX9rmz0eSfCdyWPo7N-3tVOW-ATzL3RQvbg65SNzwy1gohGzfxQmD4PJ5ZSBXy6mXleMmv0JvHyrrcP1K5y8s4mppp2lrC7jW30i26yFjBRYOHTNeEu1_57rYPQSA9ul8UYwKDJU" />
+        </div>
+    </div>
+</section>
+
+<section class="py-20 sm:py-28">
+    <div class="container mx-auto px-4">
+        <div class="rounded-xl bg-gradient-to-br from-secondary/20 to-primary/20 p-10 md:p-16 text-center">
+            <h2 class="text-3xl font-bold leading-tight tracking-tight">Are You a Local Food Business?</h2>
+            <p class="mt-4 max-w-2xl mx-auto text-text-dark-muted">Join TasteLocal to reach a global audience of food
+                lovers, manage your bookings, and grow your passion into a thriving business.</p>
+            <a href="{% url 'register' %}"
+                class="mt-8 flex-none min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity inline-flex">
+                List Your Business
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}

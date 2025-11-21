@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TasteLocal - Discover Singapore's Culinary Experiences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F7B84B", // Turmeric Yellow
+                        "secondary": "#D9534F", // Chili Red
+                        "accent": "#6A994E", // Pandan Green
+                        "background-dark": "#3B2F2F", // Dark Soy Sauce Brown
+                        "card-dark": "#493838", // Lighter Brown
+                        "border-dark": "#5A4C4C", // Muted Border
+                        "text-dark": "#F5EBE0", // Light Cream Text
+                        "text-dark-muted": "#D6CFCB", // Muted Cream Text
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-text-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="sticky top-0 z-50 bg-background-dark/80 backdrop-blur-sm border-b border-border-dark">
+<div class="container mx-auto px-4">
+<div class="flex h-20 items-center justify-between">
+<div class="flex items-center gap-4 text-text-dark">
+<div class="text-primary size-7">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</div>
+<h1 class="text-2xl font-bold">TasteLocal</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Explore</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">For Businesses</a>
+</nav>
+<div class="flex items-center gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-transparent text-sm font-bold border border-border-dark hover:bg-primary/10 transition-colors">
+<span class="truncate">Log In</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-secondary text-white text-sm font-bold hover:bg-opacity-90 transition-opacity">
+<span class="truncate">Sign Up</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<section class="relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A vibrant overhead shot of various Singaporean street food dishes like satay, laksa, and chicken rice." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOtcjXX-pkLAfXNylQv1DwK46mjMhYnBo3GEt0WFW1IFHsIONWrtaDU_cgHpUZAQ1Qrp-PcYwA62I9WjGU35Q6l6BvXlOrJO6KiuKiOFL3ld1l21vZ9hFg-JB4-EVPQ8p8oPh5krx4-LXsH-23CV4IIkSeCPzSsLQU48fFJ9cED4EkavB98LSu2HoSs4-hdqtSo43H4YUzioxMKhkbHFNAz2__GM5reus9Z7O1oZuU7_1Eh5XzHhjys9WWjtsNl245XzRK8CjCtnE');"></div>
+<div class="absolute inset-0 bg-background-dark/70"></div>
+<div class="relative container mx-auto flex min-h-[550px] flex-col items-center justify-center px-4 py-20 text-center text-white">
+<h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tighter">Savour the Flavours of Singapore</h1>
+<h2 class="mt-4 max-w-2xl text-lg font-light text-text-dark/90">Discover and book unique culinary experiences with local food heroes.</h2>
+<div class="mt-10 w-full max-w-2xl">
+<label class="flex flex-col rounded-full bg-card-dark/80 backdrop-blur-sm p-2 shadow-lg border border-border-dark">
+<div class="flex w-full items-stretch">
+<div class="flex items-center pl-4 pr-2">
+<span class="material-symbols-outlined text-text-dark-muted">search</span>
+</div>
+<input class="form-input w-full flex-1 resize-none overflow-hidden bg-transparent text-text-dark placeholder:text-text-dark-muted focus:outline-none focus:ring-0 border-0 text-base" placeholder="Try 'Hainanese Chicken Rice' or 'Laksa'" value=""/>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity">
+<span class="truncate">Search</span>
+</button>
+</div>
+</label>
+</div>
+</div>
+</section>
+<section class="py-16 sm:py-24">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Explore by Experience</h2>
+<div class="mt-12 flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="mx-auto flex items-stretch justify-center gap-4 md:gap-6">
+<div class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A bustling Singaporean hawker centre with many food stalls and people eating." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrCK_stgNyu2Fct-bsfpOEyzpHJDKK9xnjhR9-tmjVo-27E8j1yzuHXC_ufwu6ep2WINDsrlU8eZqVtBlDLJJoJMrDAk_1EcIkniVENdQAIpBr5x82yoLGVpSgKSP5qR0lEEwlAXjsyVAPKCNfoXkMwVgwGXQO9F4MN1Dj5kaccNlsNgg_ziVA15Z4I2fTJU3Fwfi4WkooZ33JreIk_h-MOiHbfo5B8u16fjc90S1G1qkdeIbzVguXM-LevrRh8sDBmwVJTM9Xc4g");'></div>
+<div>
+<p class="text-lg font-bold">Hawker Centre Tours</p>
+<p class="text-sm font-normal text-text-dark-muted">Taste the nation's best street food</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Colorful Peranakan tiles and a traditional Nyonya dish." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBKKqjf5yC6-fl9H575tfu5RycGKk_aVwIKGKJ2fLIqRt3AWpOGQvnI4PWVchMNQd32Wnq3wIx75ihDFTdhxuQubnZkFAh8IjHgwleCQcaYpC0Oyu7gBw1jxhKFVgay9jVAQkUWZ31xgcDkKS9bjaHJLXMu8Oetsdx41s82p-8LXs4ij6XWQZXdI5QPs8SEAzCH_tXoyYVjgvdwRONcj14MF-6bebrJ5wLErbME5r2VPyukdWO09IQCwPVjolWZUg1uU_a6nu8_8O4");'></div>
+<div>
+<p class="text-lg font-bold">Peranakan Cuisine Workshops</p>
+<p class="text-sm font-normal text-text-dark-muted">Discover unique Nyonya flavours</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A chef meticulously plating a dish at a Michelin-starred street food stall." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZwMJfVwW3aM_Cq8ZgjulaofUiibTkHrusEkYTpD0sC3UFTKhhZwmeWedrtDh_XbsSr1H3ZRULz9ZMleHjSbGJ2dd6FjM3sR2VSs1NlYHaP5YASEsyAFZDyrg05pw-v2S2z_JnCAJZpYAQMtQBMkyR6FUOAw2jsz3jKmkniXhFrsPETr6BvRb--azG_cGpf_Y8ouljQjEGgPM7ry1NL40AltZWv0xPxkd492BdJlK2WEq6S8Kn_U32R5qggyg5tG4Ua92k-qgMxcY");'></div>
+<div>
+<p class="text-lg font-bold">Michelin-Starred Street Food</p>
+<p class="text-sm font-normal text-text-dark-muted">World-class dining, hawker prices</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A table laden with various dim sum baskets in a traditional setting." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVujnI_PJCFvYeUFX9Cx4MN48XQfVN7omImB7oazKoTGVR7xcegTMHMBZH1e5EJI8jJyRgcW3TTad_yGfbMBE8vjNGKwOVvD9lBylI5awSxC_fM9nqsmIci2JaRrofnlVT5ymlSrkY9x7aov2IfIkYt9-7j7jcq4ZsJ36K7_iTMOqCJicsP636bSVwDhNqe8GUfxVL2Ss7K_ldiHh0FkPcI800tapNIxUJ6MwpkZEevQa35by4ypsLmuBKrwR4zNMKfjYZM_iRI-Y");'></div>
+<div>
+<p class="text-lg font-bold">Local Breakfast (Kopi &amp; Kaya)</p>
+<p class="text-sm font-normal text-text-dark-muted">Start your day like a true local</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A colourful spread of seafood dishes, including chilli crab." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYW36w_W9iqmVRmbD0BBH7phlhISUfHcCzer3ddxKXTWzn_OUqMcVCpRj-lcGqICkqKsEM_vwZ4lMN7AQiK0PVsQUTrYy7-Z5-9q_bo2PnW2IyWbU7OaQiBPVMFYkBS2U4AFta8z4ECjDRnv2bzW8lSGTvBTHZDcXqOhzlsV4bTMwVI_oFhzfUgth8kI6YNLE32V1hyS3gZ_V-ITuORxTIDWUHvKjo56AsDk4lDpIK9ZnJCqmTjMW2eJ7zs_PWoLdwPp7w6HfdLEA");'></div>
+<div>
+<p class="text-lg font-bold">Seafood Feasts</p>
+<p class="text-sm font-normal text-text-dark-muted">From chilli crab to sambal stingray</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 sm:py-24" style="background-color: rgba(0,0,0,0.15)">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Featured Experiences</h2>
+<div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img class="h-60 w-full object-cover" data-alt="The vibrant and bustling interior of Tiong Bahru Market, a famous hawker centre in Singapore." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-T2HVVziKaXZTB5E5becjlt4YNMUv1vJrY_pR35l7At_wLdPk9ZZH0Ft412SJ7HwFQ_DogBlrVIGFFEIoJk4KL2_7jSSTKTzjPcFOTnbY6bNYy7XdDce7nUFwiWry_HwOxKnUoRT8e-Hzlv4PMi4myhouM4iJ-4rRtAtU4piDAqB4V8cZHoQ0kcktdpN_3nuactHZMSXMTtZr4j3tExRjihGgbvuXHWT5JOMEDIgf4bZeMSmVQayl6wdzoBplo4OXgx0YE7LjZ8E"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Tiong Bahru Market Food Tour</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Explore one of Singapore's oldest and most beloved markets. A haven for traditional flavours and modern cafes.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Tiong Bahru</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.9</span>
+<span class="text-sm text-text-dark-muted/80">(124)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img class="h-60 w-full object-cover" data-alt="The iconic Victorian-style structure of Lau Pa Sat at night, beautifully lit up." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDagIO0Jf1owQe98fe_DA1cxH4HwVJLHnqtWf7JsR8zDmy_ohGGJTdIleNeozWmWZjjMN7MHMgv5LNsGiEZ4_Tm5PT0zwZtAV4C1IdZgNUz3Q17Qfq7WAVkKdMPdVR1hX-ke_4d18AOl8lJQEdT2BJFi01uIu4N1C1-FRbMLD1ZrYiWQQND5V8Je2DE8gQQ-9t8TX4Yvd-JaRS5s0XYED1CVs8VposbyWMByIjCMcGbwvucOYFZ9bSxGBMVEtPSPf32JqRP_DkYVSE"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Lau Pa Sat Satay Street Feast</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">As dusk falls, taste the best satay in the city at this legendary open-air street food market.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Downtown Core</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.8</span>
+<span class="text-sm text-text-dark-muted/80">(98)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10">
+<img class="h-60 w-full object-cover" data-alt="A chef skillfully preparing Roti Prata by flipping the dough in the air in a Little India eatery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWZNPrYyYWM1a5gLXwWmVjO16h2_Xkt9XLOI8pvr_N_H3IOIDiSoMbrna8WKnuYYheUFXcxHEZGJkCwyNyR-8b02QKSSSkp1tDtOv_21lC08EnahF6exrIQLdR3bFze_-JSiRbyrK4D45tTy7Z0Dv7Igo7a6k_VbgLNnZfLIsmFwvC4bIxBuzXF8Caju_4tlKa5sa-AfdjJoMX8keCVVf8obK_jCWtP2AB2JSFaaN_oS_4zm-6h9W3daLrJtRjWAQ7oAiI-RQ2R-k"/>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="text-xl font-bold">Little India Culinary Walk</h3>
+<p class="mt-2 text-sm text-text-dark-muted flex-grow">Immerse yourself in the vibrant culture and spicy aromas of Little India, from Teh Tarik to Fish Head Curry.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-accent !text-xl">place</span>
+<span class="text-sm font-medium">Little India</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary !text-xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">5.0</span>
+<span class="text-sm text-text-dark-muted/80">(82)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 sm:py-24">
+<div class="container mx-auto px-4">
+<h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Discover Culinary Spots Nearby</h2>
+<p class="mt-4 max-w-2xl mx-auto text-center text-text-dark-muted">Explore hawker centres, restaurants, and workshops around you. Your next food adventure is just around the corner.</p>
+<div class="mt-12 h-[500px] w-full overflow-hidden rounded-xl border border-border-dark">
+<img class="h-full w-full object-cover" data-alt="An interactive map showing pins for various culinary locations in a stylized map of Singapore." data-location="Singapore" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlg2wb7ZasCHvNJUCFtQSeTeZJQRnbJ-2020OnVmLGoKho1Wj1gnvdu7LqH7GzI6MyRH-cXgC2Ftsg7E_CpVy6YcNA6wJ67E2kRxQHkGGb2XwHLMHBnGKP-dIBOfwnlwW7NQRVX9rmz0eSfCdyWPo7N-3tVOW-ATzL3RQvbg65SNzwy1gohGzfxQmD4PJ5ZSBXy6mXleMmv0JvHyrrcP1K5y8s4mppp2lrC7jW30i26yFjBRYOHTNeEu1_57rYPQSA9ul8UYwKDJU"/>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-28">
+<div class="container mx-auto px-4">
+<div class="rounded-xl bg-gradient-to-br from-secondary/20 to-primary/20 p-10 md:p-16 text-center">
+<h2 class="text-3xl font-bold leading-tight tracking-tight">Are You a Local Food Business?</h2>
+<p class="mt-4 max-w-2xl mx-auto text-text-dark-muted">Join TasteLocal to reach a global audience of food lovers, manage your bookings, and grow your passion into a thriving business.</p>
+<button class="mt-8 flex-none min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity inline-flex">
+                        List Your Business
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-card-dark border-t border-border-dark">
+<div class="container mx-auto px-4 py-12">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+<div class="col-span-2 lg:col-span-1">
+<div class="flex items-center gap-2">
+<div class="text-primary size-6">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold">TasteLocal</h2>
+</div>
+<p class="mt-4 text-sm text-text-dark-muted">Connecting food lovers with authentic local experiences.</p>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Company</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Support</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold tracking-wide">Legal</h3>
+<ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-12 border-t border-border-dark pt-8 flex flex-col md:flex-row items-center justify-between">
+<p class="text-sm text-text-dark-muted/80">© 2024 TasteLocal. All rights reserved.</p>
+<div class="flex items-center space-x-4 mt-4 md:mt-0">
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+</svg>
+</a>
+<a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.014c0 4.129 2.183 7.74 5.378 9.695.1.021.218.033.332.033.117 0 .237-.012.353-.037.117-.025.228-.063.332-.11.104-.047.2-.107.284-.179.085-.072.158-.155.217-.247a.998.998 0 00.155-.32l.082-.365c.012-.05.023-.1.03-.149.008-.05.013-.1.018-.15a.72.72 0 00.003-.122c-.003-.092-.008-.18-.016-.265a2.53 2.53 0 01-.03-1.071c.063-.59.22-1.168.45-1.71.228-.542.53-1.03.882-1.442.35-.41.74-.74 1.15-.972.41-.23.83-.348 1.25-.348.42 0 .84.118 1.25.348.41.232.8.562 1.15.972.35.412.65.899.88 1.442.23.542.39.112.45 1.71a2.53 2.53 0 01-.03 1.071c-.008.085-.013.173-.016.265a.719.719 0 00.003.122c.005.05.01.1.018.15.007.05.018.1.03.149l.082.365a.998.998 0 00.155.32c.06.092.13.175.217.247.085.072.18.132.284.179.1.047.21.085.332.11.116.025.236.037.353.037.114 0 .232-.012.332-.033C19.817 19.753 22 16.142 22 12.014 22 6.477 17.523 2 12 2zm-1.01 14.116a1.31 1.31 0 01-1.29-1.313c0-.724.586-1.31 1.29-1.31s1.29.586 1.29 1.31c0 .727-.585 1.313-1.29 1.313zm2.02-5.026c0 .724-.586 1.31-1.29 1.31s-1.29-.586-1.29-1.31V9.083c0-.724.586-1.31 1.29-1.31s1.29.586 1.29 1.31v2.007z" fill-rule="evenodd"></path>
+</svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

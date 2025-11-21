@@ -1,32 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Login | TasteLocal{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 400px; margin-top: 4rem; margin-bottom: 4rem;">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Login</h2>
-    <form method="post"
-        style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        {% csrf_token %}
-        {% if form.errors %}
-        <p style="color: red; text-align: center;">Your username and password didn't match. Please try again.</p>
-        {% endif %}
+<div class="container mx-auto px-4 py-16 flex items-center justify-center min-h-[calc(100vh-200px)]">
+    <div class="w-full max-w-md">
+        <div class="bg-card-dark rounded-xl border border-border-dark p-8 shadow-lg">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold">Welcome Back</h1>
+                <p class="text-text-dark-muted mt-2">Login to continue your food journey</p>
+            </div>
 
-        <div style="margin-bottom: 1rem;">
-            <label for="id_username" style="display: block; margin-bottom: 0.5rem;">Username</label>
-            <input type="text" name="username" autofocus required id="id_username"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div
+                    class="bg-secondary/10 border border-secondary text-secondary px-4 py-3 rounded-lg text-sm text-center">
+                    Your username and password didn't match. Please try again.
+                </div>
+                {% endif %}
+
+                <div>
+                    <label for="id_username"
+                        class="block text-sm font-medium text-text-dark-muted mb-2">Username</label>
+                    <input type="text" name="username" autofocus required id="id_username"
+                        class="form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="id_password" class="block text-sm font-medium text-text-dark-muted">Password</label>
+                        <a href="#" class="text-xs text-primary hover:underline">Forgot password?</a>
+                    </div>
+                    <input type="password" name="password" required id="id_password"
+                        class="form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary">
+                </div>
+
+                <button type="submit"
+                    class="w-full flex items-center justify-center rounded-full h-12 px-8 bg-primary text-background-dark text-base font-bold hover:bg-opacity-90 transition-opacity">
+                    Log In
+                </button>
+            </form>
+
+            <div class="mt-8 text-center text-sm text-text-dark-muted">
+                Don't have an account? <a href="{% url 'register' %}"
+                    class="text-primary font-bold hover:underline">Sign up</a>
+            </div>
         </div>
-
-        <div style="margin-bottom: 1.5rem;">
-            <label for="id_password" style="display: block; margin-bottom: 0.5rem;">Password</label>
-            <input type="password" name="password" required id="id_password"
-                style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; border: none; cursor: pointer;">Login</button>
-    </form>
-    <p style="text-align: center; margin-top: 1rem;">Don't have an account? <a href="{% url 'register' %}">Sign up</a>
-    </p>
+    </div>
 </div>
 {% endblock %}

@@ -1,63 +1,184 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}TasteLocal{% endblock %}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>{% block title %}TasteLocal - Discover Singapore's Culinary Experiences{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F7B84B", // Turmeric Yellow
+                        "secondary": "#D9534F", // Chili Red
+                        "accent": "#6A994E", // Pandan Green
+                        "background-dark": "#3B2F2F", // Dark Soy Sauce Brown
+                        "card-dark": "#493838", // Lighter Brown
+                        "border-dark": "#5A4C4C", // Muted Border
+                        "text-dark": "#F5EBE0", // Light Cream Text
+                        "text-dark-muted": "#D6CFCB", // Muted Cream Text
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
 </head>
 
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="{% url 'home' %}" class="logo">TasteLocal</a>
-            <ul class="nav-links">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'listing_list' %}">Experiences</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
-                {% if user.is_authenticated %}
-                {% if user.is_vendor %}
-                <li><a href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a></li>
-                {% endif %}
-                <li><a href="{% url 'profile' %}">Profile ({{ user.username }})</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-link">Logout</button>
-                    </form>
-                </li>
-                {% else %}
-                <li><a href="{% url 'login' %}" class="btn btn-primary">Login</a></li>
-                <li><a href="{% url 'register' %}" class="btn btn-secondary">Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <footer class="footer">
-        <div class="container" style="text-align: center;">
-            <div style="margin-bottom: 1rem;">
-                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Facebook</a>
-                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Instagram</a>
-                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Twitter</a>
+<body class="bg-background-dark font-display text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col">
+        <header class="sticky top-0 z-50 bg-background-dark/80 backdrop-blur-sm border-b border-border-dark">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between">
+                    <a href="{% url 'home' %}" class="flex items-center gap-4 text-text-dark">
+                        <div class="text-primary size-7">
+                            <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h1 class="text-2xl font-bold">TasteLocal</h1>
+                    </a>
+                    <nav class="hidden md:flex items-center gap-8">
+                        <a class="text-sm font-medium hover:text-primary transition-colors"
+                            href="{% url 'home' %}">Home</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors"
+                            href="{% url 'listing_list' %}">Experiences</a>
+                        <a class="text-sm font-medium hover:text-primary transition-colors"
+                            href="{% url 'about' %}">About</a>
+                        {% if user.is_authenticated and user.is_vendor %}
+                        <a class="text-sm font-medium hover:text-primary transition-colors"
+                            href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a>
+                        {% endif %}
+                    </nav>
+                    <div class="flex items-center gap-2">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}"
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-transparent text-sm font-bold border border-border-dark hover:bg-primary/10 transition-colors">
+                            <span class="truncate">Profile ({{ user.username }})</span>
+                        </a>
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-secondary text-white text-sm font-bold hover:bg-opacity-90 transition-opacity">
+                                <span class="truncate">Log Out</span>
+                            </button>
+                        </form>
+                        {% else %}
+                        <a href="{% url 'login' %}"
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-transparent text-sm font-bold border border-border-dark hover:bg-primary/10 transition-colors">
+                            <span class="truncate">Log In</span>
+                        </a>
+                        <a href="{% url 'register' %}"
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-secondary text-white text-sm font-bold hover:bg-opacity-90 transition-opacity">
+                            <span class="truncate">Sign Up</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <p>&copy; 2025 TasteLocal. All rights reserved.</p>
-        </div>
-    </footer>
+        </header>
+
+        <main class="flex-grow">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="bg-card-dark border-t border-border-dark">
+            <div class="container mx-auto px-4 py-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                    <div class="col-span-2 lg:col-span-1">
+                        <div class="flex items-center gap-2">
+                            <div class="text-primary size-6">
+                                <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11a1 1 0 0 0 1.52 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-bold">TasteLocal</h2>
+                        </div>
+                        <p class="mt-4 text-sm text-text-dark-muted">Connecting food lovers with authentic local
+                            experiences.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-wide">Company</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+                            <li><a class="hover:text-primary transition-colors" href="{% url 'about' %}">About Us</a>
+                            </li>
+                            <li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+                            <li><a class="hover:text-primary transition-colors" href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-wide">Support</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+                            <li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+                            <li><a class="hover:text-primary transition-colors" href="#">FAQ</a></li>
+                            <li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-wide">Legal</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-text-dark-muted">
+                            <li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+                            <li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="mt-12 border-t border-border-dark pt-8 flex flex-col md:flex-row items-center justify-between">
+                    <p class="text-sm text-text-dark-muted/80">© 2025 TasteLocal. All rights reserved.</p>
+                    <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                        <a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+                            <svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path clip-rule="evenodd"
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                    fill-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a class="text-text-dark-muted hover:text-primary transition-colors" href="#">
+                            <svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>

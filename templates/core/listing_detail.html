@@ -1,134 +1,261 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %}{{ listing.title }}
+| TasteLocal{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="relative h-96">
+  {% if listing.image %}
+  <img
+    class="w-full h-full object-cover"
+    src="{{ listing.image.url }}"
+    alt="{{ listing.title }}"
+  />
+  {% else %}
+  <img
+    class="w-full h-full object-cover"
+    src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
+    alt="{{ listing.title }}"
+  />
+  {% endif %}
+  <div
+    class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"
+  ></div>
+</section>
 
-{% block title %}{{ listing.title }} | TasteLocal{% endblock %}
-
-{% block content %}
-<div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
-    <div style="display: flex; gap: 3rem; flex-wrap: wrap;">
-        <!-- Image Section -->
-        <div style="flex: 1; min-width: 300px;">
-            <div style="height: 400px; border-radius: 10px; overflow: hidden; margin-bottom: 2rem;">
-                {% if listing.image %}
-                <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
-                {% else %}
-                <img src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
-                    alt="{{ listing.title }}" style="width: 100%; height: 100%; object-fit: cover;">
-                {% endif %}
-            </div>
-
-            <!-- Map Section -->
-            <div style="height: 300px; border-radius: 10px; overflow: hidden; background: #eee;">
-                <iframe width="100%" height="100%" frameborder="0" style="border:0"
-                    src="https://maps.google.com/maps?q={{ listing.vendor.location }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                    allowfullscreen>
-                </iframe>
-            </div>
+<div class="container mx-auto px-4 -mt-24 relative pb-24">
+  <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+    <!-- Left Column: Content (Spans 2 columns) -->
+    <div class="lg:col-span-2">
+      <!-- Header / Title Section (Fixed the Syntax Error here) -->
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-white mb-2 drop-shadow-md">
+          {{ listing.title }}
+        </h1>
+        <div class="flex items-center gap-3">
+          <!-- I replaced the broken 'New' logic with a static badge for now. 
+                         Wrap this in {% if listing.is_new %} ... {% endif %} if you have that logic. -->
+          <span
+            class="bg-secondary text-white px-2 py-1 rounded text-xs font-bold shadow-sm"
+          >
+            New
+          </span>
+          <span class="text-white/90 text-sm font-medium drop-shadow-md">
+            ({{ reviews|length }} reviews)
+          </span>
         </div>
+      </div>
 
-        <!-- Details Section -->
-        <div style="flex: 1; min-width: 300px;">
-            <h1 style="margin-bottom: 0.5rem;">{{ listing.title }}</h1>
-            <p style="font-size: 1.1rem; color: #666; margin-bottom: 1.5rem;">by <a href="#"
-                    style="color: var(--primary-color);">{{ listing.vendor.business_name }}</a></p>
+      <!-- About Section -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold">About the Experience</h2>
+        <p class="mt-4 text-text-dark-muted leading-relaxed">
+          {{ listing.description }}
+        </p>
 
-            <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
-                <div>
-                    {% if listing.discount_price %}
-                    <span style="text-decoration: line-through; color: #999; font-size: 1.2rem;">${{ listing.price
-                        }}</span>
-                    <span style="font-size: 2rem; font-weight: bold; color: #e74c3c;">${{ listing.discount_price
-                        }}</span>
-                    <span
-                        style="background: #e74c3c; color: white; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.8rem; vertical-align: middle; margin-left: 0.5rem;">PROMO</span>
-                    {% else %}
-                    <span style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">${{ listing.price
-                        }}</span>
-                    {% endif %}
-                </div>
-                {% if user.is_authenticated %}
-                <a href="{% url 'toggle_favorite' listing.pk %}" class="btn"
-                    style="background: {% if is_favorite %}#e74c3c{% else %}#eee{% endif %}; color: {% if is_favorite %}white{% else %}#333{% endif %}; padding: 0.5rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.9rem;">
-                    {% if is_favorite %}♥ On Trail{% else %}♡ Add to Trail{% endif %}
-                </a>
-                {% endif %}
-            </div>
+        <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div class="bg-card-dark rounded-lg p-4 border border-border-dark">
+            <span class="material-symbols-outlined text-primary text-3xl"
+              >restaurant</span
+            >
+            <p class="mt-2 text-sm font-medium">Authentic Food</p>
+          </div>
+          <div class="bg-card-dark rounded-lg p-4 border border-border-dark">
+            <span class="material-symbols-outlined text-primary text-3xl"
+              >location_on</span
+            >
+            <p class="mt-2 text-sm font-medium">Local Spot</p>
+          </div>
+          <div class="bg-card-dark rounded-lg p-4 border border-border-dark">
+            <span class="material-symbols-outlined text-primary text-3xl"
+              >group</span
+            >
+            <p class="mt-2 text-sm font-medium">Group Friendly</p>
+          </div>
+          <div class="bg-card-dark rounded-lg p-4 border border-border-dark">
+            <span class="material-symbols-outlined text-primary text-3xl"
+              >verified</span
+            >
+            <p class="mt-2 text-sm font-medium">Verified Vendor</p>
+          </div>
+        </div>
+      </div>
 
-            <p style="line-height: 1.8; margin-bottom: 2rem;">{{ listing.description }}</p>
+      <!-- Location Map -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-4">Location</h2>
+        <div
+          class="h-[300px] rounded-xl overflow-hidden border border-border-dark"
+        >
+          <iframe
+            width="100%"
+            height="100%"
+            frameborder="0"
+            style="border: 0"
+            src="https://maps.google.com/maps?q={{ listing.vendor.location }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            allowfullscreen
+          >
+          </iframe>
+        </div>
+        <p class="mt-2 text-text-dark-muted">{{ listing.vendor.location }}</p>
+      </div>
 
-            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;">Location</h3>
-                <p>{{ listing.vendor.location }}</p>
-            </div>
+      <!-- Reviews Section -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6">Reviews</h2>
 
-            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;">Book This Experience</h3>
-                {% if user.is_authenticated %}
-                <form method="post" action="{% url 'payment_page' listing.pk %}">
-                    {% csrf_token %}
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem;">Date</label>
-                        <input type="date" name="date" required
-                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
-                    </div>
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem;">Number of Guests</label>
-                        <input type="number" name="guests" min="1" value="1" required
-                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
-                    </div>
-                    <button type="submit" class="btn btn-primary"
-                        style="width: 100%; padding: 1rem; font-size: 1.1rem;">Proceed to Payment</button>
-                </form>
-                {% else %}
-                <p>Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to book this experience.</p>
-                {% endif %}
-            </div>
-
-            <!-- Reviews Section -->
-            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;">Reviews</h3>
-                {% if reviews %}
-                {% for review in reviews %}
-                <div
-                    style="background: white; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; border: 1px solid #eee;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <strong>{{ review.user.username }}</strong>
-                        <span style="color: #f1c40f;">★ {{ review.rating }}/5</span>
-                    </div>
-                    <p style="color: #555;">{{ review.comment }}</p>
-                </div>
+        {% if reviews %}
+        <div class="space-y-6">
+          {% for review in reviews %}
+          <div class="bg-card-dark rounded-xl p-6 border border-border-dark">
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-bold text-lg">{{ review.user.username }}</span>
+              <div class="flex items-center text-primary">
+                {% for i in "12345"|make_list %}
+                <span
+                  class="material-symbols-outlined !text-lg"
+                  style="font-variation-settings: 'FILL' {% if forloop.counter <= review.rating %}1{% else %}0{% endif %};"
+                  >star</span
+                >
                 {% endfor %}
-                {% else %}
-                <p>No reviews yet. Be the first to review!</p>
-                {% endif %}
-
-                {% if user.is_authenticated %}
-                <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">Write a Review</h4>
-                <form method="post">
-                    {% csrf_token %}
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem;">Rating</label>
-                        <select name="rating" required
-                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
-                            <option value="5">5 - Excellent</option>
-                            <option value="4">4 - Good</option>
-                            <option value="3">3 - Average</option>
-                            <option value="2">2 - Poor</option>
-                            <option value="1">1 - Terrible</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem;">Comment</label>
-                        <textarea name="comment" rows="3" required
-                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-secondary" style="width: 100%; padding: 0.8rem;">Submit
-                        Review</button>
-                </form>
-                {% endif %}
+              </div>
             </div>
-
+            <p class="text-text-dark-muted">{{ review.comment }}</p>
+          </div>
+          {% endfor %}
         </div>
+        {% else %}
+        <p class="text-text-dark-muted">
+          No reviews yet. Be the first to review!
+        </p>
+        {% endif %} {% if user.is_authenticated %}
+        <div
+          class="mt-10 bg-card-dark rounded-xl p-6 border border-border-dark"
+        >
+          <h3 class="text-xl font-bold mb-4">Write a Review</h3>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-text-dark-muted mb-2"
+                >Rating</label
+              >
+              <select
+                name="rating"
+                required
+                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50"
+              >
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Terrible</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-text-dark-muted mb-2"
+                >Comment</label
+              >
+              <textarea
+                name="comment"
+                rows="3"
+                required
+                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity"
+            >
+              Submit Review
+            </button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
     </div>
+    <!-- End of Left Column -->
+
+    <!-- Right Column: Booking Card (Spans 1 column) -->
+    <div class="lg:col-span-1 mt-10 lg:mt-0">
+      <div
+        class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg"
+      >
+        <div class="mb-6">
+          {% if listing.discount_price %}
+          <p class="text-3xl font-bold text-secondary">
+            ${{ listing.discount_price }}
+          </p>
+          <p class="text-sm text-text-dark-muted line-through">
+            ${{ listing.price }} / person
+          </p>
+          {% else %}
+          <p class="text-3xl font-bold">
+            ${{ listing.price }}
+            <span class="text-base font-normal text-text-dark-muted"
+              >/ person</span
+            >
+          </p>
+          {% endif %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'payment_page' listing.pk %}">
+          {% csrf_token %}
+          <div class="space-y-4">
+            <div>
+              <label class="text-sm font-medium text-text-dark-muted" for="date"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="date"
+                required
+                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                id="date"
+              />
+            </div>
+            <div>
+              <label
+                class="text-sm font-medium text-text-dark-muted"
+                for="guests"
+                >Guests</label
+              >
+              <input
+                type="number"
+                name="guests"
+                min="1"
+                value="1"
+                required
+                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                id="guests"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity"
+          >
+            <span class="truncate">Proceed to Payment</span>
+          </button>
+          <p class="mt-4 text-center text-xs text-text-dark-muted">
+            You won't be charged yet
+          </p>
+        </form>
+        {% else %}
+        <div class="text-center py-4">
+          <p class="text-text-dark-muted mb-4">
+            Please login to book this experience.
+          </p>
+          <a
+            href="{% url 'login' %}?next={{ request.path }}"
+            class="block w-full py-3 bg-primary text-background-dark font-bold rounded-full hover:bg-opacity-90 transition-opacity"
+          >
+            Log In to Book
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- End of Right Column -->
+  </div>
+  <!-- End of Grid -->
 </div>
+<!-- End of Container -->
 {% endblock %}

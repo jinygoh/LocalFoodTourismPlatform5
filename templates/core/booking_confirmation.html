@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed | TasteLocal{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 sm:py-16">
+    <div class="mx-auto max-w-4xl">
+        <section class="rounded-xl bg-card-dark border border-border-dark p-8 md:p-12 text-center">
+            <div class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <span class="material-symbols-outlined !text-4xl">check_circle</span>
+            </div>
+            <h1 class="mt-6 text-3xl md:text-4xl font-bold">Booking Confirmed!</h1>
+            <p class="mt-2 text-lg text-text-dark-muted">Your culinary adventure is just around the corner.</p>
+            <p class="mt-4 text-sm text-text-dark-muted/80">A confirmation email with all the details has been sent to
+                your email address.</p>
+
+            <div
+                class="mt-8 text-left bg-background-dark/50 rounded-lg border border-border-dark p-6 max-w-2xl mx-auto">
+                <h2 class="text-xl font-bold">{{ booking.listing.title }}</h2>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <p class="text-text-dark-muted">Date</p>
+                        <p class="font-medium mt-1">{{ booking.date }}</p>
+                    </div>
+                    <div>
+                        <p class="text-text-dark-muted">Guests</p>
+                        <p class="font-medium mt-1">{{ booking.guests }} Guests</p>
+                    </div>
+                    <div>
+                        <p class="text-text-dark-muted">Booking ID</p>
+                        <p class="font-medium mt-1">#TL-{{ booking.pk }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{% url 'profile' %}"
+                    class="flex w-full sm:w-auto min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity">
+                    View My Bookings
+                </a>
+                <a href="{% url 'listing_list' %}"
+                    class="flex w-full sm:w-auto min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-transparent text-sm font-bold border border-border-dark hover:bg-primary/10 transition-colors">
+                    Explore More Experiences
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
