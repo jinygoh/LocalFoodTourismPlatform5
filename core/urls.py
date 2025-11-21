@@ -14,6 +14,7 @@ urlpatterns = [
     path('experiences/<int:pk>/process_payment/', views.process_payment, name='process_payment'),
     path('profile/', views.profile, name='profile'),
     path('vendor/', views.vendor_dashboard, name='vendor_dashboard'),
+    path('vendor/profile/edit/', views.edit_vendor_profile, name='edit_vendor_profile'),
     path('vendor/add/', views.add_listing, name='add_listing'),
     path('vendor/edit/<int:pk>/', views.edit_listing, name='edit_listing'),
     path('vendor/delete/<int:pk>/', views.delete_listing, name='delete_listing'),

@@ -6,22 +6,158 @@
 <div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
     <h2 style="margin-bottom: 1.5rem;">All Experiences</h2>
 
-    <!-- Search Bar -->
-    <form method="get" action="." style="margin-bottom: 2rem; display: flex; gap: 10px;">
-        <input type="text" name="q" placeholder="Search for chicken rice, laksa, crab..." value="{{ request.GET.q }}"
-            style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+    <!-- Search & Filter Section -->
+    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+        <form method="get" action="."
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-        {% for listing in listings %}
-        <div
-            style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;">
-            <div style="height: 200px; overflow: hidden;">
-                {% if listing.image %}
-                <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
-                {% else %}
+            <!-- Keyword Search -->
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Search</label>
+                <input type="text" name="q" placeholder="Search for chicken rice, laksa, crab..."
+                    value="{{ request.GET.q|default:'' }}"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <!-- Location Filter -->
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Location</label>
+                <select name="location"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="">All Locations</option>
+                    {% for loc in locations %}
+                    <option value="{{ loc }}" {% if request.GET.location == loc %}selected{% endif %}>{{ loc }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Min Price -->
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Min Price ($)</label>
+                <input type="number" name="min_price" placeholder="0" value="{{ request.GET.min_price|default:'' }}"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <!-- Max Price -->
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Max Price ($)</label>
+                <input type="number" name="max_price" placeholder="100" value="{{ request.GET.max_price|default:'' }}"
+                    style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            Filters</button>
+    </div>
+    </form>
+</div>
+
+<!-- Map View Toggle -->
+<div style="margin-bottom: 1rem; text-align: right;">
+    <button id="toggleMapBtn" class="btn btn-secondary" onclick="toggleMap()">Show Map View</button>
+</div>
+
+<!-- Map Container (Hidden by default) -->
+<div id="mapContainer"
+    style="display: none; height: 400px; width: 100%; margin-bottom: 2rem; border-radius: 10px; z-index: 1;"></div>
+
+<!-- Listings Grid -->
+<div id="listingsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+    {% for listing in listings %}
+    <div class="listing-card" data-lat="{{ listing.vendor.latitude }}" data-lng="{{ listing.vendor.longitude }}"
+        data-title="{{ listing.title }}" data-url="{% url 'listing_detail' listing.pk %}"
+        style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;">
+        <div style="height: 200px; overflow: hidden;">
+            {% if listing.image %}
+            <img src="{{ listing.image.url }}" alt="{{ listing.title }}"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+            <img src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}" alt="{{ listing.title }}"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            {% endif %}
+        </div>
+        <div style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 1.2rem; margin: 0;"><a href="{% url 'listing_detail' listing.pk %}"
+                        style="text-decoration: none; color: #333;">{{ listing.title }}</a></h3>
+                <span style="background: #eee; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.8rem;">{{
+                    listing.vendor.location }}</span>
+            </div>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">by {{ listing.vendor.business_name }}
+            </p>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    {% if listing.discount_price %}
+                    <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">${{ listing.price
+                        }}</span>
+                    <span style="color: #e74c3c; font-weight: bold; font-size: 1.1rem;">${{ listing.discount_price
+                        }}</span>
+                    {% else %}
+                    <span style="color: var(--primary-color); font-weight: bold; font-size: 1.1rem;">${{
+                        listing.price }}</span>
+                    {% endif %}
+                </div>
+                <a href="{% url 'listing_detail' listing.pk %}" class="btn btn-secondary"
+                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
             </div>
         </div>
-        {% endblock %}
+    </div>
+    {% empty %}
+    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <p style="font-size: 1.2rem; color: #666;">No experiences found matching your criteria.</p>
+        <a href="{% url 'listing_list' %}" class="btn btn-link">Clear Filters</a>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<script>
+    let map = null;
+    let markers = [];
+
+    function toggleMap() {
+        const mapContainer = document.getElementById('mapContainer');
+        const btn = document.getElementById('toggleMapBtn');
+
+        if (mapContainer.style.display === 'none') {
+            mapContainer.style.display = 'block';
+            btn.textContent = 'Hide Map View';
+            initMap();
+        } else {
+            mapContainer.style.display = 'none';
+            btn.textContent = 'Show Map View';
+        }
+    }
+
+    function initMap() {
+        if (map) return; // Already initialized
+
+        // Default to Singapore center
+        map = L.map('mapContainer').setView([1.3521, 103.8198], 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add markers from listing cards
+        const cards = document.querySelectorAll('.listing-card');
+        const bounds = [];
+
+        cards.forEach(card => {
+            const lat = parseFloat(card.dataset.lat);
+            const lng = parseFloat(card.dataset.lng);
+            const title = card.dataset.title;
+            const url = card.dataset.url;
+
+            if (lat && lng) {
+                const marker = L.marker([lat, lng]).addTo(map);
+                marker.bindPopup(`<b>${title}</b><br><a href="${url}">View Details</a>`);
+                bounds.push([lat, lng]);
+            }
+        });
+
+        if (bounds.length > 0) {
+            map.fitBounds(bounds);
+        }
+    }
+</script>
+{% endblock %}

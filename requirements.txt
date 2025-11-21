@@ -1,3 +1,5 @@
 Django
 mysqlclient
 Pillow
+requests
+python-dotenv

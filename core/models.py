@@ -11,6 +11,9 @@ class Vendor(models.Model):
     description = models.TextField()
     location = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=20)
+    opening_hours = models.CharField(max_length=255, blank=True, null=True, help_text="e.g. Mon-Sun: 10am - 10pm")
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     image = models.ImageField(upload_to='vendors/', blank=True, null=True)
 
     def __str__(self):

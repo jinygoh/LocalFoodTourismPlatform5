@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Business Profile | TasteLocal{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin-top: 4rem; margin-bottom: 4rem;">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Edit Business Profile</h2>
+    <form method="post" enctype="multipart/form-data"
+        style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        {% csrf_token %}
+        {% for field in form %}
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 0.5rem;">{{ field.label
+                }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <p style="color: red; font-size: 0.9rem;">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary"
+            style="width: 100%; border: none; cursor: pointer; margin-top: 1rem;">Save Changes</button>
+    </form>
+</div>
+
+<style>
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+</style>
+{% endblock %}

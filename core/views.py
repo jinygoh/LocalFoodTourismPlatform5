@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.db import models
 from .models import User, Listing, Booking, Vendor, Review, Favorite
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ListingForm
+from .forms import CustomUserCreationForm, ListingForm, VendorProfileForm
 
 def home(request):
     # Show featured listings (random 3 or latest 3)
@@ -17,11 +18,42 @@ def about(request):
 
 def listing_list(request):
     listings = Listing.objects.all()
-    # Simple search
+    
+    # Search (Title or Description or Cuisine/Tag if we had it)
     query = request.GET.get('q')
     if query:
-        listings = listings.filter(title__icontains=query)
-    return render(request, 'core/listing_list.html', {'listings': listings})
+        listings = listings.filter(
+            models.Q(title__icontains=query) | 
+            models.Q(description__icontains=query) |
+            models.Q(vendor__business_name__icontains=query)
+        )
+    
+    # Filter by Location
+    location = request.GET.get('location')
+    if location:
+        listings = listings.filter(vendor__location__icontains=location)
+
+    # Filter by Price
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    
+    if min_price:
+        listings = listings.filter(price__gte=min_price)
+    if max_price:
+        listings = listings.filter(price__lte=max_price)
+        
+    # Filter by Rating
+    min_rating = request.GET.get('min_rating')
+    if min_rating:
+        listings = listings.annotate(avg_rating=models.Avg('review__rating')).filter(avg_rating__gte=min_rating)
+        
+    # Get unique locations for the filter dropdown
+    locations = Vendor.objects.values_list('location', flat=True).distinct()
+        
+    return render(request, 'core/listing_list.html', {
+        'listings': listings,
+        'locations': locations
+    })
 
 def listing_detail(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
@@ -165,3 +197,19 @@ def toggle_favorite(request, pk):
     if not created:
         favorite.delete()
     return redirect('listing_detail', pk=pk)
+
+@login_required
+def edit_vendor_profile(request):
+    if not request.user.is_vendor:
+        return redirect('home')
+    
+    vendor = request.user.vendor_profile
+    
+    if request.method == 'POST':
+        form = VendorProfileForm(request.POST, request.FILES, instance=vendor)
+        if form.is_valid():
+            form.save()
+            return redirect('vendor_dashboard')
+    else:
+        form = VendorProfileForm(instance=vendor)
+    return render(request, 'core/edit_vendor_profile.html', {'form': form})

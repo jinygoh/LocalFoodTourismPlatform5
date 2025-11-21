@@ -11,9 +11,16 @@
 
     <div
         style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 3rem;">
-        <h3>My Business: {{ vendor.business_name }}</h3>
-        <p>{{ vendor.description }}</p>
-        <p><strong>Location:</strong> {{ vendor.location }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+                <h3>My Business: {{ vendor.business_name }}</h3>
+                <p>{{ vendor.description }}</p>
+                <p><strong>Location:</strong> {{ vendor.location }}</p>
+                <p><strong>Hours:</strong> {{ vendor.opening_hours|default:"Not specified" }}</p>
+            </div>
+            <a href="{% url 'edit_vendor_profile' %}" class="btn btn-secondary" style="font-size: 0.9rem;">Edit
+                Profile</a>
+        </div>
     </div>
 
     <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
