@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 from django.db import models
 from .models import User, Listing, Booking, Vendor, Review, Favorite, UserProfile
 
@@ -248,3 +250,13 @@ def edit_vendor_profile(request):
     else:
         form = VendorProfileForm(instance=vendor)
     return render(request, 'core/edit_vendor_profile.html', {'form': form})
+
+class CustomLoginView(LoginView):
+    def get_success_url(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_vendor:
+                return reverse_lazy('vendor_dashboard')
+            else:
+                return reverse_lazy('profile')
+        return reverse_lazy('login')

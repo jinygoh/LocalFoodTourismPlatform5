@@ -3,8 +3,8 @@ from playwright.sync_api import Page, expect
 
 def test_profile_picture_upload(page: Page):
     page.goto("http://127.0.0.1:8000/login/")
-    page.fill("input[name='username']", "tourist")
-    page.fill("input[name='password']", "password")
+    page.fill("input[name='username']", "tourist_john")
+    page.fill("input[name='password']", "TestPass123!")
     page.click("button[type='submit']")
     page.wait_for_url("http://127.0.0.1:8000/profile/")
 
