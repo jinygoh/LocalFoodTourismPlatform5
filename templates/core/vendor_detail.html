@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ vendor.business_name }} | TasteLocal{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <!-- Vendor Header -->
+    <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+        {% if vendor.image %}
+            <img src="{{ vendor.image.url }}" alt="{{ vendor.business_name }}" class="w-32 h-32 rounded-full object-cover border-4 border-primary">
+        {% else %}
+            <div class="w-32 h-32 rounded-full bg-gray-700 flex items-center justify-center border-4 border-primary">
+                <span class="text-4xl text-white">{{ vendor.business_name|first }}</span>
+            </div>
+        {% endif %}
+        <div>
+            <h1 class="text-4xl font-bold text-text-dark">{{ vendor.business_name }}</h1>
+            <p class="text-lg text-text-dark-muted mt-2">{{ vendor.description }}</p>
+            <div class="flex items-center gap-4 mt-4 text-text-dark-muted">
+                <span class="flex items-center gap-2"><span class="material-symbols-outlined">location_on</span> {{ vendor.location }}</span>
+                <span class="flex items-center gap-2"><span class="material-symbols-outlined">schedule</span> {{ vendor.opening_hours }}</span>
+                <span class="flex items-center gap-2"><span class="material-symbols-outlined">call</span> {{ vendor.contact_number }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listings -->
+    <h2 class="text-3xl font-bold text-text-dark mb-6">Our Offerings</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for listing in listings %}
+            <a href="{% url 'listing_detail' listing.pk %}" class="group block bg-card-dark rounded-xl border border-border-dark overflow-hidden hover:shadow-lg transition-shadow">
+                {% if listing.image %}
+                    <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="w-full h-56 object-cover">
+                {% else %}
+                    <div class="w-full h-56 bg-gray-700 flex items-center justify-center">
+                        <span class="text-xl text-white">No Image</span>
+                    </div>
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-text-dark group-hover:text-primary transition-colors">{{ listing.title }}</h3>
+                    <p class="text-text-dark-muted mt-2">{{ listing.description|truncatewords:20 }}</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <p class="text-lg font-bold text-primary">${{ listing.price }}</p>
+                        <span class="text-sm text-text-dark-muted">Learn More &rarr;</span>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p class="text-text-dark-muted">This vendor has no offerings at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

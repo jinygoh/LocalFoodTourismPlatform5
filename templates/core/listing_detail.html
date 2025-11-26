@@ -22,7 +22,7 @@
                 <div class="flex items-center gap-2 text-sm text-text-dark-muted">
                     <span>{{ listing.vendor.location }}</span>
                     <span>·</span>
-                    <span>{{ listing.vendor.business_name }}</span>
+                    <a href="{% url 'vendor_detail' listing.vendor.pk %}" class="hover:text-primary">{{ listing.vendor.business_name }}</a>
                 </div>
                 <div class="flex justify-between items-start">
                     <h1 class="text-4xl md:text-5xl font-black mt-2">{{ listing.title }}</h1>

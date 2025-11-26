@@ -271,3 +271,8 @@ class CustomLoginView(LoginView):
             else:
                 return reverse_lazy('profile')
         return reverse_lazy('login')
+
+def vendor_detail(request, pk):
+    vendor = get_object_or_404(Vendor, pk=pk)
+    listings = Listing.objects.filter(vendor=vendor)
+    return render(request, 'core/vendor_detail.html', {'vendor': vendor, 'listings': listings})
