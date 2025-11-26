@@ -17,6 +17,12 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'is_tourist', 'is_vendor')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'
+            field.label_attrs = {'class': 'block text-sm font-medium text-text-dark-muted mb-2'}
+
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
