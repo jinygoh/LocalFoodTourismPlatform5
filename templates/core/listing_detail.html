@@ -113,7 +113,7 @@
                 <p class="text-text-dark-muted">No reviews yet. Be the first to review!</p>
                 {% endif %}
 
-                {% if user.is_authenticated %}
+                {% if user.is_tourist %}
                 <div class="mt-10 bg-card-dark rounded-xl p-6 border border-border-dark">
                     <h3 class="text-xl font-bold mb-4">Write a Review</h3>
                     <form method="post">
@@ -157,7 +157,7 @@
                     {% endif %}
                 </div>
 
-                {% if user.is_authenticated %}
+                {% if user.is_tourist %}
                 <form method="post" action="{% url 'payment_page' listing.pk %}">
                     {% csrf_token %}
                     <div class="space-y-4">
@@ -180,6 +180,10 @@
                     </button>
                     <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
                 </form>
+                {% elif user.is_authenticated and not user.is_tourist %}
+                <div class="text-center py-4">
+                    <p class="text-text-dark-muted mb-4">Only tourists can book experiences.</p>
+                </div>
                 {% else %}
                 <div class="text-center py-4">
                     <p class="text-text-dark-muted mb-4">Please login to book this experience.</p>
