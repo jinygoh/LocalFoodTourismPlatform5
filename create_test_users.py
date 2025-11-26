@@ -2,11 +2,13 @@ import os
 import django
 from django.contrib.auth import get_user_model
 
+import datetime
+
 # Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
-from core.models import Vendor, Listing
+from core.models import Vendor, Listing, Booking
 
 User = get_user_model()
 
@@ -67,6 +69,24 @@ def create_test_users():
         print(f"Created Tourist: tourist_john / {password}")
     else:
         print("Tourist user 'tourist_john' already exists.")
+
+    # Create a booking for the tourist user
+    listing = Listing.objects.first()
+    booking, created = Booking.objects.get_or_create(
+        user=tourist_user,
+        listing=listing,
+        defaults={
+            'date': datetime.date.today() + datetime.timedelta(days=7),
+            'guests': 2,
+            'status': 'confirmed'
+        }
+    )
+    if created:
+        print(f"Created booking for tourist_john for listing: {listing.title}")
+    elif booking.status == 'cancelled':
+        booking.status = 'confirmed'
+        booking.save()
+        print(f"Reset booking for tourist_john for listing: {listing.title}")
 
 if __name__ == "__main__":
     create_test_users()

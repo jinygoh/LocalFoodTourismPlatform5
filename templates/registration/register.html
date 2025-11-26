@@ -18,7 +18,6 @@
                 {% for field in form %}
                 <div>
                     {{ field.label_tag }}
-
                     {{ field }}
 
                     {% if field.help_text and field.field.widget.input_type != 'checkbox' %}

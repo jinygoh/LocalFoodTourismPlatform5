@@ -6,11 +6,6 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['image']
-        widgets = {
-            'image': forms.FileInput(attrs={
-                'class': 'block w-full text-sm text-text-dark-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90'
-            })
-        }
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -19,8 +14,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
             field.label_attrs = {'class': 'block text-sm font-medium text-text-dark-muted mb-2'}
 
 class ListingForm(forms.ModelForm):

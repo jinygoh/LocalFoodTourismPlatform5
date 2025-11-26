@@ -132,6 +132,17 @@ def booking_confirmation(request, pk):
     return render(request, 'core/booking_confirmation.html', {'booking': booking})
 
 @login_required
+def cancel_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    if booking.status != 'cancelled':
+        booking.status = 'cancelled'
+        booking.save()
+        messages.success(request, 'Your booking has been cancelled.')
+    else:
+        messages.error(request, 'This booking has already been cancelled.')
+    return redirect('profile')
+
+@login_required
 def profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 

@@ -155,7 +155,8 @@ TasteLocal{% endblock %} {% block content %}
         <div class="space-y-4">
           {% for booking in bookings %}
           <div
-            class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 rounded-lg bg-background-dark border border-border-dark"
+            class="booking-card flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 rounded-lg bg-background-dark border border-border-dark"
+            data-booking-id="{{ booking.pk }}"
           >
             <div>
               <h3 class="font-bold">{{ booking.listing.title }}</h3>
@@ -174,6 +175,13 @@ TasteLocal{% endblock %} {% block content %}
                 class="text-sm text-text-dark-muted hover:text-text-dark underline"
                 >View Again</a
               >
+              {% if booking.status != 'cancelled' %}
+              <a
+                href="{% url 'cancel_booking' booking.pk %}"
+                class="text-sm text-secondary hover:underline"
+                >Cancel</a
+              >
+              {% endif %}
             </div>
           </div>
           {% endfor %}
