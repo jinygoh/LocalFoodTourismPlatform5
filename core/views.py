@@ -5,126 +5,151 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from django.db import models
-from .models import User, Listing, Booking, Vendor, Review, Favorite, UserProfile
+from django.db.models import Q, Avg
+from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ListingForm, VendorProfileForm, UserProfileForm
+from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm
 
 def home(request):
-    # Show featured listings (random 3 or latest 3)
-    featured_listings = Listing.objects.all().order_by('-created_at')[:3]
-    return render(request, 'home.html', {'featured_listings': featured_listings})
+    featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
+    return render(request, 'home.html', {'featured_experiences': featured_experiences})
 
 def about(request):
     return render(request, 'about.html')
 
-def listing_list(request):
-    listings = Listing.objects.all()
-    
-    # Search (Title or Description or Cuisine/Tag if we had it)
+def explore(request):
     query = request.GET.get('q')
-    if query:
-        listings = listings.filter(
-            models.Q(title__icontains=query) | 
-            models.Q(description__icontains=query) |
-            models.Q(vendor__business_name__icontains=query)
-        )
-    
-    # Filter by Location
     location = request.GET.get('location')
-    if location:
-        listings = listings.filter(vendor__location__icontains=location)
-
-    # Filter by Price
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    
-    if min_price:
-        listings = listings.filter(price__gte=min_price)
-    if max_price:
-        listings = listings.filter(price__lte=max_price)
-        
-    # Filter by Rating
     min_rating = request.GET.get('min_rating')
+
+    experiences = Experience.objects.all()
+    shops = Shop.objects.all()
+    dishes = Dish.objects.all()
+
+    if query:
+        experiences = experiences.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        shops = shops.filter(Q(business_name__icontains=query) | Q(description__icontains=query))
+        dishes = dishes.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    if location:
+        experiences = experiences.filter(vendor__location__icontains=location)
+        shops = shops.filter(location__icontains=location)
+
+    if min_price:
+        experiences = experiences.filter(price__gte=min_price)
+    if max_price:
+        experiences = experiences.filter(price__lte=max_price)
+
     if min_rating:
-        listings = listings.annotate(avg_rating=models.Avg('review__rating')).filter(avg_rating__gte=min_rating)
+        experiences = experiences.annotate(avg_rating=Avg('review__rating')).filter(avg_rating__gte=min_rating)
+        shops = shops.annotate(avg_rating=Avg('review__rating')).filter(avg_rating__gte=min_rating)
+        dishes = dishes.annotate(avg_rating=Avg('review__rating')).filter(avg_rating__gte=min_rating)
         
-    # Get unique locations for the filter dropdown
-    locations = Vendor.objects.values_list('location', flat=True).distinct()
-        
-    return render(request, 'core/listing_list.html', {
-        'listings': listings,
-        'locations': locations
+    locations = Shop.objects.values_list('location', flat=True).distinct()
+
+    return render(request, 'core/explore.html', {
+        'experiences': experiences,
+        'shops': shops,
+        'dishes': dishes,
+        'locations': locations,
     })
 
-def listing_detail(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    reviews = Review.objects.filter(listing=listing).order_by('-created_at')
-    is_favorite = False
-    if request.user.is_authenticated:
-        is_favorite = Favorite.objects.filter(user=request.user, listing=listing).exists()
-    
-    if request.method == 'POST' and 'rating' in request.POST:
+def dish_detail(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    reviews = Review.objects.filter(object_id=dish.pk).order_by('-created_at')
+    return render(request, 'core/dish_detail.html', {'dish': dish, 'reviews': reviews})
+
+def shop_detail(request, pk):
+    shop = get_object_or_404(Shop, pk=pk)
+    reviews = Review.objects.filter(object_id=shop.pk).order_by('-created_at')
+    if request.method == 'POST':
         if not request.user.is_authenticated:
             return redirect('login')
 
-        if request.user.is_vendor and listing.vendor.user == request.user:
-            # Optionally, you can add a message to the user
-            messages.error(request, "You cannot review your own listing.")
-            return redirect('listing_detail', pk=pk)
-
         if not request.user.is_tourist:
-            messages.error(request, "Only tourists can leave a review.")
-            return redirect('listing_detail', pk=pk)
-        
-        rating = request.POST.get('rating')
-        comment = request.POST.get('comment')
-        Review.objects.create(
-            user=request.user,
-            listing=listing,
-            rating=rating,
-            comment=comment
-        )
-        return redirect('listing_detail', pk=pk)
-        
-    return render(request, 'core/listing_detail.html', {'listing': listing, 'reviews': reviews, 'is_favorite': is_favorite})
+            messages.error(request, "Only tourists can book a table.")
+            return redirect('shop_detail', pk=pk)
 
-@login_required
-def payment_page(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    if not request.user.is_tourist:
-        messages.error(request, "Only tourists can book listings.")
-        return redirect('listing_detail', pk=pk)
-
-    if request.method == 'POST':
-        date = request.POST.get('date')
-        guests = int(request.POST.get('guests'))
-        total_price = listing.price * guests
-        return render(request, 'core/payment.html', {
-            'listing': listing,
-            'date': date,
-            'guests': guests,
-            'total_price': total_price
-        })
-    return redirect('listing_detail', pk=pk)
-
-@login_required
-def process_payment(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    if request.method == 'POST':
         date = request.POST.get('date')
         guests = request.POST.get('guests')
-        # Simulate payment processing... Success!
         booking = Booking.objects.create(
             user=request.user,
-            listing=listing,
+            content_object=shop,
             date=date,
             guests=guests,
             status='confirmed'
         )
         return redirect('booking_confirmation', pk=booking.pk)
-    return redirect('listing_detail', pk=pk)
+    return render(request, 'core/shop_detail.html', {'shop': shop, 'reviews': reviews})
+
+def experience_detail(request, pk):
+    experience = get_object_or_404(Experience, pk=pk)
+    reviews = Review.objects.filter(object_id=experience.pk).order_by('-created_at')
+    is_favorite = False
+    if request.user.is_authenticated:
+        is_favorite = Favorite.objects.filter(user=request.user, object_id=experience.pk).exists()
+    
+    if request.method == 'POST' and 'rating' in request.POST:
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        if request.user.is_vendor and experience.vendor.user == request.user:
+            messages.error(request, "You cannot review your own experience.")
+            return redirect('experience_detail', pk=pk)
+
+        if not request.user.is_tourist:
+            messages.error(request, "Only tourists can leave a review.")
+            return redirect('experience_detail', pk=pk)
+        
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        Review.objects.create(
+            user=request.user,
+            content_object=experience,
+            rating=rating,
+            comment=comment
+        )
+        return redirect('experience_detail', pk=pk)
+        
+    return render(request, 'core/experience_detail.html', {'experience': experience, 'reviews': reviews, 'is_favorite': is_favorite})
+
+@login_required
+def payment_page(request, pk):
+    experience = get_object_or_404(Experience, pk=pk)
+    if not request.user.is_tourist:
+        messages.error(request, "Only tourists can book experiences.")
+        return redirect('experience_detail', pk=pk)
+
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        guests = int(request.POST.get('guests'))
+        total_price = experience.price * guests
+        return render(request, 'core/payment.html', {
+            'experience': experience,
+            'date': date,
+            'guests': guests,
+            'total_price': total_price
+        })
+    return redirect('experience_detail', pk=pk)
+
+@login_required
+def process_payment(request, pk):
+    experience = get_object_or_404(Experience, pk=pk)
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        guests = request.POST.get('guests')
+        booking = Booking.objects.create(
+            user=request.user,
+            content_object=experience,
+            date=date,
+            guests=guests,
+            status='confirmed'
+        )
+        return redirect('booking_confirmation', pk=booking.pk)
+    return redirect('experience_detail', pk=pk)
 
 @login_required
 def booking_confirmation(request, pk):
@@ -155,12 +180,12 @@ def profile(request):
         form = UserProfileForm(instance=user_profile)
 
     bookings = Booking.objects.filter(user=request.user).order_by('-date')
-    favorite_listings = Listing.objects.filter(favorite__user=request.user)
+    favorite_experiences = Experience.objects.filter(favorite__user=request.user)
 
     return render(request, 'core/profile.html', {
         'form': form,
         'bookings': bookings,
-        'favorites': favorite_listings,
+        'favorites': favorite_experiences,
         'user_profile': user_profile
     })
 
@@ -180,21 +205,19 @@ def vendor_dashboard(request):
     if not request.user.is_vendor:
         return redirect('home')
     
-    # Ensure vendor profile exists
-    vendor, created = Vendor.objects.get_or_create(user=request.user, defaults={
+    shop, created = Shop.objects.get_or_create(user=request.user, defaults={
         'business_name': f"{request.user.username}'s Business",
         'description': 'Please update your business description.',
         'location': 'Singapore',
         'contact_number': 'Unknown'
     })
     
-    listings = Listing.objects.filter(vendor=request.user.vendor_profile)
-    # Fetch bookings for this vendor's listings
-    incoming_bookings = Booking.objects.filter(listing__vendor=request.user.vendor_profile).order_by('-date')
+    experiences = Experience.objects.filter(vendor=request.user.shop_profile)
+    incoming_bookings = Booking.objects.filter(content_object__vendor=request.user.shop_profile).order_by('-date')
     
     return render(request, 'core/vendor_dashboard.html', {
-        'listings': listings, 
-        'vendor': request.user.vendor_profile,
+        'experiences': experiences,
+        'shop': request.user.shop_profile,
         'incoming_bookings': incoming_bookings
     })
 
@@ -203,63 +226,63 @@ def add_listing(request):
     if not request.user.is_vendor:
         return redirect('home')
     
-    vendor = request.user.vendor_profile
+    shop = request.user.shop_profile
     
     if request.method == 'POST':
-        form = ListingForm(request.POST, request.FILES)
+        form = ExperienceForm(request.POST, request.FILES)
         if form.is_valid():
-            listing = form.save(commit=False)
-            listing.vendor = vendor
-            listing.save()
+            experience = form.save(commit=False)
+            experience.vendor = shop
+            experience.save()
             return redirect('vendor_dashboard')
     else:
-        form = ListingForm()
+        form = ExperienceForm()
     return render(request, 'core/add_listing.html', {'form': form, 'title': 'Add New Experience'})
 
 @login_required
 def edit_listing(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    if request.user != listing.vendor.user:
+    experience = get_object_or_404(Experience, pk=pk)
+    if request.user != experience.vendor.user:
         return redirect('home')
         
     if request.method == 'POST':
-        form = ListingForm(request.POST, request.FILES, instance=listing)
+        form = ExperienceForm(request.POST, request.FILES, instance=experience)
         if form.is_valid():
             form.save()
             return redirect('vendor_dashboard')
     else:
-        form = ListingForm(instance=listing)
+        form = ExperienceForm(instance=experience)
     return render(request, 'core/add_listing.html', {'form': form, 'title': 'Edit Experience'})
 
 @login_required
 def delete_listing(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    if request.user == listing.vendor.user:
-        listing.delete()
+    experience = get_object_or_404(Experience, pk=pk)
+    if request.user == experience.vendor.user:
+        experience.delete()
     return redirect('vendor_dashboard')
 
 @login_required
 def toggle_favorite(request, pk):
-    listing = get_object_or_404(Listing, pk=pk)
-    favorite, created = Favorite.objects.get_or_create(user=request.user, listing=listing)
+    experience = get_object_or_404(Experience, pk=pk)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, content_object=experience)
     if not created:
         favorite.delete()
-    return redirect('listing_detail', pk=pk)
+    return redirect('experience_detail', pk=pk)
 
 @login_required
 def edit_vendor_profile(request):
     if not request.user.is_vendor:
         return redirect('home')
     
-    vendor = request.user.vendor_profile
+    shop = request.user.shop_profile
     
     if request.method == 'POST':
-        form = VendorProfileForm(request.POST, request.FILES, instance=vendor)
+        form = ShopProfileForm(request.POST, request.FILES, instance=shop)
         if form.is_valid():
             form.save()
             return redirect('vendor_dashboard')
     else:
-        form = VendorProfileForm(instance=vendor)
+        form = ShopProfileForm(instance=shop)
     return render(request, 'core/edit_vendor_profile.html', {'form': form})
 
 class CustomLoginView(LoginView):
@@ -273,6 +296,6 @@ class CustomLoginView(LoginView):
         return reverse_lazy('login')
 
 def vendor_detail(request, pk):
-    vendor = get_object_or_404(Vendor, pk=pk)
-    listings = Listing.objects.filter(vendor=vendor)
-    return render(request, 'core/vendor_detail.html', {'vendor': vendor, 'listings': listings})
+    shop = get_object_or_404(Shop, pk=pk)
+    experiences = Experience.objects.filter(vendor=shop)
+    return render(request, 'core/vendor_detail.html', {'shop': shop, 'experiences': experiences})

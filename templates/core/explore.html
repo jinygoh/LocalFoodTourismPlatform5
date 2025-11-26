@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore | TasteLocal{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="container mx-auto px-4">
+        <div class="w-full max-w-3xl mx-auto">
+            <form action="{% url 'explore' %}" method="get">
+                <label class="flex flex-col rounded-full bg-card-dark p-2 shadow-lg border border-border-dark">
+                    <div class="flex w-full items-stretch">
+                        <div class="flex items-center pl-4 pr-2">
+                            <span class="material-symbols-outlined text-text-dark-muted">search</span>
+                        </div>
+                        <input name="q" value="{{ request.GET.q|default:'' }}"
+                            class="form-input w-full flex-1 resize-none overflow-hidden bg-transparent text-text-dark placeholder:text-text-dark-muted focus:outline-none focus:ring-0 border-0 text-base"
+                            placeholder="Search for food, experiences, or locations" />
+                        <button type="submit"
+                            class="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold hover:bg-opacity-90 transition-opacity">
+                            <span class="truncate">Search</span>
+                        </button>
+                    </div>
+                </label>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="pb-16 sm:pb-24">
+    <div class="container mx-auto px-4">
+        <div class="border-b border-border-dark">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <a href="#experiences" class="tab-link active-tab whitespace-nowrap border-b-2 py-4 px-1 text-base font-medium text-primary" aria-current="page">
+                    Experiences
+                </a>
+                <a href="#shops" class="tab-link whitespace-nowrap border-b-2 border-transparent py-4 px-1 text-base font-medium text-text-dark-muted hover:border-gray-300 hover:text-text-dark">
+                    Shops
+                </a>
+                <a href="#dishes" class="tab-link whitespace-nowrap border-b-2 border-transparent py-4 px-1 text-base font-medium text-text-dark-muted hover:border-gray-300 hover:text-text-dark">
+                    Dishes
+                </a>
+            </nav>
+        </div>
+
+        <div id="experiences" class="tab-content">
+            {% include 'core/experience_list.html' with experiences=experiences %}
+        </div>
+        <div id="shops" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
+                {% for shop in shops %}
+                <a href="{% url 'shop_detail' shop.pk %}"
+                    class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
+                    <div class="h-60 w-full overflow-hidden">
+                        {% if shop.image %}
+                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="{{ shop.image.url }}" alt="{{ shop.business_name }}" />
+                        {% else %}
+                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="https://source.unsplash.com/800x600/?restaurant,singapore,{{ shop.pk }}"
+                            alt="{{ shop.business_name }}" />
+                        {% endif %}
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ shop.business_name }}</h3>
+                        <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ shop.description|truncatewords:20 }}</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-accent !text-xl">place</span>
+                                <span class="text-sm font-medium">{{ shop.location }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <p class="text-xl text-text-dark-muted">No shops found matching your criteria.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="dishes" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
+                {% for dish in dishes %}
+                <a href="{% url 'dish_detail' dish.pk %}"
+                    class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
+                    <div class="h-60 w-full overflow-hidden">
+                        {% if dish.image %}
+                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="{{ dish.image.url }}" alt="{{ dish.name }}" />
+                        {% else %}
+                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="https://source.unsplash.com/800x600/?food,dish,{{ dish.pk }}"
+                            alt="{{ dish.name }}" />
+                        {% endif %}
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ dish.name }}</h3>
+                        <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ dish.description|truncatewords:20 }}</p>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <p class="text-xl text-text-dark-muted">No dishes found matching your criteria.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                tabs.forEach(t => {
+                    t.classList.remove('active-tab', 'text-primary', 'border-primary');
+                    t.classList.add('border-transparent', 'text-text-dark-muted', 'hover:border-gray-300', 'hover:text-text-dark');
+                });
+
+                tab.classList.add('active-tab', 'text-primary', 'border-primary');
+                tab.classList.remove('border-transparent', 'text-text-dark-muted', 'hover:border-gray-300', 'hover:text-text-dark');
+
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                const target = document.querySelector(tab.getAttribute('href'));
+                if (target) {
+                    target.classList.remove('hidden');
+                    window.location.hash = tab.getAttribute('href');
+                }
+            });
+        });
+
+        // Activate tab based on URL hash
+        if (window.location.hash) {
+            const tab = document.querySelector('a[href="' + window.location.hash + '"]');
+            if (tab) {
+                tab.click();
+            }
+        }
+    });
+</script>
+{% endblock %}

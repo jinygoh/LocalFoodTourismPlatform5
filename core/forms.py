@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Listing, Vendor, UserProfile
+from .models import User, Experience, Shop, UserProfile
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -17,13 +17,12 @@ class CustomUserCreationForm(UserCreationForm):
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
 
-class ListingForm(forms.ModelForm):
+class ExperienceForm(forms.ModelForm):
     class Meta:
-        model = Listing
+        model = Experience
         fields = ['title', 'description', 'price', 'discount_price', 'image']
 
-class VendorProfileForm(forms.ModelForm):
+class ShopProfileForm(forms.ModelForm):
     class Meta:
-        model = Vendor
+        model = Shop
         fields = ['business_name', 'description', 'location', 'contact_number', 'opening_hours', 'image']
-

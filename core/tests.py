@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .models import User, Vendor, Listing, Booking
+from .models import User, Shop, Dish, Experience, Booking
 
 class UserModelTest(TestCase):
     def test_create_user(self):
@@ -10,20 +10,25 @@ class UserModelTest(TestCase):
         self.assertFalse(user.is_vendor)
         self.assertFalse(user.is_tourist)
 
-class VendorModelTest(TestCase):
+class ShopModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='vendoruser', password='password123', is_vendor=True)
 
-    def test_create_vendor_profile(self):
-        vendor = Vendor.objects.create(
+    def test_create_shop_profile(self):
+        shop = Shop.objects.create(
             user=self.user,
             business_name='Test Cafe',
             description='A great place.',
             location='Downtown',
             contact_number='1234567890'
         )
-        self.assertEqual(vendor.business_name, 'Test Cafe')
-        self.assertEqual(vendor.user, self.user)
+        self.assertEqual(shop.business_name, 'Test Cafe')
+        self.assertEqual(shop.user, self.user)
+
+class DishModelTest(TestCase):
+    def test_create_dish(self):
+        dish = Dish.objects.create(name='Test Dish', description='A delicious dish.')
+        self.assertEqual(dish.name, 'Test Dish')
 
 class ViewTest(TestCase):
     def setUp(self):
@@ -44,3 +49,7 @@ class ViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/register.html')
 
+    def test_explore_page_status(self):
+        response = self.client.get(reverse('explore'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/explore.html')

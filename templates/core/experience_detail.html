@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ listing.title }} | TasteLocal{% endblock %}
+{% block title %}{{ experience.title }} | TasteLocal{% endblock %}
 
 {% block content %}
 <section class="relative h-96">
-    {% if listing.image %}
-    <img class="w-full h-full object-cover" src="{{ listing.image.url }}" alt="{{ listing.title }}" />
+    {% if experience.image %}
+    <img class="w-full h-full object-cover" src="{{ experience.image.url }}" alt="{{ experience.title }}" />
     {% else %}
-    <img class="w-full h-full object-cover" src="https://source.unsplash.com/800x600/?food,singapore,{{ listing.pk }}"
-        alt="{{ listing.title }}" />
+    <img class="w-full h-full object-cover" src="https://source.unsplash.com/800x600/?food,singapore,{{ experience.pk }}"
+        alt="{{ experience.title }}" />
     {% endif %}
     <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
 </section>
@@ -20,14 +20,14 @@
         <div class="lg:col-span-2">
             <div class="bg-card-dark rounded-xl p-6 md:p-8 border border-border-dark shadow-lg">
                 <div class="flex items-center gap-2 text-sm text-text-dark-muted">
-                    <span>{{ listing.vendor.location }}</span>
+                    <span>{{ experience.vendor.location }}</span>
                     <span>·</span>
-                    <a href="{% url 'vendor_detail' listing.vendor.pk %}" class="hover:text-primary">{{ listing.vendor.business_name }}</a>
+                    <a href="{% url 'shop_detail' experience.vendor.pk %}" class="hover:text-primary">{{ experience.vendor.business_name }}</a>
                 </div>
                 <div class="flex justify-between items-start">
-                    <h1 class="text-4xl md:text-5xl font-black mt-2">{{ listing.title }}</h1>
+                    <h1 class="text-4xl md:text-5xl font-black mt-2">{{ experience.title }}</h1>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'toggle_favorite' listing.pk %}"
+                    <a href="{% url 'toggle_favorite' experience.pk %}"
                         class="flex items-center gap-2 px-4 py-2 rounded-full border border-border-dark hover:bg-primary/10 transition-colors mt-2"
                         title="{% if is_favorite %}Remove from Trail{% else %}Add to Trail{% endif %}">
                         <span
@@ -41,8 +41,8 @@
                         <span class="material-symbols-outlined text-primary !text-2xl"
                             style="font-variation-settings: 'FILL' 1;">star</span>
                         <span class="font-bold text-lg">
-                            {% if listing.average_rating %}
-                            {{ listing.average_rating|floatformat:1 }}
+                            {% if experience.average_rating %}
+                            {{ experience.average_rating|floatformat:1 }}
                             {% else %}
                             New
                             {% endif %}
@@ -54,7 +54,7 @@
 
             <div class="mt-12">
                 <h2 class="text-2xl font-bold">About the Experience</h2>
-                <p class="mt-4 text-text-dark-muted leading-relaxed">{{ listing.description }}</p>
+                <p class="mt-4 text-text-dark-muted leading-relaxed">{{ experience.description }}</p>
 
                 <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                     <div class="bg-card-dark rounded-lg p-4 border border-border-dark">
@@ -76,16 +76,40 @@
                 </div>
             </div>
 
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold">Dishes in this experience</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {% for dish in experience.dishes.all %}
+                        <a href="{% url 'dish_detail' dish.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
+                            <h3 class="text-lg font-bold">{{ dish.name }}</h3>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold">Shops in this experience</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {% for shop in experience.shops.all %}
+                        <a href="{% url 'shop_detail' shop.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
+                            <h3 class="text-lg font-bold">{{ shop.business_name }}</h3>
+                            <p class="text-sm text-text-dark-muted">{{ shop.location }}</p>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+
             <!-- Location Map -->
             <div class="mt-12">
                 <h2 class="text-2xl font-bold mb-4">Location</h2>
                 <div class="h-[300px] rounded-xl overflow-hidden border border-border-dark">
                     <iframe width="100%" height="100%" frameborder="0" style="border:0"
-                        src="https://maps.google.com/maps?q={{ listing.vendor.location }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        src="https://maps.google.com/maps?q={{ experience.vendor.location }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
                         allowfullscreen>
                     </iframe>
                 </div>
-                <p class="mt-2 text-text-dark-muted">{{ listing.vendor.location }}</p>
+                <p class="mt-2 text-text-dark-muted">{{ experience.vendor.location }}</p>
             </div>
 
             <!-- Reviews Section -->
@@ -148,17 +172,17 @@
         <div class="lg:col-span-1 mt-10 lg:mt-0">
             <div class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg">
                 <div class="mb-6">
-                    {% if listing.discount_price %}
-                    <p class="text-3xl font-bold text-secondary">${{ listing.discount_price }}</p>
-                    <p class="text-sm text-text-dark-muted line-through">${{ listing.price }} / person</p>
+                    {% if experience.discount_price %}
+                    <p class="text-3xl font-bold text-secondary">${{ experience.discount_price }}</p>
+                    <p class="text-sm text-text-dark-muted line-through">${{ experience.price }} / person</p>
                     {% else %}
-                    <p class="text-3xl font-bold">${{ listing.price }} <span
+                    <p class="text-3xl font-bold">${{ experience.price }} <span
                             class="text-base font-normal text-text-dark-muted">/ person</span></p>
                     {% endif %}
                 </div>
 
                 {% if user.is_tourist %}
-                <form method="post" action="{% url 'payment_page' listing.pk %}">
+                <form method="post" action="{% url 'payment_page' experience.pk %}">
                     {% csrf_token %}
                     <div class="space-y-4">
                         <div>
