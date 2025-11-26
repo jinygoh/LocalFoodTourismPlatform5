@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.db import models
-from .models import User, Listing, Booking, Vendor, Review, Favorite
+from .models import User, Listing, Booking, Vendor, Review, Favorite, UserProfile
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ListingForm, VendorProfileForm
+from .forms import CustomUserCreationForm, ListingForm, VendorProfileForm, UserProfileForm
 
 def home(request):
     # Show featured listings (random 3 or latest 3)
@@ -65,6 +66,15 @@ def listing_detail(request, pk):
     if request.method == 'POST' and 'rating' in request.POST:
         if not request.user.is_authenticated:
             return redirect('login')
+
+        if request.user.is_vendor and listing.vendor.user == request.user:
+            # Optionally, you can add a message to the user
+            messages.error(request, "You cannot review your own listing.")
+            return redirect('listing_detail', pk=pk)
+
+        if not request.user.is_tourist:
+            messages.error(request, "Only tourists can leave a review.")
+            return redirect('listing_detail', pk=pk)
         
         rating = request.POST.get('rating')
         comment = request.POST.get('comment')
@@ -81,6 +91,10 @@ def listing_detail(request, pk):
 @login_required
 def payment_page(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
+    if not request.user.is_tourist:
+        messages.error(request, "Only tourists can book listings.")
+        return redirect('listing_detail', pk=pk)
+
     if request.method == 'POST':
         date = request.POST.get('date')
         guests = int(request.POST.get('guests'))
@@ -117,14 +131,24 @@ def booking_confirmation(request, pk):
 
 @login_required
 def profile(request):
-    bookings = Booking.objects.filter(user=request.user).order_by('-date')
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
-    # Get favorite listings
+    if request.method == 'POST' and 'update_picture' in request.POST:
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=user_profile)
+
+    bookings = Booking.objects.filter(user=request.user).order_by('-date')
     favorite_listings = Listing.objects.filter(favorite__user=request.user)
 
     return render(request, 'core/profile.html', {
+        'form': form,
         'bookings': bookings,
-        'favorites': favorite_listings
+        'favorites': favorite_listings,
+        'user_profile': user_profile
     })
 
 def register(request):

@@ -5,6 +5,13 @@ class User(AbstractUser):
     is_tourist = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    image = models.ImageField(upload_to='user_avatars/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
 class Vendor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='vendor_profile')
     business_name = models.CharField(max_length=255)
