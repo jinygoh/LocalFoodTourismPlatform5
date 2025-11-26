@@ -188,13 +188,13 @@ def vendor_dashboard(request):
         'contact_number': 'Unknown'
     })
     
-    listings = Listing.objects.filter(vendor=vendor)
+    listings = Listing.objects.filter(vendor=request.user.vendor_profile)
     # Fetch bookings for this vendor's listings
-    incoming_bookings = Booking.objects.filter(listing__vendor=vendor).order_by('-date')
+    incoming_bookings = Booking.objects.filter(listing__vendor=request.user.vendor_profile).order_by('-date')
     
     return render(request, 'core/vendor_dashboard.html', {
         'listings': listings, 
-        'vendor': vendor,
+        'vendor': request.user.vendor_profile,
         'incoming_bookings': incoming_bookings
     })
 

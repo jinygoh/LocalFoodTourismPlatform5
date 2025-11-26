@@ -46,13 +46,19 @@ def create_test_users():
             longitude=103.8439
         )
         
-        # Create a Listing
+        # Create a few Listings
         Listing.objects.create(
             vendor=vendor_profile,
             title="Traditional Chicken Rice Workshop",
             description="Learn to cook authentic Hainanese Chicken Rice with Tina.",
             price=80.00,
             discount_price=75.00
+        )
+        Listing.objects.create(
+            vendor=vendor_profile,
+            title="Nyonya Kueh Making Class",
+            description="A hands-on session to create colorful and delicious Peranakan sweets.",
+            price=65.00
         )
         print(f"Created Vendor: vendor_tina / {password}")
     else:
@@ -70,23 +76,41 @@ def create_test_users():
     else:
         print("Tourist user 'tourist_john' already exists.")
 
-    # Create a booking for the tourist user
-    listing = Listing.objects.first()
-    booking, created = Booking.objects.get_or_create(
+    # Create a couple of bookings for the tourist user
+    first_listing = Listing.objects.first()
+    second_listing = Listing.objects.last()
+
+    booking1, created = Booking.objects.get_or_create(
         user=tourist_user,
-        listing=listing,
+        listing=first_listing,
         defaults={
-            'date': datetime.date.today() + datetime.timedelta(days=7),
+            'date': datetime.date(2025, 11, 27),
             'guests': 2,
             'status': 'confirmed'
         }
     )
     if created:
-        print(f"Created booking for tourist_john for listing: {listing.title}")
-    elif booking.status == 'cancelled':
-        booking.status = 'confirmed'
-        booking.save()
-        print(f"Reset booking for tourist_john for listing: {listing.title}")
+        print(f"Created booking for tourist_john for listing: {first_listing.title}")
+    elif booking1.status == 'cancelled':
+        booking1.status = 'confirmed'
+        booking1.save()
+        print(f"Reset booking for tourist_john for listing: {first_listing.title}")
+
+    booking2, created = Booking.objects.get_or_create(
+        user=tourist_user,
+        listing=second_listing,
+        defaults={
+            'date': datetime.date(2025, 11, 30),
+            'guests': 4,
+            'status': 'confirmed'
+        }
+    )
+    if created:
+        print(f"Created booking for tourist_john for listing: {second_listing.title}")
+    elif booking2.status == 'cancelled':
+        booking2.status = 'confirmed'
+        booking2.save()
+        print(f"Reset booking for tourist_john for listing: {second_listing.title}")
 
 if __name__ == "__main__":
     create_test_users()

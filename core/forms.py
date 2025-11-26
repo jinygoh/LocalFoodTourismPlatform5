@@ -16,7 +16,6 @@ class CustomUserCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
-            field.label_attrs = {'class': 'block text-sm font-medium text-text-dark-muted mb-2'}
 
 class ListingForm(forms.ModelForm):
     class Meta:
