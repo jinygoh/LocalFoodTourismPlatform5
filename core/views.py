@@ -65,25 +65,48 @@ def dish_detail(request, pk):
 def shop_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
     reviews = Review.objects.filter(object_id=shop.pk).order_by('-created_at')
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+
     if request.method == 'POST':
         if not request.user.is_authenticated:
             return redirect('login')
 
-        if not request.user.is_tourist:
-            messages.error(request, "Only tourists can book a table.")
+        if 'rating' in request.POST:
+            if not request.user.is_tourist:
+                messages.error(request, "Only tourists can leave a review.")
+                return redirect('shop_detail', pk=pk)
+
+            rating = request.POST.get('rating')
+            comment = request.POST.get('comment')
+            Review.objects.create(
+                user=request.user,
+                content_object=shop,
+                rating=rating,
+                comment=comment
+            )
             return redirect('shop_detail', pk=pk)
 
-        date = request.POST.get('date')
-        guests = request.POST.get('guests')
-        booking = Booking.objects.create(
-            user=request.user,
-            content_object=shop,
-            date=date,
-            guests=guests,
-            status='confirmed'
-        )
-        return redirect('booking_confirmation', pk=booking.pk)
-    return render(request, 'core/shop_detail.html', {'shop': shop, 'reviews': reviews})
+        else:
+            if not request.user.is_tourist:
+                messages.error(request, "Only tourists can book a table.")
+                return redirect('shop_detail', pk=pk)
+
+            date = request.POST.get('date')
+            guests = request.POST.get('guests')
+            booking = Booking.objects.create(
+                user=request.user,
+                content_object=shop,
+                date=date,
+                guests=guests,
+                status='confirmed'
+            )
+            return redirect('booking_confirmation', pk=booking.pk)
+
+    return render(request, 'core/shop_detail.html', {
+        'shop': shop,
+        'reviews': reviews,
+        'average_rating': average_rating
+    })
 
 def experience_detail(request, pk):
     experience = get_object_or_404(Experience, pk=pk)

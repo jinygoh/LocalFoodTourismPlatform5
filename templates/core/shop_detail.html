@@ -4,42 +4,50 @@
 {% block title %}{{ shop.business_name }} | TasteLocal{% endblock %}
 
 {% block content %}
-<section class="py-12">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-                <img src="{{ shop.image.url }}" alt="{{ shop.business_name }}" class="w-full h-auto rounded-lg">
-            </div>
-            <div>
-                <h1 class="text-4xl font-bold mb-4">{{ shop.business_name }}</h1>
-                <p class="text-lg text-text-dark-muted mb-4">{{ shop.description }}</p>
-                <p class="text-lg text-text-dark-muted mb-4">Location: {{ shop.location }}</p>
-                <p class="text-lg text-text-dark-muted mb-4">Opening Hours: {{ shop.opening_hours }}</p>
+<section class="relative h-96">
+    {% if shop.image %}
+    <img class="w-full h-full object-cover" src="{{ shop.image.url }}" alt="{{ shop.business_name }}" />
+    {% else %}
+    <img class="w-full h-full object-cover" src="https://source.unsplash.com/800x600/?restaurant,singapore,{{ shop.pk }}"
+        alt="{{ shop.business_name }}" />
+    {% endif %}
+    <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+</section>
 
-                {% if shop.category in "fine_dining,themed_cafe,high_demand" %}
-                <div class="mt-8">
-                    <h2 class="text-2xl font-bold mb-4">Book a Table</h2>
-                    <form action="." method="post">
-                        {% csrf_token %}
-                        <div class="flex flex-col gap-4">
-                            <div>
-                                <label for="date" class="block text-lg font-semibold mb-2">Date</label>
-                                <input type="date" name="date" id="date" class="w-full rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50">
-                            </div>
-                            <div>
-                                <label for="guests" class="block text-lg font-semibold mb-2">Number of Guests</label>
-                                <input type="number" name="guests" id="guests" min="1" class="w-full rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50">
-                            </div>
-                            <button type="submit" class="w-full py-2 px-4 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
-                                Book Now
-                            </button>
-                        </div>
-                    </form>
+<div class="container mx-auto px-4 -mt-24 relative pb-24">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+        <!-- Left Column: Details -->
+        <div class="lg:col-span-2">
+            <div class="bg-card-dark rounded-xl p-6 md:p-8 border border-border-dark shadow-lg">
+                <div class="flex items-center gap-2 text-sm text-text-dark-muted">
+                    <span>{{ shop.location }}</span>
                 </div>
-                {% endif %}
+                <h1 class="text-4xl md:text-5xl font-black mt-2">{{ shop.business_name }}</h1>
 
-                <h2 class="text-2xl font-bold mt-8 mb-4">Dishes at this shop:</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center mt-4 gap-6">
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-primary !text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="font-bold text-lg">
+                            {% if average_rating %}
+                            {{ average_rating|floatformat:1 }}
+                            {% else %}
+                            New
+                            {% endif %}
+                        </span>
+                        <span class="text-sm text-text-dark-muted/80">({{ reviews|length }} reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold">About the Shop</h2>
+                <p class="mt-4 text-text-dark-muted leading-relaxed">{{ shop.description }}</p>
+            </div>
+
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold">Dishes at this shop:</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     {% for dish in shop.dishes.all %}
                         <a href="{% url 'dish_detail' dish.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
                             <h3 class="text-lg font-bold">{{ dish.name }}</h3>
@@ -47,20 +55,117 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <!-- Location Map -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">Location</h2>
+                <div class="h-[300px] rounded-xl overflow-hidden border border-border-dark">
+                    <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                        src="https://maps.google.com/maps?q={{ shop.location }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="mt-2 text-text-dark-muted">{{ shop.location }}</p>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-6">Reviews</h2>
+
+                {% if reviews %}
+                <div class="space-y-6">
+                    {% for review in reviews %}
+                    <div class="bg-card-dark rounded-xl p-6 border border-border-dark">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-lg">{{ review.user.username }}</span>
+                            <div class="flex items-center text-primary">
+                                {% for i in "12345"|make_list %}
+                                <span class="material-symbols-outlined !text-lg"
+                                    style="font-variation-settings: 'FILL' {% if forloop.counter <= review.rating %}1{% else %}0{% endif %};">star</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-text-dark-muted">{{ review.comment }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-text-dark-muted">No reviews yet. Be the first to review!</p>
+                {% endif %}
+
+                {% if user.is_tourist %}
+                <div class="mt-10 bg-card-dark rounded-xl p-6 border border-border-dark">
+                    <h3 class="text-xl font-bold mb-4">Write a Review</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Rating</label>
+                            <select name="rating" required
+                                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50">
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Poor</option>
+                                <option value="1">1 - Terrible</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Comment</label>
+                            <textarea name="comment" rows="3" required
+                                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="mt-12">
-            <h2 class="text-2xl font-bold mb-4">Reviews</h2>
-            {% for review in reviews %}
-                <div class="bg-card-dark p-4 rounded-lg mb-4">
-                    <p class="text-lg font-bold">{{ review.user.username }}</p>
-                    <p class="text-sm text-text-dark-muted">Rating: {{ review.rating }}/5</p>
-                    <p>{{ review.comment }}</p>
+        <!-- Right Column: Booking Card -->
+        <div class="lg:col-span-1 mt-10 lg:mt-0">
+            <div class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Book a Table</h2>
+                {% if user.is_tourist %}
+                <form method="post" action="{% url 'shop_detail' shop.pk %}">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm font-medium text-text-dark-muted" for="date">Date</label>
+                            <input type="date" name="date" required
+                                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                                id="date" />
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-text-dark-muted" for="guests">Guests</label>
+                            <input type="number" name="guests" min="1" value="1" required
+                                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                                id="guests" />
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
+                        <span class="truncate">Book Now</span>
+                    </button>
+                    <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
+                </form>
+                {% elif user.is_authenticated and not user.is_tourist %}
+                <div class="text-center py-4">
+                    <p class="text-text-dark-muted mb-4">Only tourists can book a table.</p>
                 </div>
-            {% empty %}
-                <p>No reviews yet.</p>
-            {% endfor %}
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="text-text-dark-muted mb-4">Please login to book a table.</p>
+                    <a href="{% url 'login' %}?next={{ request.path }}"
+                        class="block w-full py-3 bg-primary text-background-dark font-bold rounded-full hover:bg-opacity-90 transition-opacity">
+                        Log In to Book
+                    </a>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}
