@@ -40,64 +40,34 @@
 <section class="py-16 sm:py-24">
     <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Explore by Experience</h2>
-        <div
-            class="mt-12 flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div class="mx-auto flex items-stretch justify-center gap-4 md:gap-6">
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
-                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                        data-alt="A bustling Singaporean hawker centre with many food stalls and people eating."
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrCK_stgNyu2Fct-bsfpOEyzpHJDKK9xnjhR9-tmjVo-27E8j1yzuHXC_ufwu6ep2WINDsrlU8eZqVtBlDLJJoJMrDAk_1EcIkniVENdQAIpBr5x82yoLGVpSgKSP5qR0lEEwlAXjsyVAPKCNfoXkMwVgwGXQO9F4MN1Dj5kaccNlsNgg_ziVA15Z4I2fTJU3Fwfi4WkooZ33JreIk_h-MOiHbfo5B8u16fjc90S1G1qkdeIbzVguXM-LevrRh8sDBmwVJTM9Xc4g");'>
-                    </div>
-                    <div>
-                        <p class="text-lg font-bold">Hawker Centre Tours</p>
-                        <p class="text-sm font-normal text-text-dark-muted">Taste the nation's best street food</p>
-                    </div>
+        <div class="mt-12">
+            <div class="flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div class="mx-auto flex items-stretch justify-center gap-4 md:gap-6">
+                    {% for experience in featured_experiences %}
+                    <a href="{% url 'experience_detail' experience.pk %}" class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark hover:shadow-lg transition-shadow">
+                        {% if experience.image %}
+                        <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                             style="background-image: url('{{ experience.image.url }}');">
+                        </div>
+                        {% else %}
+                        <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                             style="background-image: url('https://source.unsplash.com/800x600/?food,singapore,{{ experience.pk }}');">
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-lg font-bold">{{ experience.title }}</p>
+                            <p class="text-sm font-normal text-text-dark-muted">{{ experience.description|truncatewords:10 }}</p>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <p class="text-text-dark-muted">No experiences to show yet.</p>
+                    {% endfor %}
                 </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
-                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                        data-alt="Colorful Peranakan tiles and a traditional Nyonya dish."
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBKKqjf5yC6-fl9H575tfu5RycGKk_aVwIKGKJ2fLIqRt3AWpOGQvnI4PWVchMNQd32Wnq3wIx75ihDFTdhxuQubnZkFAh8IjHgwleCQcaYpC0Oyu7gBw1jxhKFVgay9jVAQkUWZ31xgcDkKS9bjaHJLXMu8Oetsdx41s82p-8LXs4ij6XWQZXdI5QPs8SEAzCH_tXoyYVjgvdwRONcj14MF-6bebrJ5wLErbME5r2VPyukdWO09IQCwPVjolWZUg1uU_a6nu8_8O4");'>
-                    </div>
-                    <div>
-                        <p class="text-lg font-bold">Peranakan Cuisine Workshops</p>
-                        <p class="text-sm font-normal text-text-dark-muted">Discover unique Nyonya flavours</p>
-                    </div>
-                </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
-                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                        data-alt="A chef meticulously plating a dish at a Michelin-starred street food stall."
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZwMJfVwW3aM_Cq8ZgjulaofUiibTkHrusEkYTpD0sC3UFTKhhZwmeWedrtDh_XbsSr1H3ZRULz9ZMleHjSbGJ2dd6FjM3sR2VSs1NlYHaP5YASEsyAFZDyrg05pw-v2S2z_JnCAJZpYAQMtQBMkyR6FUOAw2jsz3jKmkniXhFrsPETr6BvRb--azG_cGpf_Y8ouljQjEGgPM7ry1NL40AltZWv0xPxkd492BdJlK2WEq6S8Kn_U32R5qggyg5tG4Ua92k-qgMxcY");'>
-                    </div>
-                    <div>
-                        <p class="text-lg font-bold">Michelin-Starred Street Food</p>
-                        <p class="text-sm font-normal text-text-dark-muted">World-class dining, hawker prices</p>
-                    </div>
-                </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
-                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                        data-alt="A table laden with various dim sum baskets in a traditional setting."
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVujnI_PJCFvYeUFX9Cx4MN48XQfVN7omImB7oazKoTGVR7xcegTMHMBZH1e5EJI8jJyRgcW3TTad_yGfbMBE8vjNGKwOVvD9lBylI5awSxC_fM9nqsmIci2JaRrofnlVT5ymlSrkY9x7aov2IfIkYt9-7j7jcq4ZsJ36K7_iTMOqCJicsP636bSVwDhNqe8GUfxVL2Ss7K_ldiHh0FkPcI800tapNIxUJ6MwpkZEevQa35by4ypsLmuBKrwR4zNMKfjYZM_iRI-Y");'>
-                    </div>
-                    <div>
-                        <p class="text-lg font-bold">Local Breakfast (Kopi & Kaya)</p>
-                        <p class="text-sm font-normal text-text-dark-muted">Start your day like a true local</p>
-                    </div>
-                </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark">
-                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                        data-alt="A colourful spread of seafood dishes, including chilli crab."
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYW36w_W9iqmVRmbD0BBH7phlhISUfHcCzer3ddxKXTWzn_OUqMcVCpRj-lcGqICkqKsEM_vwZ4lMN7AQiK0PVsQUTrYy7-Z5-9q_bo2PnW2IyWbU7OaQiBPVMFYkBS2U4AFta8z4ECjDRnv2bzW8lSGTvBTHZDcXqOhzlsV4bTMwVI_oFhzfUgth8kI6YNLE32V1hyS3gZ_V-ITuORxTIDWUHvKjo56AsDk4lDpIK9ZnJCqmTjMW2eJ7zs_PWoLdwPp7w6HfdLEA");'>
-                    </div>
-                    <div>
-                        <p class="text-lg font-bold">Seafood Feasts</p>
-                        <p class="text-sm font-normal text-text-dark-muted">From chilli crab to sambal stingray</p>
-                    </div>
-                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="{% url 'explore' %}" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-base font-bold text-white hover:bg-opacity-90 transition-opacity">
+                    Browse More
+                </a>
             </div>
         </div>
     </div>
@@ -148,14 +118,44 @@
         <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Discover Culinary Spots Nearby</h2>
         <p class="mt-4 max-w-2xl mx-auto text-center text-text-dark-muted">Explore hawker centres, restaurants, and
             workshops around you. Your next food adventure is just around the corner.</p>
-        <div class="mt-12 h-[500px] w-full overflow-hidden rounded-xl border border-border-dark">
-            <img class="h-full w-full object-cover"
-                data-alt="An interactive map showing pins for various culinary locations in a stylized map of Singapore."
-                data-location="Singapore"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlg2wb7ZasCHvNJUCFtQSeTeZJQRnbJ-2020OnVmLGoKho1Wj1gnvdu7LqH7GzI6MyRH-cXgC2Ftsg7E_CpVy6YcNA6wJ67E2kRxQHkGGb2XwHLMHBnGKP-dIBOfwnlwW7NQRVX9rmz0eSfCdyWPo7N-3tVOW-ATzL3RQvbg65SNzwy1gohGzfxQmD4PJ5ZSBXy6mXleMmv0JvHyrrcP1K5y8s4mppp2lrC7jW30i26yFjBRYOHTNeEu1_57rYPQSA9ul8UYwKDJU" />
-        </div>
+        <div id="map" class="mt-12 h-[500px] w-full overflow-hidden rounded-xl border border-border-dark"></div>
     </div>
 </section>
+
+{% block extra_script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize the map
+        var map = L.map('map').setView([1.3521, 103.8198], 12); // Centered on Singapore
+
+        // Add a tile layer from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Fetch vendor locations and add markers
+        var vendors = [
+            {% for experience in featured_experiences %}
+            {% if experience.vendor.latitude and experience.vendor.longitude %}
+            {
+                "lat": {{ experience.vendor.latitude }},
+                "lng": {{ experience.vendor.longitude }},
+                "name": "{{ experience.vendor.business_name|escapejs }}",
+                "url": "{% url 'vendor_detail' experience.vendor.pk %}"
+            },
+            {% endif %}
+            {% endfor %}
+        ];
+
+        vendors.forEach(function(vendor) {
+            if (vendor.lat && vendor.lng) {
+                var marker = L.marker([vendor.lat, vendor.lng]).addTo(map);
+                marker.bindPopup('<b>' + vendor.name + '</b><br><a href="' + vendor.url + '">View Details</a>');
+            }
+        });
+    });
+</script>
+{% endblock %}
 
 <section class="py-20 sm:py-28">
     <div class="container mx-auto px-4">
