@@ -30,80 +30,162 @@
 <section class="pb-16 sm:pb-24">
     <div class="container mx-auto px-4">
         <div class="border-b border-border-dark">
-            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                <a href="#experiences" class="tab-link active-tab whitespace-nowrap border-b-2 py-4 px-1 text-base font-medium text-primary" aria-current="page">
-                    Experiences
+            <nav class="-mb-px flex justify-center space-x-8" aria-label="Tabs">
+                <a href="#dishes" class="tab-link active-tab whitespace-nowrap border-b-2 py-4 px-1 text-base font-medium text-primary" aria-current="page">
+                    Dishes
                 </a>
                 <a href="#shops" class="tab-link whitespace-nowrap border-b-2 border-transparent py-4 px-1 text-base font-medium text-text-dark-muted hover:border-gray-300 hover:text-text-dark">
                     Shops
                 </a>
-                <a href="#dishes" class="tab-link whitespace-nowrap border-b-2 border-transparent py-4 px-1 text-base font-medium text-text-dark-muted hover:border-gray-300 hover:text-text-dark">
-                    Dishes
+                <a href="#experiences" class="tab-link whitespace-nowrap border-b-2 border-transparent py-4 px-1 text-base font-medium text-text-dark-muted hover:border-gray-300 hover:text-text-dark">
+                    Experiences
                 </a>
             </nav>
         </div>
 
-        <div id="experiences" class="tab-content">
-            {% include 'core/experience_list.html' with experiences=experiences %}
-        </div>
-        <div id="shops" class="tab-content hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
-                {% for shop in shops %}
-                <a href="{% url 'shop_detail' shop.pk %}"
-                    class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
-                    <div class="h-60 w-full overflow-hidden">
-                        {% if shop.image %}
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="{{ shop.image.url }}" alt="{{ shop.business_name }}" />
-                        {% else %}
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="https://source.unsplash.com/800x600/?restaurant,singapore,{{ shop.pk }}"
-                            alt="{{ shop.business_name }}" />
-                        {% endif %}
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ shop.business_name }}</h3>
-                        <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ shop.description|truncatewords:20 }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <div class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-accent !text-xl">place</span>
-                                <span class="text-sm font-medium">{{ shop.location }}</span>
-                            </div>
+        <div class="flex flex-col lg:flex-row gap-8 pt-8">
+            <aside class="w-full lg:w-1/4 xl:w-1/5">
+                <div class="sticky top-28">
+                    <form id="filter-form" action="{% url 'explore' %}" method="get">
+                        <input type="hidden" name="q" value="{{ request.GET.q|default:'' }}">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold">Filters</h2>
+                            <a href="{% url 'explore' %}"
+                                class="text-sm font-medium text-primary hover:underline">Clear all</a>
                         </div>
-                    </div>
-                </a>
-                {% empty %}
-                <div class="col-span-full text-center py-12">
-                    <p class="text-xl text-text-dark-muted">No shops found matching your criteria.</p>
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Location</h3>
+                                <select name="location"
+                                    class="w-full rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50">
+                                    <option value="">All Locations</option>
+                                    {% for loc in locations %}
+                                    <option value="{{ loc }}" {% if request.GET.location == loc %}selected{% endif %}>
+                                        {{ loc }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="border-t border-border-dark"></div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Price Range</h3>
+                                <div class="flex gap-2">
+                                    <input type="number" name="min_price" placeholder="Min"
+                                        value="{{ request.GET.min_price|default:'' }}"
+                                        class="w-1/2 rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50" />
+                                    <input type="number" name="max_price" placeholder="Max"
+                                        value="{{ request.GET.max_price|default:'' }}"
+                                        class="w-1/2 rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50" />
+                                </div>
+                            </div>
+                            <div class="border-t border-border-dark"></div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Min Rating</h3>
+                                <select name="min_rating"
+                                    class="w-full rounded bg-card-dark border-border-dark text-text-dark focus:ring-primary/50">
+                                    <option value="">Any Rating</option>
+                                    <option value="4" {% if request.GET.min_rating == '4' %}selected{% endif %}>4+
+                                        Stars
+                                    </option>
+                                    <option value="3" {% if request.GET.min_rating == '3' %}selected{% endif %}>3+
+                                        Stars
+                                    </option>
+                                    <option value="2" {% if request.GET.min_rating == '2' %}selected{% endif %}>2+
+                                        Stars
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit"
+                                class="w-full py-2 px-4 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div id="dishes" class="tab-content hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
-                {% for dish in dishes %}
-                <a href="{% url 'dish_detail' dish.pk %}"
-                    class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
-                    <div class="h-60 w-full overflow-hidden">
-                        {% if dish.image %}
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="{{ dish.image.url }}" alt="{{ dish.name }}" />
-                        {% else %}
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="https://source.unsplash.com/800x600/?food,dish,{{ dish.pk }}"
-                            alt="{{ dish.name }}" />
-                        {% endif %}
+            </aside>
+            <div class="w-full lg:w-3/4 xl:w-4/5">
+                <div class="flex flex-col sm:flex-row justify-between items-baseline mb-6">
+                    <h2 class="text-2xl font-bold">Showing <span id="results-count">0</span> results</h2>
+                    <div class="flex items-center gap-2 mt-4 sm:mt-0">
+                        <button id="toggleMapBtn" onclick="toggleMap()"
+                            class="text-sm font-medium text-primary hover:underline">Show Map View</button>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ dish.name }}</h3>
-                        <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ dish.description|truncatewords:20 }}</p>
-                    </div>
-                </a>
-                {% empty %}
-                <div class="col-span-full text-center py-12">
-                    <p class="text-xl text-text-dark-muted">No dishes found matching your criteria.</p>
                 </div>
-                {% endfor %}
+
+                <div id="mapContainer" style="display: none;"
+                    class="h-[400px] w-full mb-8 rounded-xl overflow-hidden z-10"></div>
+
+                <div id="dishes" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {% for dish in dishes %}
+                        <a href="{% url 'dish_detail' dish.pk %}"
+                            class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group"
+                            data-lat="{{ dish.shop.latitude }}" data-lng="{{ dish.shop.longitude }}"
+                            data-title="{{ dish.name }}" data-url="{% url 'dish_detail' dish.pk %}">
+                            <div class="h-60 w-full overflow-hidden">
+                                {% if dish.image %}
+                                <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    src="{{ dish.image.url }}" alt="{{ dish.name }}" />
+                                {% else %}
+                                <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    src="https://source.unsplash.com/800x600/?food,dish,{{ dish.pk }}"
+                                    alt="{{ dish.name }}" />
+                                {% endif %}
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">
+                                    {{ dish.name }}</h3>
+                                <p class="mt-2 text-sm text-text-dark-muted flex-grow">
+                                    {{ dish.description|truncatewords:20 }}</p>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <div class="col-span-full text-center py-12">
+                            <p class="text-xl text-text-dark-muted">No dishes found matching your criteria.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="shops" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {% for shop in shops %}
+                        <a href="{% url 'shop_detail' shop.pk %}"
+                            class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group"
+                            data-lat="{{ shop.latitude }}" data-lng="{{ shop.longitude }}"
+                            data-title="{{ shop.business_name }}" data-url="{% url 'shop_detail' shop.pk %}">
+                            <div class="h-60 w-full overflow-hidden">
+                                {% if shop.image %}
+                                <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    src="{{ shop.image.url }}" alt="{{ shop.business_name }}" />
+                                {% else %}
+                                <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    src="https://source.unsplash.com/800x600/?restaurant,singapore,{{ shop.pk }}"
+                                    alt="{{ shop.business_name }}" />
+                                {% endif %}
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">
+                                    {{ shop.business_name }}</h3>
+                                <p class="mt-2 text-sm text-text-dark-muted flex-grow">
+                                    {{ shop.description|truncatewords:20 }}</p>
+                                <div class="mt-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-1">
+                                        <span
+                                            class="material-symbols-outlined text-accent !text-xl">place</span>
+                                        <span class="text-sm font-medium">{{ shop.location }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <div class="col-span-full text-center py-12">
+                            <p class="text-xl text-text-dark-muted">No shops found matching your criteria.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="experiences" class="tab-content hidden">
+                    {% include 'core/experience_list.html' with experiences=experiences %}
+                </div>
             </div>
         </div>
     </div>
@@ -144,7 +226,88 @@
             if (tab) {
                 tab.click();
             }
+        } else {
+            // Set initial results count on page load
+            updateResultsCount();
         }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function (e) {
+                setTimeout(() => {
+                    updateResultsCount();
+                    if (map && mapContainer.style.display === 'block') {
+                        map.remove();
+                        map = null;
+                        initMap();
+                    }
+                }, 0);
+            });
+        });
     });
+
+    function updateResultsCount() {
+        const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
+        if (activeTabContent) {
+            const listingCards = activeTabContent.querySelectorAll('.listing-card');
+            const resultsCountEl = document.getElementById('results-count');
+            if (resultsCountEl) {
+                resultsCountEl.textContent = listingCards.length;
+            }
+        }
+    }
+
+    let map = null;
+
+    function toggleMap() {
+        const mapContainer = document.getElementById('mapContainer');
+        const btn = document.getElementById('toggleMapBtn');
+
+        if (mapContainer.style.display === 'none') {
+            mapContainer.style.display = 'block';
+            btn.textContent = 'Hide Map View';
+            initMap();
+        } else {
+            mapContainer.style.display = 'none';
+            btn.textContent = 'Show Map View';
+        }
+    }
+
+    function initMap() {
+        if (map) {
+            map.invalidateSize();
+            return;
+        }
+
+        // Default to Singapore center
+        map = L.map('mapContainer').setView([1.3521, 103.8198], 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add markers from listing cards
+        const activeTabContent = document.querySelector('.tab-content:not(.hidden)');
+        if (activeTabContent) {
+            const cards = activeTabContent.querySelectorAll('.listing-card');
+            const bounds = [];
+
+            cards.forEach(card => {
+                const lat = parseFloat(card.dataset.lat);
+                const lng = parseFloat(card.dataset.lng);
+                const title = card.dataset.title;
+                const url = card.dataset.url;
+
+                if (lat && lng) {
+                    const marker = L.marker([lat, lng]).addTo(map);
+                    marker.bindPopup(`<b>${title}</b><br><a href="${url}">View Details</a>`);
+                    bounds.push([lat, lng]);
+                }
+            });
+        }
+
+        if (bounds.length > 0) {
+            map.fitBounds(bounds);
+        }
+    }
 </script>
 {% endblock %}
