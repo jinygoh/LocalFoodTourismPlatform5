@@ -6,7 +6,7 @@ import random
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
-from core.models import Vendor
+from core.models import Shop
 
 def update_coordinates():
     print("Updating vendor coordinates with real Singapore locations...")
@@ -30,7 +30,7 @@ def update_coordinates():
         (1.2758, 103.8515, "Lau Pa Sat"),
     ]
     
-    vendors = Vendor.objects.all()
+    vendors = Shop.objects.all()
     for i, vendor in enumerate(vendors):
         # Cycle through the location list
         lat, lng, area_name = locations[i % len(locations)]

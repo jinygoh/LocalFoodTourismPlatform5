@@ -9,7 +9,7 @@ from django.core.files.temp import NamedTemporaryFile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
-from core.models import Listing, Vendor
+from core.models import Experience, Shop
 
 from django.core.files.base import ContentFile
 
@@ -40,8 +40,8 @@ def save_image_from_url(model_instance, prompt, subfolder):
 print("Starting image generation... This may take a few minutes.")
 
 # 1. Generate for Vendors
-print("\n--- Processing Vendors ---")
-for vendor in Vendor.objects.all():
+print("\n--- Processing Shops ---")
+for vendor in Shop.objects.all():
     if not vendor.image:
         prompt = f"{vendor.business_name} singapore hawker stall storefront"
         save_image_from_url(vendor, prompt, "vendors")
@@ -49,8 +49,8 @@ for vendor in Vendor.objects.all():
         print(f"Skipping {vendor.business_name} (already has image)")
 
 # 2. Generate for Listings
-print("\n--- Processing Listings ---")
-for listing in Listing.objects.all():
+print("\n--- Processing Experiences ---")
+for listing in Experience.objects.all():
     if not listing.image:
         save_image_from_url(listing, listing.title, "listings")
     else:
