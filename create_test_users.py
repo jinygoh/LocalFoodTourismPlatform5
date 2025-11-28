@@ -6,6 +6,7 @@ import datetime
 
 # Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
+import django
 django.setup()
 
 from core.models import Shop, Experience, Booking
