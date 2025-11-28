@@ -6,7 +6,7 @@ def test_vendor_ui_is_hidden(page: Page):
     page.fill("input[name='username']", "vendor_tina")
     page.fill("input[name='password']", "TestPass123!")
     page.click("button[type='submit']")
-    page.wait_for_url("http://127.0.0.1:8000/vendor/")
+    page.wait_for_url("http://127.0.0.1:8000/shop/")
     page.goto("http://127.0.0.1:8000/experiences/1/")
 
     # Assert that the review form is not visible

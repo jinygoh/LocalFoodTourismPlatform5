@@ -1,14 +1,14 @@
 import os
 import django
 from django.contrib.auth import get_user_model
-
+from django.contrib.contenttypes.models import ContentType
 import datetime
 
 # Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
-from core.models import Vendor, Listing, Booking
+from core.models import Shop, Experience, Booking
 
 User = get_user_model()
 
@@ -34,8 +34,8 @@ def create_test_users():
         vendor_user.set_password(password)
         vendor_user.save()
         
-        # Create Vendor Profile
-        vendor_profile = Vendor.objects.create(
+        # Create Shop Profile
+        shop_profile = Shop.objects.create(
             user=vendor_user,
             business_name="Tina's Authentic Eats",
             description="Serving the best home-cooked local delights since 1990.",
@@ -46,16 +46,16 @@ def create_test_users():
             longitude=103.8439
         )
         
-        # Create a few Listings
-        Listing.objects.create(
-            vendor=vendor_profile,
+        # Create a few Experiences
+        Experience.objects.create(
+            vendor=shop_profile,
             title="Traditional Chicken Rice Workshop",
             description="Learn to cook authentic Hainanese Chicken Rice with Tina.",
             price=80.00,
             discount_price=75.00
         )
-        Listing.objects.create(
-            vendor=vendor_profile,
+        Experience.objects.create(
+            vendor=shop_profile,
             title="Nyonya Kueh Making Class",
             description="A hands-on session to create colorful and delicious Peranakan sweets.",
             price=65.00
@@ -77,12 +77,14 @@ def create_test_users():
         print("Tourist user 'tourist_john' already exists.")
 
     # Create a couple of bookings for the tourist user
-    first_listing = Listing.objects.first()
-    second_listing = Listing.objects.last()
+    first_experience = Experience.objects.first()
+    second_experience = Experience.objects.last()
+    experience_content_type = ContentType.objects.get_for_model(Experience)
 
     booking1, created = Booking.objects.get_or_create(
         user=tourist_user,
-        listing=first_listing,
+        content_type=experience_content_type,
+        object_id=first_experience.pk,
         defaults={
             'date': datetime.date(2025, 11, 27),
             'guests': 2,
@@ -90,15 +92,16 @@ def create_test_users():
         }
     )
     if created:
-        print(f"Created booking for tourist_john for listing: {first_listing.title}")
+        print(f"Created booking for tourist_john for experience: {first_experience.title}")
     elif booking1.status == 'cancelled':
         booking1.status = 'confirmed'
         booking1.save()
-        print(f"Reset booking for tourist_john for listing: {first_listing.title}")
+        print(f"Reset booking for tourist_john for experience: {first_experience.title}")
 
     booking2, created = Booking.objects.get_or_create(
         user=tourist_user,
-        listing=second_listing,
+        content_type=experience_content_type,
+        object_id=second_experience.pk,
         defaults={
             'date': datetime.date(2025, 11, 30),
             'guests': 4,
@@ -106,11 +109,11 @@ def create_test_users():
         }
     )
     if created:
-        print(f"Created booking for tourist_john for listing: {second_listing.title}")
+        print(f"Created booking for tourist_john for experience: {second_experience.title}")
     elif booking2.status == 'cancelled':
         booking2.status = 'confirmed'
         booking2.save()
-        print(f"Reset booking for tourist_john for listing: {second_listing.title}")
+        print(f"Reset booking for tourist_john for experience: {second_experience.title}")
 
 if __name__ == "__main__":
     create_test_users()

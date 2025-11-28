@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.db.models import Q, Avg
+from django.contrib.contenttypes.models import ContentType
 from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
 
 # Custom Forms
@@ -203,7 +204,13 @@ def profile(request):
         form = UserProfileForm(instance=user_profile)
 
     bookings = Booking.objects.filter(user=request.user).order_by('-date')
-    favorite_experiences = Experience.objects.filter(favorite__user=request.user)
+
+    experience_content_type = ContentType.objects.get_for_model(Experience)
+    favorite_experiences_ids = Favorite.objects.filter(
+        user=request.user,
+        content_type=experience_content_type
+    ).values_list('object_id', flat=True)
+    favorite_experiences = Experience.objects.filter(pk__in=favorite_experiences_ids)
 
     return render(request, 'core/profile.html', {
         'form': form,

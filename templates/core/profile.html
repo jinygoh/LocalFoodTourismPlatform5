@@ -83,7 +83,7 @@ TasteLocal{% endblock %} {% block content %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {% for listing in favorites %}
           <a
-            href="{% url 'listing_detail' listing.pk %}"
+            href="{% url 'experience_detail' listing.pk %}"
             class="flex flex-col overflow-hidden rounded-lg bg-background-dark border border-border-dark hover:border-primary transition-colors group"
           >
             <div class="h-40 w-full overflow-hidden relative">
@@ -134,7 +134,7 @@ TasteLocal{% endblock %} {% block content %}
             You haven't added any experiences to your trail yet.
           </p>
           <a
-            href="{% url 'listing_list' %}"
+            href="{% url 'explore' %}"
             class="text-primary hover:underline mt-2 inline-block"
             >Explore Experiences</a
           >
@@ -159,7 +159,7 @@ TasteLocal{% endblock %} {% block content %}
             data-booking-id="{{ booking.pk }}"
           >
             <div>
-              <h3 class="font-bold">{{ booking.listing.title }}</h3>
+              <h3 class="font-bold">{{ booking.content_object_name }}</h3>
               <p class="text-sm text-text-dark-muted">
                 {{ booking.date }} • {{ booking.guests }} Guests
               </p>
@@ -170,11 +170,25 @@ TasteLocal{% endblock %} {% block content %}
               >
                 {{ booking.status }}
               </span>
+              {% if booking.content_type.model == 'experience' %}
               <a
-                href="{% url 'listing_detail' booking.listing.pk %}"
+                href="{% url 'experience_detail' booking.object_id %}"
                 class="text-sm text-text-dark-muted hover:text-text-dark underline"
                 >View Again</a
               >
+              {% elif booking.content_type.model == 'shop' %}
+              <a
+                href="{% url 'shop_detail' booking.object_id %}"
+                class="text-sm text-text-dark-muted hover:text-text-dark underline"
+                >View Again</a
+              >
+              {% elif booking.content_type.model == 'dish' %}
+              <a
+                href="{% url 'dish_detail' booking.object_id %}"
+                class="text-sm text-text-dark-muted hover:text-text-dark underline"
+                >View Again</a
+              >
+              {% endif %}
               {% if booking.status != 'cancelled' %}
               <a
                 href="{% url 'cancel_booking' booking.pk %}"

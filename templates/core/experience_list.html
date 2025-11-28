@@ -1,12 +1,4 @@
 {% load static %}
-<div class="flex flex-col sm:flex-row justify-between items-baseline mb-6">
-    <h2 class="text-2xl font-bold">Showing {{ experiences|length }} results</h2>
-    <div class="flex items-center gap-2 mt-4 sm:mt-0">
-        <button id="toggleMapBtn" onclick="toggleMap()" class="text-sm font-medium text-primary hover:underline">Show
-            Map View</button>
-    </div>
-</div>
-<div id="mapContainer" style="display: none;" class="h-[400px] w-full mb-8 rounded-xl overflow-hidden z-10"></div>
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
     {% for experience in experiences %}
     <a href="{% url 'experience_detail' experience.pk %}"
