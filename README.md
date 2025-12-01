@@ -19,12 +19,13 @@ TasteLocal is a web-based platform designed to connect tourists with authentic l
 ## Technology Stack
 *   **Backend:** Django (Python)
 *   **Frontend:** HTML, CSS, JavaScript (Leaflet.js for maps)
-*   **Database:** SQLite (Default) / MySQL (Compatible)
+*   **Database:** MySQL
 *   **AI Integration:** Pollinations.ai API for image generation
 
 ## Prerequisites
 *   Python 3.8 or higher
 *   pip (Python package manager)
+*   MySQL
 
 ## Setup Instructions
 
@@ -50,34 +51,57 @@ pip install -r requirements.txt
 ```
 
 ### 4. Database Setup
+This project is configured to use a MySQL database.
+
+**a. Install and Start MySQL:**
+Follow the official instructions for your operating system to install and start the MySQL server.
+
+**b. Create the Database:**
+Connect to MySQL and create a new database for the project.
+```sql
+CREATE DATABASE tastelocal;
+```
+
+**c. Configure Environment Variables:**
+The Django settings are configured to read database credentials from environment variables. Create a `.env` file in the project's root directory and add the following, replacing the placeholder values with your actual database credentials:
+
+```
+DB_NAME=tastelocal
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_HOST=127.0.0.1
+DB_PORT=3306
+SECRET_KEY=your-secret-key
+```
+**Note:** The `SECRET_KEY` is a Django-specific value for cryptographic signing and should be a long, random string.
+
+### 5. Apply Migrations
 Apply the database migrations to create the necessary tables.
 ```bash
 python manage.py migrate
 ```
 
-### 5. Create a Superuser (Optional)
+### 6. Create a Superuser (Optional)
 Create an admin account to access the Django admin panel.
 ```bash
 python manage.py createsuperuser
 ```
 
-### 6. Populate Data (One-Time Setup)
-Run the helper scripts to generate AI images and set vendor locations. You only need to do this once; the data will be saved to the database.
-```bash
-# Generate images for listings and vendors
-python generate_images.py
+### 7. Populate Data with Singaporean Food Scene
+Run the `populate_singapore_data.py` script to fill the database with 30 real food stalls from Singapore's hawker centres, each with 5 dishes. This script will also generate AI images for all entries.
 
-# Populate real coordinates for map view
-python update_coordinates.py
+**Note:** This process can take several minutes as it fetches and saves over 150 images.
+```bash
+python populate_singapore_data.py
 ```
 
-### 7. Run the Development Server
+### 8. Run the Development Server
 Start the local server.
 ```bash
 python manage.py runserver
 ```
 
-### 8. Access the Application
+### 9. Access the Application
 Open your web browser and go to:
 `http://127.0.0.1:8000/`
 
