@@ -4,6 +4,7 @@ import django
 import random
 import urllib.request
 import urllib.parse
+import time
 from django.core.files.base import ContentFile
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
@@ -18,19 +19,27 @@ def save_image_from_url(model_instance, prompt):
 
     print(f"Fetching: {prompt}...")
 
-    try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=60) as response:
-            image_content = response.read()
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=60) as response:
+                image_content = response.read()
 
-        safe_name = "".join([c if c.isalnum() else "_" for c in prompt])[:30]
-        filename = f"{safe_name}_{model_instance.pk}.jpg"
+            safe_name = "".join([c if c.isalnum() else "_" for c in prompt])[:30]
+            filename = f"{safe_name}_{model_instance.pk}.jpg"
 
-        model_instance.image.save(filename, ContentFile(image_content), save=True)
-        print(f"✅ Saved: {filename}")
+            model_instance.image.save(filename, ContentFile(image_content), save=True)
+            print(f"✅ Saved: {filename}")
+            return # Exit the function on success
 
-    except Exception as e:
-        print(f"❌ Error for {prompt}: {e}")
+        except Exception as e:
+            print(f"❌ Attempt {attempt + 1} failed for {prompt}: {e}")
+            if attempt < 2:
+                print("Retrying in 5 seconds...")
+                time.sleep(5)
+
+    print(f"❌ Failed to download image for {prompt} after 3 attempts.")
+
 
 def populate():
     print("Populating database with real Singaporean food data...")
