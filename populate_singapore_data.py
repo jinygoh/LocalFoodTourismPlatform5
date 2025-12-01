@@ -5,6 +5,7 @@ import random
 import urllib.request
 import urllib.parse
 import time
+import argparse
 from django.core.files.base import ContentFile
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
@@ -41,41 +42,41 @@ def save_image_from_url(model_instance, prompt):
     print(f"❌ Failed to download image for {prompt} after 3 attempts.")
 
 
-def populate():
+def populate(start, end):
     print("Populating database with real Singaporean food data...")
-    print("Script started. About to define data.")
+    print(f"Processing shops from index {start} to {end}")
 
     shops_data = [
-        {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "cat": "hawker_centre"},
-        {"name": "Margaret Drive Sin Kee Chicken Rice", "desc": "A popular choice for chicken rice lovers.", "cat": "hawker_centre"},
-        {"name": "Ji De Lai Hainanese Chicken Rice", "desc": "Known for its traditional Hainanese chicken rice.", "cat": "hawker_centre"},
-        {"name": "Heng Heng Cooked Food", "desc": "Serving delicious Laksa and Prawn Noodles.", "cat": "hawker_centre"},
-        {"name": "Da Shi Jia Big Prawn Mee", "desc": "A must-try for prawn noodle enthusiasts.", "cat": "hawker_centre"},
-        {"name": "Jalan Sultan Prawn Mee", "desc": "Famous for its rich and flavorful prawn broth.", "cat": "hawker_centre"},
-        {"name": "Fei Fei Roasted • Noodle", "desc": "Serving delicious Wantan Mee.", "cat": "hawker_centre"},
-        {"name": "Joo Siah Bak Koot Teh", "desc": "A popular spot for Bak Kut Teh.", "cat": "hawker_centre"},
-        {"name": "Song Fa Bak Kut Teh", "desc": "A well-known Bak Kut Teh chain.", "cat": "hawker_centre"},
-        {"name": "Ann Chin Handmade Popiah", "desc": "Serving delicious handmade Popiah.", "cat": "hawker_centre"},
-        {"name": "Hong Heng Fried Sotong Prawn Mee", "desc": "Famous for its Fried Hokkien Mee.", "cat": "hawker_centre"},
-        {"name": "Chey Sua Carrot Cake", "desc": "A must-try for carrot cake lovers.", "cat": "hawker_centre"},
-        {"name": "Hill Street Tai Hwa Pork Noodle", "desc": "A Michelin-starred Bak Chor Mee stall.", "cat": "hawker_centre"},
-        {"name": "Ru Ji Kitchen", "desc": "Famous for its fishball noodles.", "cat": "hawker_centre"},
-        {"name": "Jian Bo Tiong Bahru Shui Kueh", "desc": "A popular spot for Chwee Kueh.", "cat": "hawker_centre"},
-        {"name": "Beach Road Fish Head Bee Hoon", "desc": "Famous for its fish head bee hoon.", "cat": "hawker_centre"},
-        {"name": "Han Kee", "desc": "Serving delicious fish soup.", "cat": "hawker_centre"},
-        {"name": "C.M.Y. Satay", "desc": "A popular spot for satay.", "cat": "hawker_centre"},
-        {"name": "Chomp Chomp Satay", "desc": "Another great option for satay.", "cat": "hawker_centre"},
-        {"name": "Liao Fan Hawker Chan", "desc": "The cheapest Michelin-starred meal in the world.", "cat": "hawker_centre"},
-        {"name": "A Noodle Story", "desc": "Singapore's first and only Michelin-starred ramen.", "cat": "hawker_centre"},
-        {"name": "The Blue Ginger", "desc": "A Michelin-starred Peranakan restaurant.", "cat": "restaurant"},
-        {"name": "Candlenut", "desc": "The world's first Michelin-starred Peranakan restaurant.", "cat": "restaurant"},
-        {"name": "Odette", "desc": "A three-Michelin-starred modern French restaurant.", "cat": "restaurant"},
-        {"name": "Les Amis", "desc": "A three-Michelin-starred French restaurant.", "cat": "restaurant"},
-        {"name": "Burnt Ends", "desc": "A one-Michelin-starred modern Australian barbecue restaurant.", "cat": "restaurant"},
-        {"name": "JAAN by Kirk Westaway", "desc": "A two-Michelin-starred modern British restaurant.", "cat": "restaurant"},
-        {"name": "Shoukouwa", "desc": "A two-Michelin-starred sushi restaurant.", "cat": "restaurant"},
-        {"name": "Waku Ghin", "desc": "A two-Michelin-starred Japanese restaurant.", "cat": "restaurant"},
-        {"name": "Zen", "desc": "A three-Michelin-starred modern European restaurant.", "cat": "restaurant"},
+        {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue to Sun: 10am - 8pm"},
+        {"name": "Margaret Drive Sin Kee Chicken Rice", "desc": "A popular choice for chicken rice lovers.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue-Sun 11am-8pm"},
+        {"name": "Ji De Lai Hainanese Chicken Rice", "desc": "Known for its traditional Hainanese chicken rice.", "cat": "hawker_centre", "contact": "N/A", "hours": "8am – 8pm (Mon – Sun)"},
+        {"name": "Heng Heng Cooked Food", "desc": "Serving delicious Laksa and Prawn Noodles.", "cat": "hawker_centre", "contact": "N/A", "hours": "8am – 2pm (Mon – Tues, Fri – Sun), Closed Wed, Thurs"},
+        {"name": "Da Shi Jia Big Prawn Mee", "desc": "A must-try for prawn noodle enthusiasts.", "cat": "hawker_centre", "contact": "+65 6732 1085", "hours": "Daily 11am to 10pm"},
+        {"name": "Jalan Sultan Prawn Mee", "desc": "Famous for its rich and flavorful prawn broth.", "cat": "hawker_centre", "contact": "+65 6748 2488", "hours": "Daily 8am to 3.30pm (CLOSED on Tuesdays)"},
+        {"name": "Fei Fei Roasted • Noodle", "desc": "Serving delicious Wantan Mee.", "cat": "hawker_centre", "contact": "N/A", "hours": "Mon-Sat 9:15 AM to 1:00 PM. Closed: Sundays"},
+        {"name": "Joo Siah Bak Koot Teh", "desc": "A popular spot for Bak Kut Teh.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue-Sat 8am to 7.15pm. Sun 8am to 3.30pm. Closed on Mondays"},
+        {"name": "Song Fa Bak Kut Teh", "desc": "A well-known Bak Kut Teh chain.", "cat": "hawker_centre", "contact": "+65 6377 6311", "hours": "10:30am-9:30pm, daily"},
+        {"name": "Ann Chin Handmade Popiah", "desc": "Serving delicious handmade Popiah.", "cat": "hawker_centre", "contact": "+65 8189 4699", "hours": "8am to 7pm daily"},
+        {"name": "Hong Heng Fried Sotong Prawn Mee", "desc": "Famous for its Fried Hokkien Mee.", "cat": "hawker_centre", "contact": "N/A", "hours": "10.30am-2.30pm, 4.30pm-6pm (closed on Sundays & Mondays)"},
+        {"name": "Chey Sua Carrot Cake", "desc": "A must-try for carrot cake lovers.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue – Sun 6am to 1pm, closed on Mon"},
+        {"name": "Hill Street Tai Hwa Pork Noodle", "desc": "A Michelin-starred Bak Chor Mee stall.", "cat": "hawker_centre", "contact": "+65 9272 3920", "hours": "Monday to Sunday 9:00 Am - 8:30 Pm (close 1st and 3rd Monday every month)"},
+        {"name": "Ru Ji Kitchen", "desc": "Famous for its fishball noodles.", "cat": "hawker_centre", "contact": "94350820", "hours": "7am – 1pm (Tue – Sun), Closed Mon"},
+        {"name": "Jian Bo Tiong Bahru Shui Kueh", "desc": "A popular spot for Chwee Kueh.", "cat": "hawker_centre", "contact": "+65 6384 5379", "hours": "5.30am - 8.30pm"},
+        {"name": "Beach Road Fish Head Bee Hoon", "desc": "Famous for its fish head bee hoon.", "cat": "hawker_centre", "contact": "N/A", "hours": "9am to 2pm daily. Closed on Wednesdays and Saturdays."},
+        {"name": "Han Kee", "desc": "Serving delicious fish soup.", "cat": "hawker_centre", "contact": "N/A", "hours": "Mon – Fri. 10:30AM - 3:00PM. Closed Sat, Sun"},
+        {"name": "C.M.Y. Satay", "desc": "A popular spot for satay.", "cat": "hawker_centre", "contact": "9475 2907", "hours": "Tues-Sun 9am to 7pm, Closed on Mondays"},
+        {"name": "Chomp Chomp Satay", "desc": "Another great option for satay.", "cat": "hawker_centre", "contact": "N/A", "hours": "5:30pm – Late about midnight (Mon – Sun)"},
+        {"name": "Liao Fan Hawker Chan", "desc": "The cheapest Michelin-starred meal in the world.", "cat": "hawker_centre", "contact": "+65 6272 2000", "hours": "Open daily 10.30am – 8pm"},
+        {"name": "A Noodle Story", "desc": "Singapore's first and only Michelin-starred ramen.", "cat": "hawker_centre", "contact": "+65 9027 6289", "hours": "Monday to Friday: 11:15am to 2pm, 5:15pm to 7pm. Saturday: 10:45am to 1:15pm. Closed on Sunday."},
+        {"name": "The Blue Ginger", "desc": "A Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "(+65) 6222 3928", "hours": "Mondays – Sundays Lunch : 12pm – 3pm, Dinner : 6.30pm – 10.30pm"},
+        {"name": "Candlenut", "desc": "The world's first Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "1800 304 2288", "hours": "LUNCH, MON – SUN 12:00PM – 3:00PM, DINNER, MON – SUN AND EVE OF PUBLIC HOLIDAYS 6:00PM – 10:00PM"},
+        {"name": "Odette", "desc": "A three-Michelin-starred modern French restaurant.", "cat": "restaurant", "contact": "+65 6385 0498", "hours": "LUNCH TUESDAY TO SATURDAY 12.00pm to 1.15pm, DINNER MONDAY TO SATURDAY 6.30pm to 8.15pm, Closed on Sunday"},
+        {"name": "Les Amis", "desc": "A three-Michelin-starred French restaurant.", "cat": "restaurant", "contact": "+65 6733 2225", "hours": "Daily 12.00 to 14.00, 19.00 to 21.30"},
+        {"name": "Burnt Ends", "desc": "A one-Michelin-starred modern Australian barbecue restaurant.", "cat": "restaurant", "contact": "+65 6224 3933", "hours": "Lunch: Fri – Sat, Dinner: Tues – Sat"},
+        {"name": "JAAN by Kirk Westaway", "desc": "A two-Michelin-starred modern British restaurant.", "cat": "restaurant", "contact": "+65 9199 9008", "hours": "Lunch (Tue to Sat): 11:45am to 2:30pm, Dinner (Tues to Sat): 6:30pm to 10:30pm"},
+        {"name": "Shoukouwa", "desc": "A two-Michelin-starred sushi restaurant.", "cat": "restaurant", "contact": "+65 6423 9939", "hours": "Lunch Tuesday to Saturday 12.30pm to 3pm, Dinner Tuesday to Saturday 1st seating: 6pm to 8pm 2nd seating: 8.15pm to 10.30pm. Closed on Sunday and Monday."},
+        {"name": "Waku Ghin", "desc": "A two-Michelin-starred Japanese restaurant.", "cat": "restaurant", "contact": "+65 6688 8507", "hours": "Tuesday – Sunday: 5.30pm & 8pm ( 2 seatings)"},
+        {"name": "Zen", "desc": "A three-Michelin-starred modern European restaurant.", "cat": "restaurant", "contact": "+65 6534 8880", "hours": "Tuesday – Saturday: 7:00pm – 10:30pm"},
     ]
 
     dishes_data = {
@@ -290,11 +291,14 @@ def populate():
             {"name": "Petit Fours", "desc": "A selection of small sweets to end your meal."}
         ]
     }
-    print("Data defined. Starting to create shops.")
+
+    shops_to_process = shops_data[start:end]
+
+    print(f"Data defined. Starting to create {len(shops_to_process)} shops.")
 
     shops = []
-    for i, s_data in enumerate(shops_data):
-        username = f"vendor_singapore_{i+1}"
+    for i, s_data in enumerate(shops_to_process):
+        username = f"vendor_singapore_{start + i + 1}"
         user, created = User.objects.get_or_create(username=username, defaults={'is_vendor': True})
         if created:
             user.set_password('password123')
@@ -307,7 +311,8 @@ def populate():
                 'description': s_data['desc'],
                 'location': 'Singapore',
                 'category': s_data['cat'],
-                'contact_number': f"65{random.randint(10000000, 99999999)}"
+                'contact_number': s_data['contact'],
+                'opening_hours': s_data['hours']
             }
         )
         if created:
@@ -330,62 +335,65 @@ def populate():
 
         shop.dishes.add(*shop_dishes)
 
-    print("Shops and dishes created. Starting to create experiences.")
-    experiences_data = [
-        {"title": "Singapore Hawker Food Tour", "desc": "Explore the best of Singapore's hawker culture with our guided food tour.", "price": 50.00, "vendor_name": "Tian Tian Hainanese Chicken Rice"},
-        {"title": "Chinatown Food Adventure", "desc": "A guided tour of the best food stalls in Chinatown.", "price": 60.00, "vendor_name": "Liao Fan Hawker Chan"},
-        {"title": "Little India Culinary Journey", "desc": "Discover the vibrant flavors of Little India's street food.", "price": 55.00, "vendor_name": "The Blue Ginger"}
-    ]
+    # Only create experiences and reviews on the final run to avoid duplicates
+    if end >= len(shops_data):
+        print("Shops and dishes created. Starting to create experiences.")
+        experiences_data = [
+            {"title": "Singapore Hawker Food Tour", "desc": "Explore the best of Singapore's hawker culture with our guided food tour.", "price": 50.00, "vendor_name": "Tian Tian Hainanese Chicken Rice"},
+            {"title": "Chinatown Food Adventure", "desc": "A guided tour of the best food stalls in Chinatown.", "price": 60.00, "vendor_name": "Liao Fan Hawker Chan"},
+            {"title": "Little India Culinary Journey", "desc": "Discover the vibrant flavors of Little India's street food.", "price": 55.00, "vendor_name": "The Blue Ginger"}
+        ]
 
-    for e_data in experiences_data:
-        try:
-            vendor_shop = Shop.objects.get(business_name=e_data['vendor_name'])
-            experience, created = Experience.objects.get_or_create(
-                title=e_data['title'],
-                defaults={
-                    'vendor': vendor_shop,
-                    'description': e_data['desc'],
-                    'price': e_data['price']
-                }
-            )
-            if created:
-                print(f"Created Experience: {e_data['title']}")
-                save_image_from_url(experience, e_data['title'])
-
-                # Link some relevant dishes and shops to the experience
-                experience.shops.add(vendor_shop)
-                for dish in vendor_shop.dishes.all():
-                    experience.dishes.add(dish)
-        except Shop.DoesNotExist:
-            print(f"Could not find shop with name {e_data['vendor_name']} to create experience.")
-
-    print("Experiences created. Starting to create reviews.")
-
-    # Create Reviews
-    tourist_user, created = User.objects.get_or_create(username='tourist_john', defaults={'is_tourist': True})
-    if created:
-        tourist_user.set_password('password123')
-        tourist_user.save()
-
-    review_comments = [
-        "Absolutely delicious! A must-try when in Singapore.",
-        "The flavours were authentic and the portions were generous.",
-        "A bit of a wait, but totally worth it. I'll be back for more.",
-        "Friendly staff and great food. What more could you ask for?",
-        "An unforgettable culinary experience. Highly recommended."
-    ]
-
-    for shop in Shop.objects.all():
-        for dish in shop.dishes.all():
-            if not Review.objects.filter(user=tourist_user, object_id=dish.pk).exists():
-                Review.objects.create(
-                    user=tourist_user,
-                    content_object=dish,
-                    rating=random.randint(4, 5),
-                    comment=random.choice(review_comments)
+        for e_data in experiences_data:
+            try:
+                vendor_shop = Shop.objects.get(business_name=e_data['vendor_name'])
+                experience, created = Experience.objects.get_or_create(
+                    title=e_data['title'],
+                    defaults={
+                        'vendor': vendor_shop,
+                        'description': e_data['desc'],
+                        'price': e_data['price']
+                    }
                 )
+                if created:
+                    print(f"Created Experience: {e_data['title']}")
+                    save_image_from_url(experience, e_data['title'])
+
+                    experience.shops.add(vendor_shop)
+                    for dish in vendor_shop.dishes.all():
+                        experience.dishes.add(dish)
+            except Shop.DoesNotExist:
+                print(f"Could not find shop with name {e_data['vendor_name']} to create experience.")
+
+        print("Experiences created. Starting to create reviews.")
+        tourist_user, created = User.objects.get_or_create(username='tourist_john', defaults={'is_tourist': True})
+        if created:
+            tourist_user.set_password('password123')
+            tourist_user.save()
+
+        review_comments = [
+            "Absolutely delicious! A must-try when in Singapore.",
+            "The flavours were authentic and the portions were generous.",
+            "A bit of a wait, but totally worth it. I'll be back for more.",
+            "Friendly staff and great food. What more could you ask for?",
+            "An unforgettable culinary experience. Highly recommended."
+        ]
+
+        for shop in Shop.objects.all():
+            for dish in shop.dishes.all():
+                if not Review.objects.filter(user=tourist_user, object_id=dish.pk).exists():
+                    Review.objects.create(
+                        user=tourist_user,
+                        content_object=dish,
+                        rating=random.randint(4, 5),
+                        comment=random.choice(review_comments)
+                    )
 
     print("Successfully populated the database with realistic Singaporean data.")
 
 if __name__ == '__main__':
-    populate()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--start", type=int, default=0, help="Starting index of shops to process")
+    parser.add_argument("--end", type=int, default=30, help="Ending index of shops to process")
+    args = parser.parse_args()
+    populate(args.start, args.end)
