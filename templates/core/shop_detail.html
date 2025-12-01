@@ -47,11 +47,28 @@
 
             <div class="mt-12">
                 <h2 class="text-2xl font-bold">Dishes at this shop:</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                     {% for dish in shop.dishes.all %}
-                        <a href="{% url 'dish_detail' dish.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
-                            <h3 class="text-lg font-bold">{{ dish.name }}</h3>
-                        </a>
+                    <a href="{% url 'dish_detail' dish.pk %}"
+                        class="block bg-card-dark rounded-lg overflow-hidden hover:bg-gray-700/50 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <div class="w-24 h-24 flex-shrink-0">
+                                {% if dish.image %}
+                                <img class="w-full h-full object-cover" src="{{ dish.image.url }}" alt="{{ dish.name }}">
+                                {% else %}
+                                <img class="w-full h-full object-cover"
+                                    src="https://source.unsplash.com/150x150/?food,singapore&random={{ dish.pk }}"
+                                    alt="{{ dish.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold">{{ dish.name }}</h3>
+                                <p class="text-sm text-text-dark-muted mt-1 line-clamp-2">{{ dish.description }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <p class="text-text-dark-muted md:col-span-2">This shop hasn't added any dishes yet.</p>
                     {% endfor %}
                 </div>
             </div>
