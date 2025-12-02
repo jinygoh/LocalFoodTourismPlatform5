@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm
+from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm, BookingForm, TouristProfileForm
 
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
@@ -67,6 +67,7 @@ def shop_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
     reviews = Review.objects.filter(object_id=shop.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    booking_form = BookingForm(shop=shop)
 
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -92,21 +93,20 @@ def shop_detail(request, pk):
                 messages.error(request, "Only tourists can book a table.")
                 return redirect('shop_detail', pk=pk)
 
-            date = request.POST.get('date')
-            guests = request.POST.get('guests')
-            booking = Booking.objects.create(
-                user=request.user,
-                content_object=shop,
-                date=date,
-                guests=guests,
-                status='confirmed'
-            )
-            return redirect('booking_confirmation', pk=booking.pk)
+            booking_form = BookingForm(request.POST, shop=shop)
+            if booking_form.is_valid():
+                booking = booking_form.save(commit=False)
+                booking.user = request.user
+                booking.content_object = shop
+                booking.status = 'confirmed'
+                booking.save()
+                return redirect('booking_confirmation', pk=booking.pk)
 
     return render(request, 'core/shop_detail.html', {
         'shop': shop,
         'reviews': reviews,
-        'average_rating': average_rating
+        'average_rating': average_rating,
+        'booking_form': booking_form
     })
 
 def experience_detail(request, pk):
@@ -329,3 +329,17 @@ def vendor_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
     experiences = Experience.objects.filter(vendor=shop)
     return render(request, 'core/vendor_detail.html', {'shop': shop, 'experiences': experiences})
+
+@login_required
+def edit_tourist_profile(request):
+    if not request.user.is_tourist:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = TouristProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = TouristProfileForm(instance=request.user)
+    return render(request, 'core/edit_tourist_profile.html', {'form': form})

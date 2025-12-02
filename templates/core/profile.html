@@ -20,6 +20,8 @@ TasteLocal{% endblock %} {% block content %}
           <h2 class="text-xl font-bold">{{ user.username }}</h2>
           <p class="text-text-dark-muted">{{ user.email }}</p>
 
+          <a href="{% url 'edit_tourist_profile' %}" class="mt-2 text-sm text-primary hover:underline">Edit Profile</a>
+
           <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data" class="w-full max-w-xs mt-4">
             {% csrf_token %}
             <div class="flex flex-col items-center">

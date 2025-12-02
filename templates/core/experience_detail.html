@@ -172,13 +172,8 @@
         <div class="lg:col-span-1 mt-10 lg:mt-0">
             <div class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg">
                 <div class="mb-6">
-                    {% if experience.discount_price %}
-                    <p class="text-3xl font-bold text-secondary">${{ experience.discount_price }}</p>
-                    <p class="text-sm text-text-dark-muted line-through">${{ experience.price }} / person</p>
-                    {% else %}
                     <p class="text-3xl font-bold">${{ experience.price }} <span
                             class="text-base font-normal text-text-dark-muted">/ person</span></p>
-                    {% endif %}
                 </div>
 
                 {% if user.is_tourist %}

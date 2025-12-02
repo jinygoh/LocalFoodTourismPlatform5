@@ -73,45 +73,6 @@
     </div>
 </section>
 
-<section class="py-16 sm:py-24" style="background-color: rgba(0,0,0,0.15)">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Featured Experiences</h2>
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for experience in featured_experiences %}
-            <a href="{% url 'experience_detail' experience.pk %}"
-                class="flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
-                <div class="h-60 w-full overflow-hidden">
-                    {% if experience.image %}
-                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        src="{{ experience.image.url }}" alt="{{ experience.title }}" />
-                    {% else %}
-                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        src="https://source.unsplash.com/800x600/?food,singapore,{{ experience.pk }}"
-                        alt="{{ experience.title }}" />
-                    {% endif %}
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors">{{ experience.title }}</h3>
-                    <p class="mt-2 text-sm text-text-dark-muted flex-grow">{{ experience.vendor.business_name }}</p>
-                    <div class="mt-4 flex justify-between items-center">
-                        <div class="flex items-center gap-1">
-                            <span class="material-symbols-outlined text-accent !text-xl">place</span>
-                            <span class="text-sm font-medium">Singapore</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <span class="text-lg font-bold text-primary">${{ experience.price }}</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            {% empty %}
-            <div class="col-span-full text-center text-text-dark-muted">
-                <p>No featured experiences yet.</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
 
 <section class="py-16 sm:py-24">
     <div class="container mx-auto px-4">

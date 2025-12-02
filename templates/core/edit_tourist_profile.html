@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile | TasteLocal{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-8">Edit Profile</h1>
+        <form method="post" class="bg-card-dark p-8 rounded-lg">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="mt-4 px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
