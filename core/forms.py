@@ -4,15 +4,23 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User, Experience, Shop, UserProfile, Booking
 import datetime
 
-class TouristProfileForm(forms.ModelForm):
+class TouristUserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
+class TouristProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['contact_number', 'image']
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['image']
+        widgets = {
+            'image': forms.FileInput(attrs={'id': 'id_image'}),
+        }
 
 class CustomUserCreationForm(UserCreationForm):
     USER_TYPE_CHOICES = (

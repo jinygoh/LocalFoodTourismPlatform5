@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm, BookingForm, TouristProfileForm
+from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm, BookingForm, TouristUserEditForm, TouristProfileEditForm
 
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
@@ -337,15 +337,32 @@ def vendor_detail(request, pk):
     return render(request, 'core/vendor_detail.html', {'shop': shop, 'experiences': experiences})
 
 @login_required
-def edit_tourist_profile(request):
+def profile_edit_view(request):
     if not request.user.is_tourist:
         return redirect('home')
 
+    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
-        form = TouristProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        user_form = TouristUserEditForm(request.POST, instance=request.user)
+        profile_form = TouristProfileEditForm(request.POST, request.FILES, instance=user_profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
             return redirect('profile')
     else:
-        form = TouristProfileForm(instance=request.user)
-    return render(request, 'core/edit_tourist_profile.html', {'form': form})
+        user_form = TouristUserEditForm(instance=request.user)
+        profile_form = TouristProfileEditForm(instance=user_profile)
+
+    # Add styling to the form fields
+    for field in user_form.fields.values():
+        field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+    for field in profile_form.fields.values():
+        field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+
+    return render(request, 'core/edit_tourist_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })

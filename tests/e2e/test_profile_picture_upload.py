@@ -8,7 +8,7 @@ def test_profile_picture_upload(page: Page):
     page.click("button[type='submit']")
     page.wait_for_url("http://127.0.0.1:8000/profile/")
 
-    page.set_input_files("input[type='file']", "tests/assets/default.png")
+    page.set_input_files("input#id_image", "tests/assets/default.png")
     page.click("button[name='update_picture']")
     page.wait_for_load_state("networkidle")
 

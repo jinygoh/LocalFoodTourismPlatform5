@@ -1,4 +1,3 @@
-print("Script execution started.")
 import os
 import django
 import random
@@ -47,36 +46,36 @@ def populate(start, end):
     print(f"Processing shops from index {start} to {end}")
 
     shops_data = [
-        {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue to Sun: 10am - 8pm"},
-        {"name": "Margaret Drive Sin Kee Chicken Rice", "desc": "A popular choice for chicken rice lovers.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue-Sun 11am-8pm"},
-        {"name": "Ji De Lai Hainanese Chicken Rice", "desc": "Known for its traditional Hainanese chicken rice.", "cat": "hawker_centre", "contact": "N/A", "hours": "8am – 8pm (Mon – Sun)"},
-        {"name": "Heng Heng Cooked Food", "desc": "Serving delicious Laksa and Prawn Noodles.", "cat": "hawker_centre", "contact": "N/A", "hours": "8am – 2pm (Mon – Tues, Fri – Sun), Closed Wed, Thurs"},
-        {"name": "Da Shi Jia Big Prawn Mee", "desc": "A must-try for prawn noodle enthusiasts.", "cat": "hawker_centre", "contact": "+65 6732 1085", "hours": "Daily 11am to 10pm"},
-        {"name": "Jalan Sultan Prawn Mee", "desc": "Famous for its rich and flavorful prawn broth.", "cat": "hawker_centre", "contact": "+65 6748 2488", "hours": "Daily 8am to 3.30pm (CLOSED on Tuesdays)"},
-        {"name": "Fei Fei Roasted • Noodle", "desc": "Serving delicious Wantan Mee.", "cat": "hawker_centre", "contact": "N/A", "hours": "Mon-Sat 9:15 AM to 1:00 PM. Closed: Sundays"},
-        {"name": "Joo Siah Bak Koot Teh", "desc": "A popular spot for Bak Kut Teh.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue-Sat 8am to 7.15pm. Sun 8am to 3.30pm. Closed on Mondays"},
-        {"name": "Song Fa Bak Kut Teh", "desc": "A well-known Bak Kut Teh chain.", "cat": "hawker_centre", "contact": "+65 6377 6311", "hours": "10:30am-9:30pm, daily"},
-        {"name": "Ann Chin Handmade Popiah", "desc": "Serving delicious handmade Popiah.", "cat": "hawker_centre", "contact": "+65 8189 4699", "hours": "8am to 7pm daily"},
-        {"name": "Hong Heng Fried Sotong Prawn Mee", "desc": "Famous for its Fried Hokkien Mee.", "cat": "hawker_centre", "contact": "N/A", "hours": "10.30am-2.30pm, 4.30pm-6pm (closed on Sundays & Mondays)"},
-        {"name": "Chey Sua Carrot Cake", "desc": "A must-try for carrot cake lovers.", "cat": "hawker_centre", "contact": "N/A", "hours": "Tue – Sun 6am to 1pm, closed on Mon"},
-        {"name": "Hill Street Tai Hwa Pork Noodle", "desc": "A Michelin-starred Bak Chor Mee stall.", "cat": "hawker_centre", "contact": "+65 9272 3920", "hours": "Monday to Sunday 9:00 Am - 8:30 Pm (close 1st and 3rd Monday every month)"},
-        {"name": "Ru Ji Kitchen", "desc": "Famous for its fishball noodles.", "cat": "hawker_centre", "contact": "94350820", "hours": "7am – 1pm (Tue – Sun), Closed Mon"},
-        {"name": "Jian Bo Tiong Bahru Shui Kueh", "desc": "A popular spot for Chwee Kueh.", "cat": "hawker_centre", "contact": "+65 6384 5379", "hours": "5.30am - 8.30pm"},
-        {"name": "Beach Road Fish Head Bee Hoon", "desc": "Famous for its fish head bee hoon.", "cat": "hawker_centre", "contact": "N/A", "hours": "9am to 2pm daily. Closed on Wednesdays and Saturdays."},
-        {"name": "Han Kee", "desc": "Serving delicious fish soup.", "cat": "hawker_centre", "contact": "N/A", "hours": "Mon – Fri. 10:30AM - 3:00PM. Closed Sat, Sun"},
-        {"name": "C.M.Y. Satay", "desc": "A popular spot for satay.", "cat": "hawker_centre", "contact": "9475 2907", "hours": "Tues-Sun 9am to 7pm, Closed on Mondays"},
-        {"name": "Chomp Chomp Satay", "desc": "Another great option for satay.", "cat": "hawker_centre", "contact": "N/A", "hours": "5:30pm – Late about midnight (Mon – Sun)"},
-        {"name": "Liao Fan Hawker Chan", "desc": "The cheapest Michelin-starred meal in the world.", "cat": "hawker_centre", "contact": "+65 6272 2000", "hours": "Open daily 10.30am – 8pm"},
-        {"name": "A Noodle Story", "desc": "Singapore's first and only Michelin-starred ramen.", "cat": "hawker_centre", "contact": "+65 9027 6289", "hours": "Monday to Friday: 11:15am to 2pm, 5:15pm to 7pm. Saturday: 10:45am to 1:15pm. Closed on Sunday."},
-        {"name": "The Blue Ginger", "desc": "A Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "(+65) 6222 3928", "hours": "Mondays – Sundays Lunch : 12pm – 3pm, Dinner : 6.30pm – 10.30pm"},
-        {"name": "Candlenut", "desc": "The world's first Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "1800 304 2288", "hours": "LUNCH, MON – SUN 12:00PM – 3:00PM, DINNER, MON – SUN AND EVE OF PUBLIC HOLIDAYS 6:00PM – 10:00PM"},
-        {"name": "Odette", "desc": "A three-Michelin-starred modern French restaurant.", "cat": "restaurant", "contact": "+65 6385 0498", "hours": "LUNCH TUESDAY TO SATURDAY 12.00pm to 1.15pm, DINNER MONDAY TO SATURDAY 6.30pm to 8.15pm, Closed on Sunday"},
-        {"name": "Les Amis", "desc": "A three-Michelin-starred French restaurant.", "cat": "restaurant", "contact": "+65 6733 2225", "hours": "Daily 12.00 to 14.00, 19.00 to 21.30"},
-        {"name": "Burnt Ends", "desc": "A one-Michelin-starred modern Australian barbecue restaurant.", "cat": "restaurant", "contact": "+65 6224 3933", "hours": "Lunch: Fri – Sat, Dinner: Tues – Sat"},
-        {"name": "JAAN by Kirk Westaway", "desc": "A two-Michelin-starred modern British restaurant.", "cat": "restaurant", "contact": "+65 9199 9008", "hours": "Lunch (Tue to Sat): 11:45am to 2:30pm, Dinner (Tues to Sat): 6:30pm to 10:30pm"},
-        {"name": "Shoukouwa", "desc": "A two-Michelin-starred sushi restaurant.", "cat": "restaurant", "contact": "+65 6423 9939", "hours": "Lunch Tuesday to Saturday 12.30pm to 3pm, Dinner Tuesday to Saturday 1st seating: 6pm to 8pm 2nd seating: 8.15pm to 10.30pm. Closed on Sunday and Monday."},
-        {"name": "Waku Ghin", "desc": "A two-Michelin-starred Japanese restaurant.", "cat": "restaurant", "contact": "+65 6688 8507", "hours": "Tuesday – Sunday: 5.30pm & 8pm ( 2 seatings)"},
-        {"name": "Zen", "desc": "A three-Michelin-starred modern European restaurant.", "cat": "restaurant", "contact": "+65 6534 8880", "hours": "Tuesday – Saturday: 7:00pm – 10:30pm"},
+        {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue to Sun: 10am - 8pm", "location": "Maxwell Food Centre, 1 Kadayanallur St, #01-10/11, Singapore 069184", "lat": 1.2803, "lon": 103.8449},
+        {"name": "Margaret Drive Sin Kee Chicken Rice", "desc": "A popular choice for chicken rice lovers.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue-Sun 11am-8pm", "location": "40 Holland Dr, #01-39, Singapore 270040", "lat": 1.3065, "lon": 103.7946},
+        {"name": "Ji De Lai Hainanese Chicken Rice", "desc": "Known for its traditional Hainanese chicken rice.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "8am – 8pm (Mon – Sun)", "location": "Chinatown Complex Market & Food Centre, 335 Smith St, #02-170, Singapore 050335", "lat": 1.2818, "lon": 103.8431},
+        {"name": "Heng Heng Cooked Food", "desc": "Serving delicious Laksa and Prawn Noodles.", "cat": "hawker_centre", "contact": "9181 8181", "hours": "8am – 2pm (Mon – Tues, Fri – Sun), Closed Wed, Thurs", "location": "Hong Lim Market & Food Centre, 531A Upper Cross St, #02-09, Singapore 051531", "lat": 1.2841, "lon": 103.8451},
+        {"name": "Da Shi Jia Big Prawn Mee", "desc": "A must-try for prawn noodle enthusiasts.", "cat": "hawker_centre", "contact": "+65 6732 1085", "hours": "Daily 11am to 10pm", "location": "89 Killiney Rd, Singapore 239534", "lat": 1.2989, "lon": 103.8436},
+        {"name": "Jalan Sultan Prawn Mee", "desc": "Famous for its rich and flavorful prawn broth.", "cat": "hawker_centre", "contact": "+65 6748 2488", "hours": "Daily 8am to 3.30pm (CLOSED on Tuesdays)", "location": "2 Jalan Ayer, Singapore 389141", "lat": 1.3126, "lon": 103.8687},
+        {"name": "Fei Fei Roasted • Noodle", "desc": "Serving delicious Wantan Mee.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Mon-Sat 9:15 AM to 1:00 PM. Closed: Sundays", "location": "Yuhua Village Market and Food Centre, 254 Jurong East St 24, #01-28, Singapore 600254", "lat": 1.3468, "lon": 103.7381},
+        {"name": "Joo Siah Bak Koot Teh", "desc": "A popular spot for Bak Kut Teh.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue-Sat 8am to 7.15pm. Sun 8am to 3.30pm. Closed on Mondays", "location": "347 Jurong East Ave 1, #01-220, Singapore 600347", "lat": 1.3475, "lon": 103.7332},
+        {"name": "Song Fa Bak Kut Teh", "desc": "A well-known Bak Kut Teh chain.", "cat": "hawker_centre", "contact": "+65 6377 6311", "hours": "10:30am-9:30pm, daily", "location": "11 New Bridge Rd, #01-01, Singapore 059383", "lat": 1.2858, "lon": 103.8463},
+        {"name": "Ann Chin Handmade Popiah", "desc": "Serving delicious handmade Popiah.", "cat": "hawker_centre", "contact": "+65 8189 4699", "hours": "8am to 7pm daily", "location": "Chinatown Complex Market & Food Centre, 335 Smith St, #02-112, Singapore 050335", "lat": 1.2818, "lon": 103.8431},
+        {"name": "Hong Heng Fried Sotong Prawn Mee", "desc": "Famous for its Fried Hokkien Mee.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "10.30am-2.30pm, 4.30pm-6pm (closed on Sundays & Mondays)", "location": "Tiong Bahru Market, 30 Seng Poh Rd, #02-01, Singapore 168898", "lat": 1.2850, "lon": 103.8329},
+        {"name": "Chey Sua Carrot Cake", "desc": "A must-try for carrot cake lovers.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue – Sun 6am to 1pm, closed on Mon", "location": "Toa Payoh West Market and Food Court, 127 Lor 1 Toa Payoh, #02-30, Singapore 310127", "lat": 1.3323, "lon": 103.8459},
+        {"name": "Hill Street Tai Hwa Pork Noodle", "desc": "A Michelin-starred Bak Chor Mee stall.", "cat": "hawker_centre", "contact": "+65 9272 3920", "hours": "Monday to Sunday 9:00 Am - 8:30 Pm (close 1st and 3rd Monday every month)", "location": "466 Crawford Ln, #01-12, Singapore 190466", "lat": 1.3065, "lon": 103.8617},
+        {"name": "Ru Ji Kitchen", "desc": "Famous for its fishball noodles.", "cat": "hawker_centre", "contact": "94350820", "hours": "7am – 1pm (Tue – Sun), Closed Mon", "location": "Old Airport Road Food Centre, 51 Old Airport Rd, #01-37, Singapore 390051", "lat": 1.3085, "lon": 103.8850},
+        {"name": "Jian Bo Tiong Bahru Shui Kueh", "desc": "A popular spot for Chwee Kueh.", "cat": "hawker_centre", "contact": "+65 6384 5379", "hours": "5.30am - 8.30pm", "location": "Tiong Bahru Market, 30 Seng Poh Rd, #02-05, Singapore 168898", "lat": 1.2850, "lon": 103.8329},
+        {"name": "Beach Road Fish Head Bee Hoon", "desc": "Famous for its fish head bee hoon.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "9am to 2pm daily. Closed on Wednesdays and Saturdays.", "location": "Whampoa Makan Place, 91 Whampoa Dr, #01-46, Singapore 320091", "lat": 1.3218, "lon": 103.8557},
+        {"name": "Han Kee", "desc": "Serving delicious fish soup.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Mon – Fri. 10:30AM - 3:00PM. Closed Sat, Sun", "location": "Amoy Street Food Centre, 7 Maxwell Rd, #02-129, Singapore 069111", "lat": 1.2785, "lon": 103.8465},
+        {"name": "C.M.Y. Satay", "desc": "A popular spot for satay.", "cat": "hawker_centre", "contact": "9475 2907", "hours": "Tues-Sun 9am to 7pm, Closed on Mondays", "location": "Lau Pa Sat, 18 Raffles Quay, Singapore 048582", "lat": 1.2798, "lon": 103.8505},
+        {"name": "Chomp Chomp Satay", "desc": "Another great option for satay.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "5:30pm – Late about midnight (Mon – Sun)", "location": "Chomp Chomp Food Centre, 20 Kensington Park Rd, Singapore 557269", "lat": 1.3639, "lon": 103.8631},
+        {"name": "Liao Fan Hawker Chan", "desc": "The cheapest Michelin-starred meal in the world.", "cat": "hawker_centre", "contact": "+65 6272 2000", "hours": "Open daily 10.30am – 8pm", "location": "78 Smith St, Singapore 058972", "lat": 1.2825, "lon": 103.8433},
+        {"name": "A Noodle Story", "desc": "Singapore's first and only Michelin-starred ramen.", "cat": "hawker_centre", "contact": "+65 9027 6289", "hours": "Monday to Friday: 11:15am to 2pm, 5:15pm to 7pm. Saturday: 10:45am to 1:15pm. Closed on Sunday.", "location": "Amoy Street Food Centre, 7 Maxwell Rd, #01-39, Singapore 069111", "lat": 1.2785, "lon": 103.8465},
+        {"name": "The Blue Ginger", "desc": "A Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "(+65) 6222 3928", "hours": "Mondays – Sundays Lunch : 12pm – 3pm, Dinner : 6.30pm – 10.30pm", "location": "97 Tanjong Pagar Rd, Singapore 088518", "lat": 1.2783, "lon": 103.8434},
+        {"name": "Candlenut", "desc": "The world's first Michelin-starred Peranakan restaurant.", "cat": "restaurant", "contact": "1800 304 2288", "hours": "LUNCH, MON – SUN 12:00PM – 3:00PM, DINNER, MON – SUN AND EVE OF PUBLIC HOLIDAYS 6:00PM – 10:00PM", "location": "17A Dempsey Rd, Singapore 249676", "lat": 1.3046, "lon": 103.8073},
+        {"name": "Odette", "desc": "A three-Michelin-starred modern French restaurant.", "cat": "restaurant", "contact": "+65 6385 0498", "hours": "LUNCH TUESDAY TO SATURDAY 12.00pm to 1.15pm, DINNER MONDAY TO SATURDAY 6.30pm to 8.15pm, Closed on Sunday", "location": "1 St Andrew's Rd, #01-04 National Gallery, Singapore 178957", "lat": 1.2896, "lon": 103.8520},
+        {"name": "Les Amis", "desc": "A three-Michelin-starred French restaurant.", "cat": "restaurant", "contact": "+65 6733 2225", "hours": "Daily 12.00 to 14.00, 19.00 to 21.30", "location": "1 Scotts Rd, #01-16 Shaw Centre, Singapore 228208", "lat": 1.3050, "lon": 103.8322},
+        {"name": "Burnt Ends", "desc": "A one-Michelin-starred modern Australian barbecue restaurant.", "cat": "restaurant", "contact": "+65 6224 3933", "hours": "Lunch: Fri – Sat, Dinner: Tues – Sat", "location": "7 Dempsey Rd, #01-04, Singapore 249671", "lat": 1.3046, "lon": 103.8073},
+        {"name": "JAAN by Kirk Westaway", "desc": "A two-Michelin-starred modern British restaurant.", "cat": "restaurant", "contact": "+65 9199 9008", "hours": "Lunch (Tue to Sat): 11:45am to 2:30pm, Dinner (Tues to Sat): 6:30pm to 10:30pm", "location": "2 Stamford Rd, Level 70, Swissôtel The Stamford, Singapore 178882", "lat": 1.2929, "lon": 103.8526},
+        {"name": "Shoukouwa", "desc": "A two-Michelin-starred sushi restaurant.", "cat": "restaurant", "contact": "+65 6423 9939", "hours": "Lunch Tuesday to Saturday 12.30pm to 3pm, Dinner Tuesday to Saturday 1st seating: 6pm to 8pm 2nd seating: 8.15pm to 10.30pm. Closed on Sunday and Monday.", "location": "1 Fullerton Rd, #02-02A One Fullerton, Singapore 049213", "lat": 1.2856, "lon": 103.8550},
+        {"name": "Waku Ghin", "desc": "A two-Michelin-starred Japanese restaurant.", "cat": "restaurant", "contact": "+65 6688 8507", "hours": "Tuesday – Sunday: 5.30pm & 8pm ( 2 seatings)", "location": "2 Bayfront Ave, #02-01, The Shoppes at Marina Bay Sands, Singapore 018972", "lat": 1.2830, "lon": 103.8602},
+        {"name": "Zen", "desc": "A three-Michelin-starred modern European restaurant.", "cat": "restaurant", "contact": "+65 6534 8880", "hours": "Tuesday – Saturday: 7:00pm – 10:30pm", "location": "41 Bukit Pasoh Rd, Singapore 089855", "lat": 1.2796, "lon": 103.8415},
     ]
 
     dishes_data = {
@@ -306,7 +305,9 @@ def populate(start, end):
             defaults={
                 'business_name': s_data['name'],
                 'description': s_data['desc'],
-                'location': 'Singapore',
+                'location': s_data['location'],
+                'latitude': s_data['lat'],
+                'longitude': s_data['lon'],
                 'category': s_data['cat'],
                 'contact_number': s_data['contact'],
                 'opening_hours': s_data['hours']
@@ -315,6 +316,18 @@ def populate(start, end):
         if created:
             print(f"Created Shop: {s_data['name']}")
             save_image_from_url(shop, f"{s_data['name']} singapore hawker stall storefront")
+        else:
+             # Update existing shop
+            shop.business_name = s_data['name']
+            shop.description = s_data['desc']
+            shop.location = s_data['location']
+            shop.latitude = s_data['lat']
+            shop.longitude = s_data['lon']
+            shop.category = s_data['cat']
+            shop.contact_number = s_data['contact']
+            shop.opening_hours = s_data['hours']
+            shop.save()
+            print(f"Updated Shop: {s_data['name']}")
 
         shops.append(shop)
 
@@ -337,8 +350,26 @@ def populate(start, end):
         experiences_data = [
             {"title": "Singapore Hawker Food Tour", "desc": "Explore the best of Singapore's hawker culture with our guided food tour.", "price": 50.00, "vendor_name": "Tian Tian Hainanese Chicken Rice"},
             {"title": "Chinatown Food Adventure", "desc": "A guided tour of the best food stalls in Chinatown.", "price": 60.00, "vendor_name": "Liao Fan Hawker Chan"},
-            {"title": "Little India Culinary Journey", "desc": "Discover the vibrant flavors of Little India's street food.", "price": 55.00, "vendor_name": "The Blue Ginger"}
+            {"title": "Little India Culinary Journey", "desc": "Discover the vibrant flavors of Little India's street food.", "price": 55.00, "vendor_name": "The Blue Ginger"},
+            {"title": "Michelin Starred Hawker Crawl", "desc": "Taste the cheapest Michelin-starred meals in the world.", "price": 75.00, "vendor_name": "Hill Street Tai Hwa Pork Noodle"},
+            {"title": "Seafood Discovery Tour", "desc": "A tour dedicated to Singapore's best seafood dishes.", "price": 80.00, "vendor_name": "Da Shi Jia Big Prawn Mee"},
+            {"title": "Peranakan Cuisine Workshop", "desc": "Learn to cook authentic Peranakan dishes.", "price": 90.00, "vendor_name": "Candlenut"},
+            {"title": "Late Night Supper Trail", "desc": "Explore Singapore's vibrant late-night food scene.", "price": 45.00, "vendor_name": "Chomp Chomp Satay"},
+            {"title": "Bak Kut Teh Bonanza", "desc": "A tour for lovers of the iconic pork rib soup.", "price": 50.00, "vendor_name": "Song Fa Bak Kut Teh"},
+            {"title": "The Ultimate Chicken Rice Challenge", "desc": "Taste and compare the best chicken rice in Singapore.", "price": 65.00, "vendor_name": "Margaret Drive Sin Kee Chicken Rice"},
+            {"title": "Noodle Nirvana Tour", "desc": "A journey through the best noodle dishes Singapore has to offer.", "price": 60.00, "vendor_name": "A Noodle Story"},
+            {"title": "Sweet Treats and Desserts Tour", "desc": "Discover Singapore's best local desserts.", "price": 40.00, "vendor_name": "Jian Bo Tiong Bahru Shui Kueh"},
+            {"title": "Vegetarian Foodie Walk", "desc": "A tour of the best vegetarian-friendly hawker stalls.", "price": 55.00, "vendor_name": "Ann Chin Handmade Popiah"},
+            {"title": "Tiong Bahru Market Exploration", "desc": "A deep dive into one of Singapore's most iconic markets.", "price": 50.00, "vendor_name": "Hong Heng Fried Sotong Prawn Mee"},
+            {"title": "Fine Dining Experience", "desc": "A curated evening at one of Singapore's top restaurants.", "price": 250.00, "vendor_name": "Odette"},
+            {"title": "Modern Singaporean Food Tour", "desc": "Explore the innovative and modern side of Singaporean cuisine.", "price": 85.00, "vendor_name": "Burnt Ends"},
+            {"title": "Sushi Masterclass", "desc": "Learn the art of sushi making from a master.", "price": 150.00, "vendor_name": "Shoukouwa"},
+            {"title": "French Gastronomy in Singapore", "desc": "Experience the best of French cuisine in the heart of Singapore.", "price": 200.00, "vendor_name": "Les Amis"},
+            {"title": "British Classics with a Twist", "desc": "A unique dining experience of modern British cuisine.", "price": 180.00, "vendor_name": "JAAN by Kirk Westaway"},
+            {"title": "Japanese Teppanyaki Spectacle", "desc": "Enjoy a spectacular teppanyaki performance and meal.", "price": 120.00, "vendor_name": "Waku Ghin"},
+            {"title": "A Culinary Journey with Zen", "desc": "An unforgettable multi-course tasting menu.", "price": 300.00, "vendor_name": "Zen"}
         ]
+
 
         for e_data in experiences_data:
             try:

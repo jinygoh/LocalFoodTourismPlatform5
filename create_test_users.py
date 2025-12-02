@@ -67,6 +67,14 @@ def create_test_users():
             'price': 65.00
         }
     )
+    Experience.objects.get_or_create(
+        vendor=shop_profile,
+        title="Singapore Hawker Food Tour",
+        defaults={
+            'description': "Explore the best of Singapore's hawker culture with our guided food tour.",
+            'price': 50.00
+        }
+    )
 
     # 3. Tourist User 1
     tourist_user, created = User.objects.get_or_create(username='tourist_john', defaults={
@@ -128,7 +136,14 @@ def create_test_users():
 
     # Create a booking for the tourist user for a specific experience
     try:
-        experience_to_book = Experience.objects.get(title="Traditional Chicken Rice Workshop")
+        experience_to_book, _ = Experience.objects.get_or_create(
+            vendor=shop_profile,
+            title="Traditional Chicken Rice Workshop",
+            defaults={
+                'description': "Learn to cook authentic Hainanese Chicken Rice with Tina.",
+                'price': 80.00
+            }
+        )
         experience_content_type = ContentType.objects.get_for_model(Experience)
 
         # Use a future date for the booking to ensure it's active

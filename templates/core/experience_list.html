@@ -22,8 +22,9 @@
             </p>
             <div class="mt-4 flex justify-between items-center">
                 <div class="flex items-center gap-1">
-                    <span class="material-symbols-outlined text-accent !text-xl">place</span>
-                    <span class="text-sm font-medium">{{ experience.vendor.location }}</span>
+                    <span class="material-symbols-outlined text-accent !text-base">place</span>
+                    <span
+                        class="text-xs font-medium text-text-dark-muted">{{ experience.vendor.location|truncatechars:40 }}</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <span class="text-lg font-bold text-primary">${{ experience.price }}</span>

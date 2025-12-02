@@ -6,10 +6,18 @@
 <section class="py-12">
     <div class="container mx-auto px-4">
         <h1 class="text-4xl font-bold mb-8">Edit Profile</h1>
-        <form method="post" class="bg-card-dark p-8 rounded-lg">
+        <form method="post" enctype="multipart/form-data" class="space-y-6 max-w-lg mx-auto bg-card-dark p-8 rounded-xl border border-border-dark">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="mt-4 px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+
+            <div class="space-y-4">
+                {{ user_form.as_p }}
+            </div>
+
+            <div class="space-y-4">
+                {{ profile_form.as_p }}
+            </div>
+
+            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-bold text-white bg-secondary hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
                 Save Changes
             </button>
         </form>
