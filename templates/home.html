@@ -37,41 +37,6 @@
     </div>
 </section>
 
-<section class="py-16 sm:py-24">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold leading-tight tracking-tight text-center">Explore by Experience</h2>
-        <div class="mt-12">
-            <div class="flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <div class="mx-auto flex items-stretch justify-center gap-4 md:gap-6">
-                    {% for experience in featured_experiences %}
-                    <a href="{% url 'experience_detail' experience.pk %}" class="flex h-full flex-1 flex-col gap-4 rounded-xl min-w-60 bg-card-dark p-4 border border-border-dark hover:shadow-lg transition-shadow">
-                        {% if experience.image %}
-                        <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                             style="background-image: url('{{ experience.image.url }}');">
-                        </div>
-                        {% else %}
-                        <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
-                             style="background-image: url('https://source.unsplash.com/800x600/?food,singapore,{{ experience.pk }}');">
-                        </div>
-                        {% endif %}
-                        <div>
-                            <p class="text-lg font-bold">{{ experience.title }}</p>
-                            <p class="text-sm font-normal text-text-dark-muted">{{ experience.description|truncatewords:10 }}</p>
-                        </div>
-                    </a>
-                    {% empty %}
-                    <p class="text-text-dark-muted">No experiences to show yet.</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="mt-8 text-center">
-                <a href="{% url 'explore' %}" class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-base font-bold text-white hover:bg-opacity-90 transition-opacity">
-                    Browse More
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
 
 
 <section class="py-16 sm:py-24">
@@ -94,24 +59,24 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Fetch vendor locations and add markers
-        var vendors = [
-            {% for experience in featured_experiences %}
-            {% if experience.vendor.latitude and experience.vendor.longitude %}
+        // Fetch shop locations and add markers
+        var shops = [
+            {% for shop in all_shops %}
+            {% if shop.latitude and shop.longitude %}
             {
-                "lat": {{ experience.vendor.latitude }},
-                "lng": {{ experience.vendor.longitude }},
-                "name": "{{ experience.vendor.business_name|escapejs }}",
-                "url": "{% url 'vendor_detail' experience.vendor.pk %}"
+                "lat": {{ shop.latitude }},
+                "lng": {{ shop.longitude }},
+                "name": "{{ shop.business_name|escapejs }}",
+                "url": "{% url 'shop_detail' shop.pk %}"
             },
             {% endif %}
             {% endfor %}
         ];
 
-        vendors.forEach(function(vendor) {
-            if (vendor.lat && vendor.lng) {
-                var marker = L.marker([vendor.lat, vendor.lng]).addTo(map);
-                marker.bindPopup('<b>' + vendor.name + '</b><br><a href="' + vendor.url + '">View Details</a>');
+        shops.forEach(function(shop) {
+            if (shop.lat && shop.lng) {
+                var marker = L.marker([shop.lat, shop.lng]).addTo(map);
+                marker.bindPopup('<b>' + shop.name + '</b><br><a href="' + shop.url + '">View Details</a>');
             }
         });
     });

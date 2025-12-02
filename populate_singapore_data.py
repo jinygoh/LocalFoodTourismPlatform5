@@ -242,7 +242,6 @@ def populate(start, end):
             {"name": "Buah Keluak Ice Cream", "desc": "A unique and adventurous dessert."}
         ],
         "Odette": [
-            {"name": "Pigeon", "desc": "A signature dish, cooked to perfection."},
             {"name": "Foie Gras", "desc": "A luxurious and decadent dish."},
             {"name": "Scallop", "desc": "Fresh and delicate scallops."},
             {"name": "Cheese Trolley", "desc": "A selection of fine cheeses."},
@@ -266,7 +265,6 @@ def populate(start, end):
             {"name": "English Garden", "desc": "A beautiful and delicate vegetable dish."},
             {"name": "Devonshire Cream Tea", "desc": "A modern take on a classic."},
             {"name": "Fish and Chips", "desc": "A refined version of the British classic."},
-            {"name": "Pigeon", "desc": "A perfectly cooked pigeon dish."},
             {"name": "Cheese Selection", "desc": "A selection of British cheeses."}
         ],
         "Shoukouwa": [
@@ -286,7 +284,6 @@ def populate(start, end):
         "Zen": [
             {"name": "Tasting Menu", "desc": "A multi-course tasting menu of modern European cuisine."},
             {"name": "Scallop and Truffle", "desc": "A luxurious and flavorful dish."},
-            {"name": "Pigeon and Foie Gras", "desc": "A rich and decadent dish."},
             {"name": "Wine Pairing", "desc": "An extensive wine list to complement your meal."},
             {"name": "Petit Fours", "desc": "A selection of small sweets to end your meal."}
         ]
@@ -321,19 +318,18 @@ def populate(start, end):
 
         shops.append(shop)
 
-        shop_dishes = []
         for d_data in dishes_data.get(s_data['name'], []):
             dish, created = Dish.objects.get_or_create(
+                shop=shop,
                 name=d_data['name'],
-                defaults={'description': d_data['desc']}
+                defaults={
+                    'description': d_data['desc'],
+                    'price': round(random.uniform(5.0, 50.0), 2)
+                }
             )
             if created:
-                print(f"  Created Dish: {d_data['name']}")
-                save_image_from_url(dish, d_data['name'])
-
-            shop_dishes.append(dish)
-
-        shop.dishes.add(*shop_dishes)
+                print(f"  Created Dish: {d_data['name']} for {shop.business_name}")
+                save_image_from_url(dish, f"{d_data['name']} from {shop.business_name}")
 
     # Only create experiences and reviews on the final run to avoid duplicates
     if end >= len(shops_data):

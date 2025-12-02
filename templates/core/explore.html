@@ -136,6 +136,11 @@
                                     {{ dish.name }}</h3>
                                 <p class="mt-2 text-sm text-text-dark-muted flex-grow">
                                     {{ dish.description|truncatewords:20 }}</p>
+                                {% if dish.price %}
+                                <div class="mt-4 flex justify-between items-center">
+                                    <span class="text-lg font-bold text-accent">${{ dish.price }}</span>
+                                </div>
+                                {% endif %}
                             </div>
                         </a>
                         {% empty %}

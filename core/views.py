@@ -14,7 +14,11 @@ from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, User
 
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
-    return render(request, 'home.html', {'featured_experiences': featured_experiences})
+    all_shops = Shop.objects.all()
+    return render(request, 'home.html', {
+        'featured_experiences': featured_experiences,
+        'all_shops': all_shops
+    })
 
 def about(request):
     return render(request, 'about.html')
@@ -41,8 +45,10 @@ def explore(request):
 
     if min_price:
         experiences = experiences.filter(price__gte=min_price)
+        dishes = dishes.filter(price__gte=min_price)
     if max_price:
         experiences = experiences.filter(price__lte=max_price)
+        dishes = dishes.filter(price__lte=max_price)
 
     if min_rating:
         experiences = experiences.annotate(avg_rating=Avg('review__rating')).filter(avg_rating__gte=min_rating)

@@ -8,7 +8,11 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
+                {% if dish.image %}
                 <img src="{{ dish.image.url }}" alt="{{ dish.name }}" class="w-full h-auto rounded-lg">
+                {% else %}
+                <img src="https://source.unsplash.com/800x600/?food,dish,{{ dish.pk }}" alt="{{ dish.name }}" class="w-full h-auto rounded-lg">
+                {% endif %}
             </div>
             <div>
                 <h1 class="text-4xl font-bold mb-4">{{ dish.name }}</h1>
@@ -17,14 +21,12 @@
                 <p class="text-2xl font-bold text-primary mb-4">${{ dish.price }}</p>
                 {% endif %}
 
-                <h2 class="text-2xl font-bold mt-8 mb-4">Shops that serve this dish:</h2>
+                <h2 class="text-2xl font-bold mt-8 mb-4">Served at:</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% for shop in dish.shops.all %}
-                        <a href="{% url 'shop_detail' shop.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
-                            <h3 class="text-lg font-bold">{{ shop.business_name }}</h3>
-                            <p class="text-sm text-text-dark-muted">{{ shop.location }}</p>
-                        </a>
-                    {% endfor %}
+                    <a href="{% url 'shop_detail' dish.shop.pk %}" class="block bg-card-dark p-4 rounded-lg hover:bg-gray-700">
+                        <h3 class="text-lg font-bold">{{ dish.shop.business_name }}</h3>
+                        <p class="text-sm text-text-dark-muted">{{ dish.shop.location }}</p>
+                    </a>
                 </div>
             </div>
         </div>
