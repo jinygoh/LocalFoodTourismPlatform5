@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.db.models import Q, Avg
 from django.contrib.contenttypes.models import ContentType
 from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 # Custom Forms
 from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm, BookingForm, TouristUserEditForm, TouristProfileEditForm
@@ -57,23 +59,40 @@ def explore(request):
         
     locations = Shop.objects.values_list('location', flat=True).distinct()
 
+    favorite_shops_ids = []
+    favorite_dishes_ids = []
+    favorite_experiences_ids = []
+    if request.user.is_authenticated and request.user.is_tourist:
+        favorite_shops_ids = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Shop)).values_list('object_id', flat=True)
+        favorite_dishes_ids = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Dish)).values_list('object_id', flat=True)
+        favorite_experiences_ids = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Experience)).values_list('object_id', flat=True)
+
     return render(request, 'core/explore.html', {
         'experiences': experiences,
         'shops': shops,
         'dishes': dishes,
         'locations': locations,
+        'favorite_shops_ids': list(favorite_shops_ids),
+        'favorite_dishes_ids': list(favorite_dishes_ids),
+        'favorite_experiences_ids': list(favorite_experiences_ids),
     })
 
 def dish_detail(request, pk):
     dish = get_object_or_404(Dish, pk=pk)
     reviews = Review.objects.filter(object_id=dish.pk).order_by('-created_at')
-    return render(request, 'core/dish_detail.html', {'dish': dish, 'reviews': reviews})
+    is_favorite = False
+    if request.user.is_authenticated and request.user.is_tourist:
+        is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Dish), object_id=dish.pk).exists()
+    return render(request, 'core/dish_detail.html', {'dish': dish, 'reviews': reviews, 'is_favorite': is_favorite})
 
 def shop_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
     reviews = Review.objects.filter(object_id=shop.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     booking_form = BookingForm(shop=shop)
+    is_favorite = False
+    if request.user.is_authenticated and request.user.is_tourist:
+        is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Shop), object_id=shop.pk).exists()
 
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -112,7 +131,8 @@ def shop_detail(request, pk):
         'shop': shop,
         'reviews': reviews,
         'average_rating': average_rating,
-        'booking_form': booking_form
+        'booking_form': booking_form,
+        'is_favorite': is_favorite
     })
 
 def experience_detail(request, pk):
@@ -249,7 +269,15 @@ def vendor_dashboard(request):
     })
     
     experiences = Experience.objects.filter(vendor=request.user.shop_profile)
-    incoming_bookings = Booking.objects.filter(content_object__vendor=request.user.shop_profile).order_by('-date')
+
+    shop_type = ContentType.objects.get_for_model(Shop)
+    experience_type = ContentType.objects.get_for_model(Experience)
+    experience_ids = experiences.values_list('pk', flat=True)
+
+    incoming_bookings = Booking.objects.filter(
+        (Q(content_type=shop_type) & Q(object_id=shop.pk)) |
+        (Q(content_type=experience_type) & Q(object_id__in=experience_ids))
+    ).order_by('-date')
     
     return render(request, 'core/vendor_dashboard.html', {
         'experiences': experiences,
@@ -366,3 +394,49 @@ def profile_edit_view(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+@login_required
+def favorites_page(request):
+    if not request.user.is_tourist:
+        return redirect('home')
+
+    shop_content_type = ContentType.objects.get_for_model(Shop)
+    dish_content_type = ContentType.objects.get_for_model(Dish)
+    experience_content_type = ContentType.objects.get_for_model(Experience)
+
+    favorite_shops_ids = Favorite.objects.filter(user=request.user, content_type=shop_content_type).values_list('object_id', flat=True)
+    favorite_dishes_ids = Favorite.objects.filter(user=request.user, content_type=dish_content_type).values_list('object_id', flat=True)
+    favorite_experiences_ids = Favorite.objects.filter(user=request.user, content_type=experience_content_type).values_list('object_id', flat=True)
+
+    favorite_shops = Shop.objects.filter(pk__in=favorite_shops_ids)
+    favorite_dishes = Dish.objects.filter(pk__in=favorite_dishes_ids)
+    favorite_experiences = Experience.objects.filter(pk__in=favorite_experiences_ids)
+
+    return render(request, 'core/favorites.html', {
+        'favorite_shops': favorite_shops,
+        'favorite_dishes': favorite_dishes,
+        'favorite_experiences': favorite_experiences,
+    })
+
+@require_POST
+@login_required
+def toggle_favorite_api(request, model_name, pk):
+    if not request.user.is_tourist:
+        return JsonResponse({'status': 'error', 'message': 'Only tourists can favorite items.'}, status=403)
+
+    try:
+        model_map = {'shop': Shop, 'dish': Dish, 'experience': Experience}
+        model = model_map.get(model_name.lower())
+        if not model:
+            return JsonResponse({'status': 'error', 'message': 'Invalid item type.'}, status=400)
+
+        content_object = get_object_or_404(model, pk=pk)
+        favorite, created = Favorite.objects.get_or_create(user=request.user, content_object=content_object)
+
+        if created:
+            return JsonResponse({'status': 'added', 'message': 'Added to favorites.'})
+        else:
+            favorite.delete()
+            return JsonResponse({'status': 'removed', 'message': 'Removed from favorites.'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

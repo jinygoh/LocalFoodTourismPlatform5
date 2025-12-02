@@ -29,6 +29,17 @@
                 <div class="flex items-center gap-1">
                     <span class="text-lg font-bold text-primary">${{ experience.price }}</span>
                 </div>
+                {% if user.is_authenticated and user.is_tourist %}
+                    <button class="favorite-btn z-20 text-accent hover:text-red-500 transition-colors" data-model="experience" data-id="{{ experience.pk }}">
+                        <span class="material-symbols-outlined">
+                            {% if experience.pk in favorite_experiences_ids %}
+                                favorite
+                            {% else %}
+                                favorite_border
+                            {% endif %}
+                        </span>
+                    </button>
+                {% endif %}
             </div>
         </div>
     </a>

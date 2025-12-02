@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Favorites | TasteLocal{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-8">My Favorites</h1>
+
+        <div class="space-y-12">
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Favorite Dishes</h2>
+                {% if favorite_dishes %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {% for dish in favorite_dishes %}
+                            <a href="{% url 'dish_detail' dish.pk %}"
+                                class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
+                                <div class="h-60 w-full overflow-hidden">
+                                    {% if dish.image %}
+                                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        src="{{ dish.image.url }}" alt="{{ dish.name }}" />
+                                    {% else %}
+                                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        src="https://source.unsplash.com/800x600/?food,dish,{{ dish.pk }}"
+                                        alt="{{ dish.name }}" />
+                                    {% endif %}
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors">
+                                        {{ dish.name }}</h3>
+                                    <p class="text-sm font-semibold text-text-dark mt-1">{{ dish.shop.business_name }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-text-dark-muted">You haven't favorited any dishes yet.</p>
+                {% endif %}
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Favorite Shops</h2>
+                {% if favorite_shops %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {% for shop in favorite_shops %}
+                            <a href="{% url 'shop_detail' shop.pk %}"
+                                class="listing-card flex flex-col overflow-hidden rounded-xl bg-card-dark border border-border-dark shadow-md transition-shadow hover:shadow-xl hover:shadow-primary/10 group">
+                                <div class="h-60 w-full overflow-hidden">
+                                    {% if shop.image %}
+                                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        src="{{ shop.image.url }}" alt="{{ shop.business_name }}" />
+                                    {% else %}
+                                    <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        src="https://source.unsplash.com/800x600/?restaurant,singapore,{{ shop.pk }}"
+                                        alt="{{ shop.business_name }}" />
+                                    {% endif %}
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors">
+                                        {{ shop.business_name }}</h3>
+                                    <p class="mt-2 text-sm text-text-dark-muted flex-grow">
+                                        {{ shop.description|truncatewords:20 }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-text-dark-muted">You haven't favorited any shops yet.</p>
+                {% endif %}
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Favorite Experiences</h2>
+                {% if favorite_experiences %}
+                    {% include 'core/experience_list.html' with experiences=favorite_experiences %}
+                {% else %}
+                    <p class="text-text-dark-muted">You haven't favorited any experiences yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

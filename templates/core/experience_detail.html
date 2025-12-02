@@ -26,13 +26,16 @@
                 </div>
                 <div class="flex justify-between items-start">
                     <h1 class="text-4xl md:text-5xl font-black mt-2">{{ experience.title }}</h1>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'toggle_favorite' experience.pk %}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-full border border-border-dark hover:bg-primary/10 transition-colors mt-2"
-                        title="{% if is_favorite %}Remove from Trail{% else %}Add to Trail{% endif %}">
-                        <span
-                            class="material-symbols-outlined {% if is_favorite %}text-secondary material-symbols-filled{% else %}text-text-dark-muted{% endif %}">favorite</span>
-                    </a>
+                    {% if user.is_authenticated and user.is_tourist %}
+                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors" data-model="experience" data-id="{{ experience.pk }}">
+                            <span class="material-symbols-outlined !text-4xl">
+                                {% if is_favorite %}
+                                    favorite
+                                {% else %}
+                                    favorite_border
+                                {% endif %}
+                            </span>
+                        </button>
                     {% endif %}
                 </div>
 
@@ -137,9 +140,9 @@
                 <p class="text-text-dark-muted">No reviews yet. Be the first to review!</p>
                 {% endif %}
 
-                {% if user.is_tourist %}
                 <div class="mt-10 bg-card-dark rounded-xl p-6 border border-border-dark">
                     <h3 class="text-xl font-bold mb-4">Write a Review</h3>
+                    {% if user.is_tourist %}
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-4">
@@ -163,8 +166,10 @@
                             Submit Review
                         </button>
                     </form>
+                    {% else %}
+                    <p class="text-text-dark-muted">Only tourists can write a review.</p>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
 
@@ -176,33 +181,35 @@
                             class="text-base font-normal text-text-dark-muted">/ person</span></p>
                 </div>
 
-                {% if user.is_tourist %}
-                <form method="post" action="{% url 'payment_page' experience.pk %}">
-                    {% csrf_token %}
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-sm font-medium text-text-dark-muted" for="date">Date</label>
-                            <input type="date" name="date" required
-                                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
-                                id="date" />
+                {% if user.is_authenticated %}
+                    {% if user.is_tourist %}
+                    <form method="post" action="{% url 'payment_page' experience.pk %}">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm font-medium text-text-dark-muted" for="date">Date</label>
+                                <input type="date" name="date" required
+                                    class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                                    id="date" />
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-text-dark-muted" for="guests">Guests</label>
+                                <input type="number" name="guests" min="1" value="1" required
+                                    class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
+                                    id="guests" />
+                            </div>
                         </div>
-                        <div>
-                            <label class="text-sm font-medium text-text-dark-muted" for="guests">Guests</label>
-                            <input type="number" name="guests" min="1" value="1" required
-                                class="form-input mt-1 block w-full rounded-md bg-background-dark border-border-dark focus:border-primary focus:ring focus:ring-primary/50 text-text-dark"
-                                id="guests" />
-                        </div>
+                        <button type="submit"
+                            class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
+                            <span class="truncate">Proceed to Payment</span>
+                        </button>
+                        <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
+                    </form>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-text-dark-muted mb-4">Only tourists can book experiences.</p>
                     </div>
-                    <button type="submit"
-                        class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
-                        <span class="truncate">Proceed to Payment</span>
-                    </button>
-                    <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
-                </form>
-                {% elif user.is_authenticated and not user.is_tourist %}
-                <div class="text-center py-4">
-                    <p class="text-text-dark-muted mb-4">Only tourists can book experiences.</p>
-                </div>
+                    {% endif %}
                 {% else %}
                 <div class="text-center py-4">
                     <p class="text-text-dark-muted mb-4">Please login to book this experience.</p>
@@ -216,4 +223,33 @@
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelector('.favorite-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const model = this.dataset.model;
+    const id = this.dataset.id;
+    const icon = this.querySelector('.material-symbols-outlined');
+
+    fetch(`/api/toggle_favorite/${model}/${id}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'added') {
+            icon.textContent = 'favorite';
+        } else if (data.status === 'removed') {
+            icon.textContent = 'favorite_border';
+        }
+    });
+});
+</script>
 {% endblock %}

@@ -3,3 +3,4 @@ mysqlclient
 Pillow
 requests
 python-dotenv
+pytest-django

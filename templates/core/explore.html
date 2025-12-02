@@ -142,11 +142,22 @@
                                 </div>
                                 <p class="mt-2 text-sm text-text-dark-muted flex-grow">
                                     {{ dish.description|truncatewords:20 }}</p>
-                                {% if dish.price %}
                                 <div class="mt-4 flex justify-between items-center">
-                                    <span class="text-lg font-bold text-accent">${{ dish.price }}</span>
+                                    {% if dish.price %}
+                                        <span class="text-lg font-bold text-accent">${{ dish.price }}</span>
+                                    {% endif %}
+                                    {% if user.is_authenticated and user.is_tourist %}
+                                        <button class="favorite-btn z-20 text-accent hover:text-red-500 transition-colors" data-model="dish" data-id="{{ dish.pk }}">
+                                            <span class="material-symbols-outlined">
+                                                {% if dish.pk in favorite_dishes_ids %}
+                                                    favorite
+                                                {% else %}
+                                                    favorite_border
+                                                {% endif %}
+                                            </span>
+                                        </button>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
                             </div>
                         </a>
                         {% empty %}
@@ -184,6 +195,17 @@
                                             class="material-symbols-outlined text-accent !text-xl">place</span>
                                         <span class="text-sm font-medium">{{ shop.location }}</span>
                                     </div>
+                                    {% if user.is_authenticated and user.is_tourist %}
+                                        <button class="favorite-btn z-20 text-accent hover:text-red-500 transition-colors" data-model="shop" data-id="{{ shop.pk }}">
+                                            <span class="material-symbols-outlined">
+                                                {% if shop.pk in favorite_shops_ids %}
+                                                    favorite
+                                                {% else %}
+                                                    favorite_border
+                                                {% endif %}
+                                            </span>
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </a>
@@ -320,5 +342,32 @@
             map.fitBounds(bounds);
         }
     }
+
+    document.querySelectorAll('.favorite-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const model = this.dataset.model;
+            const id = this.dataset.id;
+            const icon = this.querySelector('.material-symbols-outlined');
+
+            fetch(`/api/toggle_favorite/${model}/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    icon.textContent = 'favorite';
+                } else if (data.status === 'removed') {
+                    icon.textContent = 'favorite_border';
+                }
+            });
+        });
+    });
 </script>
 {% endblock %}
