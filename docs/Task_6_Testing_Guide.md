@@ -4,13 +4,13 @@ This document provides a structured guide to testing the **TasteLocal** platform
 
 ## 1. Test Accounts
 
-Use the following credentials to log in and test the application.
+Use the following credentials to log in and test the application. These users are created by the `populate_singapore_data.py` script.
 
 | Role | Username | Password | Purpose |
 | :--- | :--- | :--- | :--- |
 | **Tourist** | `tourist_john` | `TestPass123!` | Test search, booking, and reviews. |
 | **Vendor** | `vendor_tina` | `TestPass123!` | Test profile management, listing creation, and booking management. |
-| **Admin** | `admin` | `TestPass123!` | Access Django Admin panel (if needed). |
+| **Admin** | `admin` | `TestPass123!` | Access Django Admin panel (if created). |
 
 ---
 
@@ -19,27 +19,34 @@ Use the following credentials to log in and test the application.
 
 ### Step 1: Search & Discovery
 1.  Log in as `tourist_john`.
-2.  Navigate to the **"Experiences"** page.
-3.  **Keyword Search:** Enter "Chicken" in the search bar and click "Apply Filters". Verify that "Traditional Chicken Rice Workshop" appears.
-4.  **Location Filter:** Select "Chinatown" from the location dropdown. Verify results update.
-5.  **Map View:** Click **"Show Map View"**. Verify that a map appears with pins. Click a pin to see the popup.
-6.  **Price Filter:** Set Max Price to $50. Verify that expensive listings disappear.
+2.  Navigate to the **"Explore"** page.
+3.  **Keyword Search:** Enter "Chicken" in the search bar and click "Search". Verify that dishes and shops related to chicken appear.
+4.  **Tabs:** Click the "Shops" and "Experiences" tabs to see different types of listings.
+5.  **Location Filter:** Select a location from the dropdown (e.g., "Chinatown"). Verify results update.
+6.  **Map View:** Click **"Show Map View"**. Verify that a map appears with pins. Click a pin to see the popup.
 
-### Step 2: Booking an Experience
-1.  Click on "Traditional Chicken Rice Workshop" (or any listing).
-2.  **View Details:** Check if the description, price, and map are visible.
-3.  **Book:** Fill in the "Book This Experience" form:
+### Step 2: Booking a Shop
+1.  From the "Shops" tab, click on a listing (e.g., "Tian Tian Hainanese Chicken Rice").
+2.  **View Details:** Check if the description, opening hours, and map are visible.
+3.  **Book:** Fill in the "Book a Table" form:
     *   **Date:** Select a future date.
+    *   **Time:** Select a time within the shop's opening hours.
     *   **Guests:** Enter `2`.
-    *   Click **"Proceed to Payment"**.
-4.  **Payment:** You will see a payment confirmation screen. Click **"Confirm Payment"**.
-5.  **Confirmation:** You should be redirected to your Profile page showing the new booking with status "Confirmed".
+    *   Click **"Book Now"**.
+4.  **Confirmation:** You should be redirected to a confirmation page. The booking will also appear on your Profile page.
 
 ### Step 3: Favorites & Reviews
-1.  Go back to the "Experiences" page.
-2.  **Favorite:** Click the "Heart" icon (or "Save to Favorites" button) on a listing.
-3.  Go to **"Profile"** -> **"My Favorites"**. Verify the listing is there.
-4.  **Review:** (Note: You can usually only review after a booking, but for testing, check if the review form exists on the Listing Detail page). Leave a 5-star rating and a comment. Verify it appears at the bottom of the page.
+1.  Navigate to any dish, shop, or experience page.
+2.  **Favorite:** Click the "Heart" icon on the item. The heart should fill in.
+3.  Go to **"My Favorites"** from the navigation bar. Verify the listing is there.
+4.  **Review:** On a shop or experience detail page, find the "Write a Review" form. Leave a 5-star rating and a comment. Verify it appears in the reviews section.
+
+### Step 4: Profile Editing
+1.  Navigate to your **Profile** page.
+2.  Click the **"Edit Profile"** button (or a similar link).
+3.  Change your **Username** and **Contact Number**.
+4.  Click **"Save Changes"**.
+5.  Verify that your profile information has been updated.
 
 ---
 
@@ -55,20 +62,20 @@ Use the following credentials to log in and test the application.
     *   Click **"Save Changes"**.
 4.  Verify the dashboard now shows the updated details.
 
-### Step 2: Manage Listings
-1.  **Add Listing:** Click **"Add New Listing"**.
+### Step 2: Manage Experiences
+1.  **Add Listing:** Click **"Add New Listing"** or **"Add New Experience"**.
     *   **Title:** "Spicy Laksa Challenge".
     *   **Description:** "Can you handle the heat?".
     *   **Price:** `15.00`.
     *   **Image:** (Optional, or upload a sample).
     *   Click **"Create Listing"**.
-2.  **Verify:** Check that the new listing appears in the "My Listings" section of the dashboard.
+2.  **Verify:** Check that the new experience appears in the "My Experiences" section of the dashboard.
 3.  **Edit Listing:** Click "Edit" on the new listing. Change the price to `18.00` and save.
 
 ### Step 3: Manage Bookings
 1.  Look at the **"Incoming Bookings"** section on the dashboard.
 2.  You should see the booking made by `tourist_john` in the previous test.
-3.  Verify it shows the correct Date, Guests, and Status.
+3.  Verify it shows the correct Date, Time, Guests, and Status.
 
 ---
 
@@ -78,15 +85,27 @@ Use the following credentials to log in and test the application.
 | :--- | :--- | :--- |
 | **Search & Discovery** | Keyword, Location, Price, Rating filters | [ ] Pass |
 | **Geolocation** | Interactive Map View with Pins | [ ] Pass |
-| **Booking System** | Booking form + Simulated Payment | [ ] Pass |
-| **Itinerary/Favorites** | "Save to Favorites" functionality | [ ] Pass |
+| **Booking System** | Booking form with time and validation | [ ] Pass |
+| **Itinerary/Favorites** | "Save to Favorites" for all listing types | [ ] Pass |
 | **Vendor Profile** | Edit Profile (Name, Hours, Location, Photo) | [ ] Pass |
-| **Promotions** | Discount Price field (strikethrough display) | [ ] Pass |
+| **Tourist Profile** | Edit Profile (Username, Email, Contact) | [ ] Pass |
 | **Reviews** | User ratings and comments | [ ] Pass |
+| **No Discounts**| Discount feature is fully removed| [ ] Pass |
 
-## 5. Resetting Data (Optional)
+
+## 5. Resetting Data
 If you need to wipe the database and start over:
-1.  Delete `db.sqlite3`.
-2.  Run `python manage.py migrate`.
-3.  Run `python create_test_users.py`.
-4.  Run `python generate_images.py` and `python update_coordinates.py`.
+1.  Open your MySQL client.
+2.  Run the following commands:
+    ```sql
+    DROP DATABASE IF EXISTS tastelocal;
+    CREATE DATABASE tastelocal;
+    ```
+3.  Apply the migrations:
+    ```bash
+    python manage.py migrate
+    ```
+4.  Run the data population script:
+    ```bash
+    python populate_singapore_data.py
+    ```

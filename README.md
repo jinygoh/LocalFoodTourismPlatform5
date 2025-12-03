@@ -5,16 +5,16 @@ TasteLocal is a web-based platform designed to connect tourists with authentic l
 ## Features
 
 ### For Tourists
-*   **Search & Discovery:** Filter experiences by Keyword, Location, Price, and Rating.
+*   **Search & Discovery:** Filter dishes, shops, and experiences by Keyword, Location, Price, and Rating.
 *   **Interactive Map:** View search results on an interactive map to find nearby food spots.
 *   **Booking System:** Reserve tables or book food tours directly.
-*   **Favorites:** Save interesting listings to your personal wishlist.
+*   **Favorites:** Save interesting dishes, shops, and experiences to your personal "Food Trail".
 *   **Reviews:** Read and leave reviews for experiences.
+*   **Profile Editing:** Update your username, email, and contact information.
 
 ### For Vendors
 *   **Dashboard:** Manage listings, view incoming bookings, and update profile details.
 *   **Profile Management:** Update business name, description, location, hours, and photos.
-*   **Promotions:** Highlight special offers with discount pricing.
 
 ## Technology Stack
 *   **Backend:** Django (Python)
@@ -116,10 +116,11 @@ Open your web browser and go to:
 
 ### Tourist Workflow
 1.  **Sign Up/Login:** Create an account (default is Tourist).
-2.  **Browse:** Use the "Experiences" page to search for food.
+2.  **Browse:** Use the "Explore" page to search for food, shops, and experiences.
 3.  **Filter:** Use the filter bar or "Show Map View" to find specific spots.
 4.  **Book:** Click on a listing and use the booking form.
 5.  **Review:** After your visit, leave a review on the listing page.
+6.  **Favorites:** Click the "Heart" icon on any listing to add it to your "My Favorites" page.
 
 ## Project Structure
 *   `core/`: Main Django app containing models, views, and forms.
