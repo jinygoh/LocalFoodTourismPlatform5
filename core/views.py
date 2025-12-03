@@ -384,12 +384,6 @@ def profile_edit_view(request):
         user_form = TouristUserEditForm(instance=request.user)
         profile_form = TouristProfileEditForm(instance=user_profile)
 
-    # Add styling to the form fields
-    for field in user_form.fields.values():
-        field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
-    for field in profile_form.fields.values():
-        field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
-
     return render(request, 'core/edit_tourist_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form

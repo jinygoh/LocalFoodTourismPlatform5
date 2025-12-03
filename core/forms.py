@@ -1,4 +1,6 @@
 from django import forms
+import re
+from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, Experience, Shop, UserProfile, Booking
@@ -9,10 +11,20 @@ class TouristUserEditForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+
 class TouristProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['contact_number', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -89,11 +101,38 @@ class BookingForm(forms.ModelForm):
                 raise ValidationError("You cannot book a date in the past.")
 
         if self.shop and self.shop.opening_hours and time:
-            opening_hours_str = self.shop.opening_hours.split(': ')[1]
-            opening_time_str, closing_time_str = [x.strip() for x in opening_hours_str.split('-')]
-            opening_time = datetime.datetime.strptime(opening_time_str, '%I%p').time()
-            closing_time = datetime.datetime.strptime(closing_time_str, '%I%p').time()
+            try:
+                match = re.search(r'(\d{1,2}:?\d{0,2}\s?[ap]m)\s*-\s*(\d{1,2}:?\d{0,2}\s?[ap]m)', self.shop.opening_hours, re.IGNORECASE)
+                if match:
+                    opening_time_str = match.group(1).replace(" ", "")
+                    closing_time_str = match.group(2).replace(" ", "")
 
-            if not (opening_time <= time <= closing_time):
-                raise ValidationError(f"The shop is not open at the selected time. Please book between {opening_time_str} and {closing_time_str}.")
+                    time_formats = ['%I%p', '%I:%M%p']
+                    opening_time = None
+                    closing_time = None
+
+                    for fmt in time_formats:
+                        try:
+                            opening_time = datetime.datetime.strptime(opening_time_str, fmt).time()
+                            break
+                        except ValueError:
+                            continue
+
+                    for fmt in time_formats:
+                        try:
+                            closing_time = datetime.datetime.strptime(closing_time_str, fmt).time()
+                            break
+                        except ValueError:
+                            continue
+
+                    if opening_time is None or closing_time is None:
+                        raise ValidationError("Could not parse the opening hours. Please contact the shop.")
+
+                    if not (opening_time <= time <= closing_time):
+                        raise ValidationError(f"The shop is not open at the selected time. Please book between {opening_time_str} and {closing_time_str}.")
+                else:
+                    raise ValidationError("Could not parse the opening hours. Please contact the shop.")
+            except Exception:
+                raise ValidationError("Could not parse the opening hours. Please contact the shop.")
+
         return cleaned_data
