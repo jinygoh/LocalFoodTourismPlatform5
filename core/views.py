@@ -175,15 +175,17 @@ def payment_page(request, pk):
 
     if request.method == 'POST':
         date = request.POST.get('date')
+        time = request.POST.get('time')
         guests = int(request.POST.get('guests'))
         total_price = experience.price * guests
         return render(request, 'core/payment.html', {
             'experience': experience,
             'date': date,
+            'time': time,
             'guests': guests,
             'total_price': total_price
         })
-    return redirect('experience_detail', pk=pk)
+    return render(request, 'core/payment.html', {'experience': experience})
 
 @login_required
 def process_payment(request, pk):
