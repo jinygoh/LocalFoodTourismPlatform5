@@ -2,6 +2,10 @@ from django import forms
 import re
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms.widgets import ClearableFileInput
+
+class CustomClearableFileInput(ClearableFileInput):
+    template_name = 'core/custom_clearable_file_input.html'
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, Experience, Shop, UserProfile, Booking
 import datetime
@@ -31,7 +35,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['image']
         widgets = {
-            'image': forms.FileInput(attrs={'id': 'id_image'}),
+            'image': CustomClearableFileInput(attrs={'class': 'form-input w-full text-sm text-text-dark-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30'}),
         }
 
 class CustomUserCreationForm(UserCreationForm):

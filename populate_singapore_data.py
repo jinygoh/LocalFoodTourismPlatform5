@@ -45,6 +45,17 @@ def populate(start, end):
     print("Populating database with real Singaporean food data...")
     print(f"Processing shops from index {start} to {end}")
 
+    # Create test users
+    tourist_user, created = User.objects.get_or_create(username='tourist_john', defaults={'is_tourist': True})
+    if created:
+        tourist_user.set_password('TestPass123!')
+        tourist_user.save()
+
+    vendor_user, created = User.objects.get_or_create(username='vendor_tina', defaults={'is_vendor': True})
+    if created:
+        vendor_user.set_password('TestPass123!')
+        vendor_user.save()
+
     shops_data = [
         {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue to Sun: 10am - 8pm", "location": "Maxwell Food Centre, 1 Kadayanallur St, #01-10/11, Singapore 069184", "lat": 1.2803, "lon": 103.8449},
         {"name": "Margaret Drive Sin Kee Chicken Rice", "desc": "A popular choice for chicken rice lovers.", "cat": "hawker_centre", "contact": "9691 4852", "hours": "Tue-Sun 11am-8pm", "location": "40 Holland Dr, #01-39, Singapore 270040", "lat": 1.3065, "lon": 103.7946},
