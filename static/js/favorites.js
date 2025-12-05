@@ -18,8 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     if (data.status === 'added') {
                         icon.textContent = 'favorite';
+                        button.classList.add('favorited');
                     } else if (data.status === 'removed') {
                         icon.textContent = 'favorite_border';
+                        button.classList.remove('favorited');
                     }
                 });
         });

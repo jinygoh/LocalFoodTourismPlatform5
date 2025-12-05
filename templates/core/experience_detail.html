@@ -27,7 +27,7 @@
                 <div class="flex justify-between items-start">
                     <h1 class="text-4xl md:text-5xl font-black mt-2">{{ experience.title }}</h1>
                     {% if user.is_authenticated and user.is_tourist %}
-                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors" data-model="experience" data-id="{{ experience.pk }}">
+                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors {% if is_favorite %}favorited{% endif %}" data-model="experience" data-id="{{ experience.pk }}">
                             <span class="material-symbols-outlined !text-4xl">
                                 {% if is_favorite %}
                                     favorite

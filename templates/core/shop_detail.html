@@ -27,7 +27,7 @@
                         <h1 class="text-4xl md:text-5xl font-black mt-2">{{ shop.business_name }}</h1>
                     </div>
                     {% if user.is_authenticated and user.is_tourist %}
-                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors" data-model="shop" data-id="{{ shop.pk }}">
+                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors {% if is_favorite %}favorited{% endif %}" data-model="shop" data-id="{{ shop.pk }}">
                             <span class="material-symbols-outlined !text-4xl">
                                 {% if is_favorite %}
                                     favorite

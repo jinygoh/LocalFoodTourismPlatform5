@@ -108,6 +108,11 @@ body {
     color: var(--primary-color);
 }
 
+/* Favorite Button */
+.favorite-btn.favorited {
+    color: var(--primary-color);
+}
+
 /* Hero Section (for Home) */
 .hero {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
