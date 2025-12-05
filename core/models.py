@@ -35,14 +35,14 @@ class Shop(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     image = models.ImageField(upload_to='shops/', blank=True, null=True)
-    category = models.CharField(max_length=50, choices=[
-        ('fine_dining', 'Fine-Dining Restaurant'),
-        ('themed_cafe', 'Themed Café'),
-        ('high_demand', 'High-Demand Eatery'),
-        ('hawker_centre', 'Hawker Centre'),
-        ('food_court', 'Food Court'),
-        ('casual_cafe', 'Casual Café'),
-        ('fast_food', 'Fast-Food Outlet'),
+    dining_establishment_type = models.CharField(max_length=50, choices=[
+        ('fine_dining', 'Fine-dining restaurant'),
+        ('popular_themed_cafe', 'Popular themed café'),
+        ('high_demand_eatery', 'High-demand eatery (Michelin-starred or celebrity-chef)'),
+        ('hawker_centre', 'Hawker centre'),
+        ('food_court', 'Food court'),
+        ('casual_cafe', 'Casual café'),
+        ('fast_food_outlet', 'Fast-food outlet'),
     ], default='casual_cafe')
 
     def __str__(self):

@@ -177,56 +177,66 @@
         <div class="lg:col-span-1 mt-10 lg:mt-0">
             <div class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg">
                 <h2 class="text-2xl font-bold mb-4">Book a Table</h2>
-                {% if user.is_tourist %}
-                <form method="post" action="{% url 'shop_detail' shop.pk %}">
-                    {% csrf_token %}
-                    <div class="space-y-4">
-                        {% for field in booking_form %}
-                        <div>
-                            {{ field.label_tag }}
-                            {{ field }}
-{% if booking_form.non_field_errors or booking_form.errors %}
-<div id="booking-error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-card-dark rounded-lg p-8 max-w-sm w-full">
-        <h3 class="text-xl font-bold mb-4">Booking Error</h3>
-        <div class="text-red-500 text-sm mb-4">
-            {% if booking_form.non_field_errors %}
-                {{ booking_form.non_field_errors }}
-            {% else %}
-                {% for field in booking_form %}
-                    {% if field.errors %}
-                        {{ field.label }}: {{ field.errors|striptags }}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </div>
-        <button onclick="document.getElementById('booking-error-modal').style.display='none'" class="px-4 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
-            Close
-        </button>
-    </div>
-</div>
-{% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <button type="submit"
-                        class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
-                        <span class="truncate">Book Now</span>
-                    </button>
-                    <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
-                </form>
-                {% elif user.is_authenticated and not user.is_tourist %}
-                <div class="text-center py-4">
-                    <p class="text-text-dark-muted mb-4">Only tourists can book a table.</p>
-                </div>
+                {% if shop.dining_establishment_type in "fine_dining,popular_themed_cafe,high_demand_eatery" %}
+                    {% if user.is_tourist %}
+                    <form method="post" action="{% url 'shop_detail' shop.pk %}">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            {% for field in booking_form %}
+                            <div>
+                                {{ field.label_tag }}
+                                {{ field }}
+    {% if booking_form.non_field_errors or booking_form.errors %}
+    <div id="booking-error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-card-dark rounded-lg p-8 max-w-sm w-full">
+            <h3 class="text-xl font-bold mb-4">Booking Error</h3>
+            <div class="text-red-500 text-sm mb-4">
+                {% if booking_form.non_field_errors %}
+                    {{ booking_form.non_field_errors }}
                 {% else %}
-                <div class="text-center py-4">
-                    <p class="text-text-dark-muted mb-4">Please login to book a table.</p>
-                    <a href="{% url 'login' %}?next={{ request.path }}"
-                        class="block w-full py-3 bg-primary text-background-dark font-bold rounded-full hover:bg-opacity-90 transition-opacity">
-                        Log In to Book
-                    </a>
-                </div>
+                    {% for field in booking_form %}
+                        {% if field.errors %}
+                            {{ field.label }}: {{ field.errors|striptags }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <button onclick="document.getElementById('booking-error-modal').style.display='none'" class="px-4 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+                Close
+            </button>
+        </div>
+    </div>
+    {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit"
+                            class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
+                            <span class="truncate">Book Now</span>
+                        </button>
+                        <p class="mt-4 text-center text-xs text-text-dark-muted">You won't be charged yet</p>
+                    </form>
+                    {% elif user.is_authenticated and not user.is_tourist %}
+                    <div class="text-center py-4">
+                        <p class="text-text-dark-muted mb-4">Only tourists can book a table.</p>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-text-dark-muted mb-4">Please login to book a table.</p>
+                        <a href="{% url 'login' %}?next={{ request.path }}"
+                            class="block w-full py-3 bg-primary text-background-dark font-bold rounded-full hover:bg-opacity-90 transition-opacity">
+                            Log In to Book
+                        </a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-text-dark-muted mb-4">Walk-ins only (no reservations required).</p>
+                        <button disabled
+                            class="mt-8 w-full flex cursor-not-allowed items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-gray-600 text-white text-lg font-bold">
+                            <span class="truncate">Book Now</span>
+                        </button>
+                    </div>
                 {% endif %}
             </div>
         </div>
