@@ -422,8 +422,8 @@ def toggle_favorite_api(request, model_name, pk):
         if not model:
             return JsonResponse({'status': 'error', 'message': 'Invalid item type.'}, status=400)
 
-        content_object = get_object_or_404(model, pk=pk)
-        favorite, created = Favorite.objects.get_or_create(user=request.user, content_object=content_object)
+        content_type = ContentType.objects.get_for_model(model)
+        favorite, created = Favorite.objects.get_or_create(user=request.user, content_type=content_type, object_id=pk)
 
         if created:
             return JsonResponse({'status': 'added', 'message': 'Added to favorites.'})
