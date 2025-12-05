@@ -19,7 +19,6 @@ urlpatterns = [
     path('booking/cancel/<int:pk>/', views.cancel_booking, name='cancel_booking'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit_view, name='profile_edit'),
-    path('favorites/', views.favorites_page, name='favorites'),
     path('vendor/dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
     path('shop/<int:pk>/', views.vendor_detail, name='vendor_detail'),
     path('shop/profile/edit/', views.edit_vendor_profile, name='edit_vendor_profile'),

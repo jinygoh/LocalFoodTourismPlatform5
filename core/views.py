@@ -241,17 +241,24 @@ def profile(request):
 
     bookings = Booking.objects.filter(user=request.user).order_by('-date')
 
+    shop_content_type = ContentType.objects.get_for_model(Shop)
+    dish_content_type = ContentType.objects.get_for_model(Dish)
     experience_content_type = ContentType.objects.get_for_model(Experience)
-    favorite_experiences_ids = Favorite.objects.filter(
-        user=request.user,
-        content_type=experience_content_type
-    ).values_list('object_id', flat=True)
+
+    favorite_shops_ids = Favorite.objects.filter(user=request.user, content_type=shop_content_type).values_list('object_id', flat=True)
+    favorite_dishes_ids = Favorite.objects.filter(user=request.user, content_type=dish_content_type).values_list('object_id', flat=True)
+    favorite_experiences_ids = Favorite.objects.filter(user=request.user, content_type=experience_content_type).values_list('object_id', flat=True)
+
+    favorite_shops = Shop.objects.filter(pk__in=favorite_shops_ids)
+    favorite_dishes = Dish.objects.filter(pk__in=favorite_dishes_ids)
     favorite_experiences = Experience.objects.filter(pk__in=favorite_experiences_ids)
 
     return render(request, 'core/profile.html', {
         'form': form,
         'bookings': bookings,
-        'favorites': favorite_experiences,
+        'favorite_shops': favorite_shops,
+        'favorite_dishes': favorite_dishes,
+        'favorite_experiences': favorite_experiences,
         'user_profile': user_profile
     })
 
@@ -402,28 +409,6 @@ def profile_edit_view(request):
         'profile_form': profile_form
     })
 
-@login_required
-def favorites_page(request):
-    if not request.user.is_tourist:
-        return redirect('home')
-
-    shop_content_type = ContentType.objects.get_for_model(Shop)
-    dish_content_type = ContentType.objects.get_for_model(Dish)
-    experience_content_type = ContentType.objects.get_for_model(Experience)
-
-    favorite_shops_ids = Favorite.objects.filter(user=request.user, content_type=shop_content_type).values_list('object_id', flat=True)
-    favorite_dishes_ids = Favorite.objects.filter(user=request.user, content_type=dish_content_type).values_list('object_id', flat=True)
-    favorite_experiences_ids = Favorite.objects.filter(user=request.user, content_type=experience_content_type).values_list('object_id', flat=True)
-
-    favorite_shops = Shop.objects.filter(pk__in=favorite_shops_ids)
-    favorite_dishes = Dish.objects.filter(pk__in=favorite_dishes_ids)
-    favorite_experiences = Experience.objects.filter(pk__in=favorite_experiences_ids)
-
-    return render(request, 'core/favorites.html', {
-        'favorite_shops': favorite_shops,
-        'favorite_dishes': favorite_dishes,
-        'favorite_experiences': favorite_experiences,
-    })
 
 @require_POST
 @login_required

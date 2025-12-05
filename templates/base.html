@@ -74,10 +74,6 @@
                             href="{% url 'explore' %}">Explore</a>
                         <a class="text-sm font-medium hover:text-primary transition-colors"
                             href="{% url 'about' %}">About</a>
-                        {% if user.is_authenticated and user.is_tourist %}
-                        <a class="text-sm font-medium hover:text-primary transition-colors"
-                            href="{% url 'favorites' %}">My Favorites</a>
-                        {% endif %}
                         {% if user.is_authenticated and user.is_vendor %}
                         <a class="text-sm font-medium hover:text-primary transition-colors"
                             href="{% url 'vendor_dashboard' %}">Vendor Dashboard</a>
@@ -183,7 +179,8 @@
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="{% static 'js/favorites.js' %}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="{% static 'js/favorites.js' %}?v=1"></script>
     {% block extra_script %}{% endblock %}
     {% block extra_js %}{% endblock %}
 </body>
