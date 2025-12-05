@@ -12,7 +12,16 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 # Custom Forms
-from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, UserProfileForm, BookingForm, TouristUserEditForm, TouristProfileEditForm
+from .forms import (
+    CustomUserCreationForm,
+    ExperienceForm,
+    ShopProfileForm,
+    UserProfileForm,
+    BookingForm,
+    TouristUserEditForm,
+    TouristProfileEditForm,
+    ReviewForm,
+)
 
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
@@ -85,10 +94,35 @@ def explore(request):
 def dish_detail(request, pk):
     dish = get_object_or_404(Dish, pk=pk)
     reviews = Review.objects.filter(object_id=dish.pk).order_by('-created_at')
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    review_form = ReviewForm()
     is_favorite = False
     if request.user.is_authenticated and request.user.is_tourist:
         is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Dish), object_id=dish.pk).exists()
-    return render(request, 'core/dish_detail.html', {'dish': dish, 'reviews': reviews, 'is_favorite': is_favorite})
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        if not request.user.is_tourist:
+            messages.error(request, "Only tourists can leave a review.")
+            return redirect('dish_detail', pk=pk)
+
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.content_object = dish
+            review.save()
+            return redirect('dish_detail', pk=pk)
+
+    return render(request, 'core/dish_detail.html', {
+        'dish': dish,
+        'reviews': reviews,
+        'average_rating': average_rating,
+        'review_form': review_form,
+        'is_favorite': is_favorite
+    })
 
 def shop_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
@@ -414,7 +448,7 @@ def profile_edit_view(request):
 @login_required
 def toggle_favorite_api(request, model_name, pk):
     if not request.user.is_tourist:
-        return JsonResponse({'status': 'error', 'message': 'Only tourists can favorite items.'}, status=403)
+        return JsonResponse({'status': 'error', 'message': 'Only tourists can favorite items.'}, status=4.03)
 
     try:
         model_map = {'shop': Shop, 'dish': Dish, 'experience': Experience}

@@ -91,211 +91,211 @@ def populate(start, end):
 
     dishes_data = {
         "Tian Tian Hainanese Chicken Rice": [
-            {"name": "Hainanese Chicken Rice", "desc": "The star dish, poached chicken with fragrant rice."},
-            {"name": "Roasted Chicken Rice", "desc": "A crispy alternative to the classic."},
-            {"name": "Bean Sprouts with Oyster Sauce", "desc": "A common side dish."},
-            {"name": "Chicken Innards", "desc": "For the more adventurous diners."},
-            {"name": "Oyster Sauce Vegetables", "desc": "A healthy and delicious side."}
+            {"name": "Hainanese Chicken Rice", "desc": "The star dish, poached chicken with fragrant rice.", "price": 5.00},
+            {"name": "Roasted Chicken Rice", "desc": "A crispy alternative to the classic.", "price": 5.00},
+            {"name": "Bean Sprouts with Oyster Sauce", "desc": "A common side dish.", "price": 3.00},
+            {"name": "Chicken Innards", "desc": "For the more adventurous diners.", "price": 2.00},
+            {"name": "Oyster Sauce Vegetables", "desc": "A healthy and delicious side.", "price": 3.00}
         ],
         "Margaret Drive Sin Kee Chicken Rice": [
-            {"name": "Hainanese Chicken Rice", "desc": "Tender poached chicken with flavorful rice."},
-            {"name": "Chicken Porridge", "desc": "A comforting and savory porridge."},
-            {"name": "Chicken Feet", "desc": "A delicacy for some."},
-            {"name": "Braised Egg", "desc": "A simple yet delicious side."},
-            {"name": "Soup of the Day", "desc": "A daily selection of comforting soups."}
+            {"name": "Hainanese Chicken Rice", "desc": "Tender poached chicken with flavorful rice.", "price": 4.50},
+            {"name": "Chicken Porridge", "desc": "A comforting and savory porridge.", "price": 3.50},
+            {"name": "Chicken Feet", "desc": "A delicacy for some.", "price": 3.00},
+            {"name": "Braised Egg", "desc": "A simple yet delicious side.", "price": 1.00},
+            {"name": "Soup of the Day", "desc": "A daily selection of comforting soups.", "price": 2.00}
         ],
         "Ji De Lai Hainanese Chicken Rice": [
-            {"name": "Hainanese Chicken Rice", "desc": "A traditional and authentic version of the dish."},
-            {"name": "Lemon Chicken", "desc": "A zesty and refreshing alternative."},
-            {"name": "Thai Style Tofu", "desc": "A flavorful and spicy tofu dish."},
-            {"name": "Salted Vegetable Duck Soup", "desc": "A tangy and savory soup."},
-            {"name": "Gado Gado", "desc": "An Indonesian salad with peanut sauce."}
+            {"name": "Hainanese Chicken Rice", "desc": "A traditional and authentic version of the dish.", "price": 4.00},
+            {"name": "Lemon Chicken", "desc": "A zesty and refreshing alternative.", "price": 5.00},
+            {"name": "Thai Style Tofu", "desc": "A flavorful and spicy tofu dish.", "price": 4.00},
+            {"name": "Salted Vegetable Duck Soup", "desc": "A tangy and savory soup.", "price": 4.50},
+            {"name": "Gado Gado", "desc": "An Indonesian salad with peanut sauce.", "price": 4.00}
         ],
         "Heng Heng Cooked Food": [
-            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup."},
-            {"name": "Prawn Noodles", "desc": "A flavorful noodle soup with prawns and pork ribs."},
-            {"name": "Curry Chicken Noodles", "desc": "A spicy and savory curry noodle dish."},
-            {"name": "Fishball Noodles", "desc": "A classic Singaporean noodle dish."},
-            {"name": "Mee Siam", "desc": "A sweet and sour noodle dish."}
+            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup.", "price": 4.00},
+            {"name": "Prawn Noodles", "desc": "A flavorful noodle soup with prawns and pork ribs.", "price": 5.00},
+            {"name": "Curry Chicken Noodles", "desc": "A spicy and savory curry noodle dish.", "price": 4.50},
+            {"name": "Fishball Noodles", "desc": "A classic Singaporean noodle dish.", "price": 3.50},
+            {"name": "Mee Siam", "desc": "A sweet and sour noodle dish.", "price": 3.50}
         ],
         "Da Shi Jia Big Prawn Mee": [
-            {"name": "Big Prawn Mee", "desc": "A flavorful noodle soup with large prawns."},
-            {"name": "Pork Ribs Prawn Mee", "desc": "A combination of prawns and pork ribs in a rich broth."},
-            {"name": "Prawn Noodle Dry", "desc": "A dry version of the popular noodle dish."},
-            {"name": "Ngoh Hiang", "desc": "A deep-fried meat roll."},
-            {"name": "Fried Wantons", "desc": "Crispy and delicious fried dumplings."}
+            {"name": "Big Prawn Mee", "desc": "A flavorful noodle soup with large prawns.", "price": 8.00},
+            {"name": "Pork Ribs Prawn Mee", "desc": "A combination of prawns and pork ribs in a rich broth.", "price": 7.00},
+            {"name": "Prawn Noodle Dry", "desc": "A dry version of the popular noodle dish.", "price": 7.00},
+            {"name": "Ngoh Hiang", "desc": "A deep-fried meat roll.", "price": 4.00},
+            {"name": "Fried Wantons", "desc": "Crispy and delicious fried dumplings.", "price": 4.00}
         ],
         "Jalan Sultan Prawn Mee": [
-            {"name": "Prawn Mee", "desc": "A rich and flavorful prawn noodle soup."},
-            {"name": "King Prawn Mee", "desc": "A more luxurious version with king prawns."},
-            {"name": "Pork Ribs Noodle", "desc": "A savory noodle soup with tender pork ribs."},
-            {"name": "Pig's Tail Noodle", "desc": "A unique and flavorful noodle dish."},
-            {"name": "Gyoza", "desc": "Japanese-style dumplings."}
+            {"name": "Prawn Mee", "desc": "A rich and flavorful prawn noodle soup.", "price": 6.00},
+            {"name": "King Prawn Mee", "desc": "A more luxurious version with king prawns.", "price": 10.00},
+            {"name": "Pork Ribs Noodle", "desc": "A savory noodle soup with tender pork ribs.", "price": 5.00},
+            {"name": "Pig's Tail Noodle", "desc": "A unique and flavorful noodle dish.", "price": 5.00},
+            {"name": "Gyoza", "desc": "Japanese-style dumplings.", "price": 4.00}
         ],
         "Fei Fei Roasted • Noodle": [
-            {"name": "Wanton Mee", "desc": "A popular noodle dish with wontons and char siu."},
-            {"name": "Roasted Duck Rice", "desc": "Crispy roasted duck with rice."},
-            {"name": "Roasted Pork Rice", "desc": "Savory roasted pork with rice."},
-            {"name": "Soya Sauce Chicken Rice", "desc": "Tender chicken in a savory soy sauce."},
-            {"name": "Dumpling Soup", "desc": "A comforting soup with handmade dumplings."}
+            {"name": "Wanton Mee", "desc": "A popular noodle dish with wontons and char siu.", "price": 4.00},
+            {"name": "Roasted Duck Rice", "desc": "Crispy roasted duck with rice.", "price": 5.00},
+            {"name": "Roasted Pork Rice", "desc": "Savory roasted pork with rice.", "price": 5.00},
+            {"name": "Soya Sauce Chicken Rice", "desc": "Tender chicken in a savory soy sauce.", "price": 4.50},
+            {"name": "Dumpling Soup", "desc": "A comforting soup with handmade dumplings.", "price": 4.00}
         ],
         "Joo Siah Bak Koot Teh": [
-            {"name": "Bak Kut Teh", "desc": "A peppery pork rib soup."},
-            {"name": "Braised Pig's Trotter", "desc": "A tender and flavorful pork dish."},
-            {"name": "Salted Vegetables", "desc": "A tangy and savory side dish."},
-            {"name": "You Tiao", "desc": "Fried dough fritters, perfect for dipping in the soup."},
-            {"name": "Tau Pok", "desc": "Fried tofu puffs."}
+            {"name": "Bak Kut Teh", "desc": "A peppery pork rib soup.", "price": 6.00},
+            {"name": "Braised Pig's Trotter", "desc": "A tender and flavorful pork dish.", "price": 7.00},
+            {"name": "Salted Vegetables", "desc": "A tangy and savory side dish.", "price": 2.00},
+            {"name": "You Tiao", "desc": "Fried dough fritters, perfect for dipping in the soup.", "price": 1.00},
+            {"name": "Tau Pok", "desc": "Fried tofu puffs.", "price": 1.50}
         ],
         "Song Fa Bak Kut Teh": [
-            {"name": "Bak Kut Teh", "desc": "A popular peppery pork rib soup."},
-            {"name": "Pork Ribs Soup", "desc": "A classic and comforting soup."},
-            {"name": "Pork Liver Soup", "desc": "A nutritious and flavorful soup."},
-            {"name": "Pork Kidney Soup", "desc": "A unique and flavorful soup."},
-            {"name": "Braised Peanuts", "desc": "A simple yet delicious side dish."}
+            {"name": "Bak Kut Teh", "desc": "A popular peppery pork rib soup.", "price": 7.00},
+            {"name": "Pork Ribs Soup", "desc": "A classic and comforting soup.", "price": 7.00},
+            {"name": "Pork Liver Soup", "desc": "A nutritious and flavorful soup.", "price": 6.00},
+            {"name": "Pork Kidney Soup", "desc": "A unique and flavorful soup.", "price": 6.00},
+            {"name": "Braised Peanuts", "desc": "A simple yet delicious side dish.", "price": 2.00}
         ],
         "Ann Chin Handmade Popiah": [
-            {"name": "Popiah", "desc": "A fresh spring roll with a variety of fillings."},
-            {"name": "Kueh Pie Tee", "desc": "A crispy pastry cup filled with similar ingredients to popiah."},
-            {"name": "Muah Chee", "desc": "A sticky rice cake coated in peanuts."},
-            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup."},
-            {"name": "Satay", "desc": "Grilled meat skewers with peanut sauce."}
+            {"name": "Popiah", "desc": "A fresh spring roll with a variety of fillings.", "price": 2.00},
+            {"name": "Kueh Pie Tee", "desc": "A crispy pastry cup filled with similar ingredients to popiah.", "price": 3.00},
+            {"name": "Muah Chee", "desc": "A sticky rice cake coated in peanuts.", "price": 2.50},
+            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup.", "price": 4.00},
+            {"name": "Satay", "desc": "Grilled meat skewers with peanut sauce.", "price": 0.80}
         ],
         "Hong Heng Fried Sotong Prawn Mee": [
-            {"name": "Fried Hokkien Mee", "desc": "A stir-fried noodle dish with prawns and squid."},
-            {"name": "Char Kway Teow", "desc": "Stir-fried rice noodles with a sweet and savory sauce."},
-            {"name": "Oyster Omelette", "desc": "A savory omelette with oysters."},
-            {"name": "Satay", "desc": "Grilled meat skewers with peanut sauce."},
-            {"name": "Sugarcane Juice", "desc": "A refreshing and sweet drink."}
+            {"name": "Fried Hokkien Mee", "desc": "A stir-fried noodle dish with prawns and squid.", "price": 5.00},
+            {"name": "Char Kway Teow", "desc": "Stir-fried rice noodles with a sweet and savory sauce.", "price": 4.00},
+            {"name": "Oyster Omelette", "desc": "A savory omelette with oysters.", "price": 6.00},
+            {"name": "Satay", "desc": "Grilled meat skewers with peanut sauce.", "price": 0.80},
+            {"name": "Sugarcane Juice", "desc": "A refreshing and sweet drink.", "price": 1.50}
         ],
         "Chey Sua Carrot Cake": [
-            {"name": "Carrot Cake", "desc": "A savory fried radish cake."},
-            {"name": "Black Carrot Cake", "desc": "A sweeter version with dark soy sauce."},
-            {"name": "White Carrot Cake", "desc": "The classic savory version."},
-            {"name": "Oyster Omelette", "desc": "A savory omelette with oysters."},
-            {"name": "Popiah", "desc": "A fresh spring roll with a variety of fillings."}
+            {"name": "Carrot Cake", "desc": "A savory fried radish cake.", "price": 3.00},
+            {"name": "Black Carrot Cake", "desc": "A sweeter version with dark soy sauce.", "price": 3.50},
+            {"name": "White Carrot Cake", "desc": "The classic savory version.", "price": 3.00},
+            {"name": "Oyster Omelette", "desc": "A savory omelette with oysters.", "price": 5.00},
+            {"name": "Popiah", "desc": "A fresh spring roll with a variety of fillings.", "price": 2.00}
         ],
         "Hill Street Tai Hwa Pork Noodle": [
-            {"name": "Bak Chor Mee", "desc": "A popular noodle dish with minced pork and mushrooms."},
-            {"name": "Pork Noodle Soup", "desc": "A comforting and savory noodle soup."},
-            {"name": "Meatball Soup", "desc": "A simple and delicious soup with meatballs."},
-            {"name": "Dumpling Soup", "desc": "A comforting soup with handmade dumplings."},
-            {"name": "Seaweed Soup", "desc": "A light and healthy soup."}
+            {"name": "Bak Chor Mee", "desc": "A popular noodle dish with minced pork and mushrooms.", "price": 6.00},
+            {"name": "Pork Noodle Soup", "desc": "A comforting and savory noodle soup.", "price": 5.00},
+            {"name": "Meatball Soup", "desc": "A simple and delicious soup with meatballs.", "price": 4.00},
+            {"name": "Dumpling Soup", "desc": "A comforting soup with handmade dumplings.", "price": 4.00},
+            {"name": "Seaweed Soup", "desc": "A light and healthy soup.", "price": 3.00}
         ],
         "Ru Ji Kitchen": [
-            {"name": "Fishball Noodles", "desc": "A classic Singaporean noodle dish with fishballs."},
-            {"name": "Minced Meat Noodles", "desc": "A savory noodle dish with minced meat."},
-            {"name": "Fishball Soup", "desc": "A simple and delicious soup with fishballs."},
-            {"name": "Yong Tau Foo", "desc": "A variety of tofu and vegetables stuffed with fish paste."},
-            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup."}
+            {"name": "Fishball Noodles", "desc": "A classic Singaporean noodle dish with fishballs.", "price": 3.50},
+            {"name": "Minced Meat Noodles", "desc": "A savory noodle dish with minced meat.", "price": 4.00},
+            {"name": "Fishball Soup", "desc": "A simple and delicious soup with fishballs.", "price": 3.00},
+            {"name": "Yong Tau Foo", "desc": "A variety of tofu and vegetables stuffed with fish paste.", "price": 5.00},
+            {"name": "Laksa", "desc": "A rich and spicy coconut milk-based noodle soup.", "price": 4.00}
         ],
         "Jian Bo Tiong Bahru Shui Kueh": [
-            {"name": "Chwee Kueh", "desc": "Steamed rice cakes with preserved radish."},
-            {"name": "Chee Cheong Fun", "desc": "Steamed rice noodle rolls with a sweet sauce."},
-            {"name": "Yam Cake", "desc": "A savory steamed cake made with yam."},
-            {"name": "Soon Kueh", "desc": "A steamed dumpling with a turnip filling."},
-            {"name": "Peng Kueh", "desc": "A steamed glutinous rice cake with a savory filling."}
+            {"name": "Chwee Kueh", "desc": "Steamed rice cakes with preserved radish.", "price": 2.00},
+            {"name": "Chee Cheong Fun", "desc": "Steamed rice noodle rolls with a sweet sauce.", "price": 2.50},
+            {"name": "Yam Cake", "desc": "A savory steamed cake made with yam.", "price": 2.50},
+            {"name": "Soon Kueh", "desc": "A steamed dumpling with a turnip filling.", "price": 1.50},
+            {"name": "Peng Kueh", "desc": "A steamed glutinous rice cake with a savory filling.", "price": 1.50}
         ],
         "Beach Road Fish Head Bee Hoon": [
-            {"name": "Fish Head Bee Hoon", "desc": "A milky and flavorful noodle soup with fish head."},
-            {"name": "Fried Fish Bee Hoon", "desc": "A version with fried fish slices."},
-            {"name": "Fish Soup", "desc": "A clear and light fish soup."},
-            {"name": "Tom Yum Soup", "desc": "A spicy and sour Thai soup."},
-            {"name": "Prawn Paste Chicken", "desc": "Crispy and savory fried chicken."}
+            {"name": "Fish Head Bee Hoon", "desc": "A milky and flavorful noodle soup with fish head.", "price": 7.00},
+            {"name": "Fried Fish Bee Hoon", "desc": "A version with fried fish slices.", "price": 6.00},
+            {"name": "Fish Soup", "desc": "A clear and light fish soup.", "price": 5.00},
+            {"name": "Tom Yum Soup", "desc": "A spicy and sour Thai soup.", "price": 6.00},
+            {"name": "Prawn Paste Chicken", "desc": "Crispy and savory fried chicken.", "price": 5.00}
         ],
         "Han Kee": [
-            {"name": "Fish Soup", "desc": "A clear and light fish soup with fresh fish slices."},
-            {"name": "Fish Porridge", "desc": "A comforting and savory porridge with fish."},
-            {"name": "Seafood Soup", "desc": "A flavorful soup with a variety of seafood."},
-            {"name": "Sliced Fish Bee Hoon", "desc": "A noodle soup with sliced fish."},
-            {"name": "Fish Head Steamboat", "desc": "A communal hot pot with fish head."}
+            {"name": "Fish Soup", "desc": "A clear and light fish soup with fresh fish slices.", "price": 5.00},
+            {"name": "Fish Porridge", "desc": "A comforting and savory porridge with fish.", "price": 5.00},
+            {"name": "Seafood Soup", "desc": "A flavorful soup with a variety of seafood.", "price": 7.00},
+            {"name": "Sliced Fish Bee Hoon", "desc": "A noodle soup with sliced fish.", "price": 5.00},
+            {"name": "Fish Head Steamboat", "desc": "A communal hot pot with fish head.", "price": 25.00}
         ],
         "C.M.Y. Satay": [
-            {"name": "Chicken Satay", "desc": "Grilled chicken skewers with peanut sauce."},
-            {"name": "Mutton Satay", "desc": "Grilled mutton skewers with peanut sauce."},
-            {"name": "Pork Satay", "desc": "Grilled pork skewers with peanut sauce."},
-            {"name": "Ketupat", "desc": "Rice cakes, a perfect accompaniment to satay."},
-            {"name": "Cucumber and Onion", "desc": "A refreshing side for satay."}
+            {"name": "Chicken Satay", "desc": "Grilled chicken skewers with peanut sauce.", "price": 0.80},
+            {"name": "Mutton Satay", "desc": "Grilled mutton skewers with peanut sauce.", "price": 0.90},
+            {"name": "Pork Satay", "desc": "Grilled pork skewers with peanut sauce.", "price": 0.80},
+            {"name": "Ketupat", "desc": "Rice cakes, a perfect accompaniment to satay.", "price": 1.00},
+            {"name": "Cucumber and Onion", "desc": "A refreshing side for satay.", "price": 1.00}
         ],
         "Chomp Chomp Satay": [
-            {"name": "Chicken Satay", "desc": "Grilled chicken skewers with peanut sauce."},
-            {"name": "Beef Satay", "desc": "Grilled beef skewers with peanut sauce."},
-            {"name": "Mutton Satay", "desc": "Grilled mutton skewers with peanut sauce."},
-            {"name": "Rice Dumplings", "desc": "A savory glutinous rice dumpling."},
-            {"name": "Sugarcane Juice", "desc": "A refreshing and sweet drink."}
+            {"name": "Chicken Satay", "desc": "Grilled chicken skewers with peanut sauce.", "price": 0.90},
+            {"name": "Beef Satay", "desc": "Grilled beef skewers with peanut sauce.", "price": 1.00},
+            {"name": "Mutton Satay", "desc": "Grilled mutton skewers with peanut sauce.", "price": 1.00},
+            {"name": "Rice Dumplings", "desc": "A savory glutinous rice dumpling.", "price": 2.00},
+            {"name": "Sugarcane Juice", "desc": "A refreshing and sweet drink.", "price": 2.00}
         ],
         "Liao Fan Hawker Chan": [
-            {"name": "Soya Sauce Chicken Rice", "desc": "The famous Michelin-starred dish."},
-            {"name": "Roasted Pork Rice", "desc": "Crispy and savory roasted pork."},
-            {"name": "Char Siew Rice", "desc": "Sweet and savory barbecued pork."},
-            {"name": "Pork Ribs", "desc": "Tender and flavorful pork ribs."},
-            {"name": "Wonton Noodles", "desc": "A classic noodle dish with wontons."}
+            {"name": "Soya Sauce Chicken Rice", "desc": "The famous Michelin-starred dish.", "price": 3.80},
+            {"name": "Roasted Pork Rice", "desc": "Crispy and savory roasted pork.", "price": 4.50},
+            {"name": "Char Siew Rice", "desc": "Sweet and savory barbecued pork.", "price": 4.50},
+            {"name": "Pork Ribs", "desc": "Tender and flavorful pork ribs.", "price": 5.00},
+            {"name": "Wonton Noodles", "desc": "A classic noodle dish with wontons.", "price": 4.00}
         ],
         "A Noodle Story": [
-            {"name": "Singapore-style Ramen", "desc": "A unique fusion of ramen and local flavors."},
-            {"name": "Pork Belly Cha-shu", "desc": "Tender and flavorful pork belly."},
-            {"name": "Onsen Egg", "desc": "A perfectly cooked soft-boiled egg."},
-            {"name": "Potato-wrapped Prawn", "desc": "A crispy and savory side dish."},
-            {"name": "Hong Kong-style Wontons", "desc": "Delicious handmade wontons."}
+            {"name": "Singapore-style Ramen", "desc": "A unique fusion of ramen and local flavors.", "price": 8.00},
+            {"name": "Pork Belly Cha-shu", "desc": "Tender and flavorful pork belly.", "price": 3.00},
+            {"name": "Onsen Egg", "desc": "A perfectly cooked soft-boiled egg.", "price": 1.50},
+            {"name": "Potato-wrapped Prawn", "desc": "A crispy and savory side dish.", "price": 3.00},
+            {"name": "Hong Kong-style Wontons", "desc": "Delicious handmade wontons.", "price": 4.00}
         ],
         "The Blue Ginger": [
-            {"name": "Ayam Buah Keluak", "desc": "A classic Peranakan chicken dish."},
-            {"name": "Babi Pongteh", "desc": "A savory pork stew."},
-            {"name": "Ngo Heong", "desc": "A deep-fried meat roll."},
-            {"name": "Chap Chye", "desc": "A mixed vegetable stew."},
-            {"name": "Durian Chendol", "desc": "A popular dessert with a modern twist."}
+            {"name": "Ayam Buah Keluak", "desc": "A classic Peranakan chicken dish.", "price": 28.00},
+            {"name": "Babi Pongteh", "desc": "A savory pork stew.", "price": 26.00},
+            {"name": "Ngo Heong", "desc": "A deep-fried meat roll.", "price": 16.00},
+            {"name": "Chap Chye", "desc": "A mixed vegetable stew.", "price": 18.00},
+            {"name": "Durian Chendol", "desc": "A popular dessert with a modern twist.", "price": 12.00}
         ],
         "Candlenut": [
-            {"name": "Kueh Pie Tee", "desc": "A crispy pastry cup with a savory filling."},
-            {"name": "Wing Bean Salad", "desc": "A refreshing and spicy salad."},
-            {"name": "Beef Rendang", "desc": "A rich and flavorful beef stew."},
-            {"name": "Assam Sotong", "desc": "A tangy and spicy squid dish."},
-            {"name": "Buah Keluak Ice Cream", "desc": "A unique and adventurous dessert."}
+            {"name": "Kueh Pie Tee", "desc": "A crispy pastry cup with a savory filling.", "price": 20.00},
+            {"name": "Wing Bean Salad", "desc": "A refreshing and spicy salad.", "price": 22.00},
+            {"name": "Beef Rendang", "desc": "A rich and flavorful beef stew.", "price": 32.00},
+            {"name": "Assam Sotong", "desc": "A tangy and spicy squid dish.", "price": 28.00},
+            {"name": "Buah Keluak Ice Cream", "desc": "A unique and adventurous dessert.", "price": 18.00}
         ],
         "Odette": [
-            {"name": "Foie Gras", "desc": "A luxurious and decadent dish."},
-            {"name": "Scallop", "desc": "Fresh and delicate scallops."},
-            {"name": "Cheese Trolley", "desc": "A selection of fine cheeses."},
-            {"name": "Dessert Trolley", "desc": "A variety of exquisite desserts."}
+            {"name": "Foie Gras", "desc": "A luxurious and decadent dish.", "price": 88.00},
+            {"name": "Scallop", "desc": "Fresh and delicate scallops.", "price": 78.00},
+            {"name": "Cheese Trolley", "desc": "A selection of fine cheeses.", "price": 48.00},
+            {"name": "Dessert Trolley", "desc": "A variety of exquisite desserts.", "price": 38.00}
         ],
         "Les Amis": [
-            {"name": "Caviar", "desc": "A luxurious and indulgent dish."},
-            {"name": "Lobster", "desc": "Fresh and succulent lobster."},
-            {"name": "Wagyu Beef", "desc": "High-quality Japanese beef."},
-            {"name": "Wine Pairing", "desc": "An extensive wine list to complement your meal."},
-            {"name": "Grand Dessert", "desc": "A spectacular dessert to end your meal."}
+            {"name": "Caviar", "desc": "A luxurious and indulgent dish.", "price": 180.00},
+            {"name": "Lobster", "desc": "Fresh and succulent lobster.", "price": 120.00},
+            {"name": "Wagyu Beef", "desc": "High-quality Japanese beef.", "price": 150.00},
+            {"name": "Wine Pairing", "desc": "An extensive wine list to complement your meal.", "price": 90.00},
+            {"name": "Grand Dessert", "desc": "A spectacular dessert to end your meal.", "price": 50.00}
         ],
         "Burnt Ends": [
-            {"name": "Sanger", "desc": "A delicious and messy pulled pork sandwich."},
-            {"name": "King Crab and Garlic", "desc": "A simple yet flavorful dish."},
-            {"name": "Beef Marmalade and Pickles", "desc": "A unique and delicious dish."},
-            {"name": "Smoked Quail Egg and Caviar", "desc": "A luxurious and smoky bite."},
-            {"name": "Wagyu", "desc": "High-quality Japanese beef, cooked to perfection."}
+            {"name": "Sanger", "desc": "A delicious and messy pulled pork sandwich.", "price": 22.00},
+            {"name": "King Crab and Garlic", "desc": "A simple yet flavorful dish.", "price": 45.00},
+            {"name": "Beef Marmalade and Pickles", "desc": "A unique and delicious dish.", "price": 18.00},
+            {"name": "Smoked Quail Egg and Caviar", "desc": "A luxurious and smoky bite.", "price": 25.00},
+            {"name": "Wagyu", "desc": "High-quality Japanese beef, cooked to perfection.", "price": 80.00}
         ],
         "JAAN by Kirk Westaway": [
-            {"name": "English Garden", "desc": "A beautiful and delicate vegetable dish."},
-            {"name": "Devonshire Cream Tea", "desc": "A modern take on a classic."},
-            {"name": "Fish and Chips", "desc": "A refined version of the British classic."},
-            {"name": "Cheese Selection", "desc": "A selection of British cheeses."}
+            {"name": "English Garden", "desc": "A beautiful and delicate vegetable dish.", "price": 68.00},
+            {"name": "Devonshire Cream Tea", "desc": "A modern take on a classic.", "price": 48.00},
+            {"name": "Fish and Chips", "desc": "A refined version of the British classic.", "price": 78.00},
+            {"name": "Cheese Selection", "desc": "A selection of British cheeses.", "price": 58.00}
         ],
         "Shoukouwa": [
-            {"name": "Omakase", "desc": "A chef's tasting menu of the freshest sushi."},
-            {"name": "Uni", "desc": "Fresh and creamy sea urchin."},
-            {"name": "Toro", "desc": "Fatty and delicious tuna belly."},
-            {"name": "Sake Pairing", "desc": "A selection of fine sakes to complement your meal."},
-            {"name": "Japanese Musk Melon", "desc": "A sweet and juicy dessert."}
+            {"name": "Omakase", "desc": "A chef's tasting menu of the freshest sushi.", "price": 320.00},
+            {"name": "Uni", "desc": "Fresh and creamy sea urchin.", "price": 80.00},
+            {"name": "Toro", "desc": "Fatty and delicious tuna belly.", "price": 60.00},
+            {"name": "Sake Pairing", "desc": "A selection of fine sakes to complement your meal.", "price": 120.00},
+            {"name": "Japanese Musk Melon", "desc": "A sweet and juicy dessert.", "price": 40.00}
         ],
         "Waku Ghin": [
-            {"name": "Marinated Botan Shrimp with Sea Urchin and Caviar", "desc": "A luxurious and decadent dish."},
-            {"name": "Wagyu with Wasabi and Citrus Soy", "desc": "High-quality Japanese beef with a zesty sauce."},
-            {"name": "Abalone with Fregola and Tomato", "desc": "A tender and flavorful abalone dish."},
-            {"name": "Teppanyaki", "desc": "A variety of grilled dishes, cooked to perfection."},
-            {"name": "Japanese Desserts", "desc": "A selection of exquisite Japanese desserts."}
+            {"name": "Marinated Botan Shrimp with Sea Urchin and Caviar", "desc": "A luxurious and decadent dish.", "price": 120.00},
+            {"name": "Wagyu with Wasabi and Citrus Soy", "desc": "High-quality Japanese beef with a zesty sauce.", "price": 150.00},
+            {"name": "Abalone with Fregola and Tomato", "desc": "A tender and flavorful abalone dish.", "price": 100.00},
+            {"name": "Teppanyaki", "desc": "A variety of grilled dishes, cooked to perfection.", "price": 200.00},
+            {"name": "Japanese Desserts", "desc": "A selection of exquisite Japanese desserts.", "price": 50.00}
         ],
         "Zen": [
-            {"name": "Tasting Menu", "desc": "A multi-course tasting menu of modern European cuisine."},
-            {"name": "Scallop and Truffle", "desc": "A luxurious and flavorful dish."},
-            {"name": "Wine Pairing", "desc": "An extensive wine list to complement your meal."},
-            {"name": "Petit Fours", "desc": "A selection of small sweets to end your meal."}
+            {"name": "Tasting Menu", "desc": "A multi-course tasting menu of modern European cuisine.", "price": 450.00},
+            {"name": "Scallop and Truffle", "desc": "A luxurious and flavorful dish.", "price": 90.00},
+            {"name": "Wine Pairing", "desc": "An extensive wine list to complement your meal.", "price": 180.00},
+            {"name": "Petit Fours", "desc": "A selection of small sweets to end your meal.", "price": 40.00}
         ]
     }
 
@@ -348,7 +348,7 @@ def populate(start, end):
                 name=d_data['name'],
                 defaults={
                     'description': d_data['desc'],
-                    'price': round(random.uniform(5.0, 50.0), 2)
+                    'price': d_data['price']
                 }
             )
             if created:
@@ -378,7 +378,7 @@ def populate(start, end):
             {"title": "French Gastronomy in Singapore", "desc": "Experience the best of French cuisine in the heart of Singapore.", "price": 200.00, "vendor_name": "Les Amis"},
             {"title": "British Classics with a Twist", "desc": "A unique dining experience of modern British cuisine.", "price": 180.00, "vendor_name": "JAAN by Kirk Westaway"},
             {"title": "Japanese Teppanyaki Spectacle", "desc": "Enjoy a spectacular teppanyaki performance and meal.", "price": 120.00, "vendor_name": "Waku Ghin"},
-            {"title": "A Culinary Journey with Zen", "desc": "An unforgettable multi-course tasting menu.", "price": 300.00, "vendor_name": "Zen"}
+            {"title": "A Culinary Journey with Zen", "desc": "An unforgettable multi-course tasting menu.", "price": 300.00, "vendor_name": "Zen"},
         ]
 
 

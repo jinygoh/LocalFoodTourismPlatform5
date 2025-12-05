@@ -131,6 +131,12 @@ body {
     margin-bottom: 2rem;
 }
 
+/* Map Section */
+.map-section {
+    background-color: #f0f0f0; /* Slightly darker than the default light background */
+    padding: 4rem 0;
+}
+
 /* Footer */
 .footer {
     background-color: var(--dark-bg);

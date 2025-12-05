@@ -7,8 +7,17 @@ from django.forms.widgets import ClearableFileInput
 class CustomClearableFileInput(ClearableFileInput):
     template_name = 'core/custom_clearable_file_input.html'
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Experience, Shop, UserProfile, Booking
+from .models import User, Experience, Shop, UserProfile, Booking, Review
 import datetime
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'comment': forms.Textarea(attrs={'rows': 4}),
+        }
 
 class TouristUserEditForm(forms.ModelForm):
     class Meta:
@@ -79,7 +88,7 @@ class ExperienceForm(forms.ModelForm):
 class ShopProfileForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ['business_name', 'description', 'location', 'contact_number', 'opening_hours', 'image']
+        fields = ['business_name', 'description', 'location', 'contact_number', 'opening_hours', 'image', 'dining_establishment_type']
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -108,31 +117,12 @@ class BookingForm(forms.ModelForm):
 
         if self.shop and self.shop.opening_hours and time:
             try:
-                match = re.search(r'(\d{1,2}:?\d{0,2}\s?[ap]m)\s*-\s*(\d{1,2}:?\d{0,2}\s?[ap]m)', self.shop.opening_hours, re.IGNORECASE)
-                if match:
-                    opening_time_str = match.group(1).replace(" ", "")
-                    closing_time_str = match.group(2).replace(" ", "")
-
-                    time_formats = ['%I%p', '%I:%M%p']
-                    opening_time = None
-                    closing_time = None
-
-                    for fmt in time_formats:
-                        try:
-                            opening_time = datetime.datetime.strptime(opening_time_str, fmt).time()
-                            break
-                        except ValueError:
-                            continue
-
-                    for fmt in time_formats:
-                        try:
-                            closing_time = datetime.datetime.strptime(closing_time_str, fmt).time()
-                            break
-                        except ValueError:
-                            continue
-
-                    if opening_time is None or closing_time is None:
-                        raise ValidationError("Could not parse the opening hours. Please contact the shop.")
+                opening_hours_str = self.shop.opening_hours.lower()
+                parts = re.split(r'\s*-\s*', opening_hours_str)
+                if len(parts) == 2:
+                    opening_time_str, closing_time_str = parts
+                    opening_time = self.convert_to_24_hour(opening_time_str)
+                    closing_time = self.convert_to_24_hour(closing_time_str)
 
                     if not (opening_time <= time <= closing_time):
                         raise ValidationError(f"The shop is not open at the selected time. Please book between {opening_time_str} and {closing_time_str}.")
@@ -142,3 +132,29 @@ class BookingForm(forms.ModelForm):
                 raise ValidationError("Could not parse the opening hours. Please contact the shop.")
 
         return cleaned_data
+
+    def convert_to_24_hour(self, time_str):
+        time_str = time_str.replace(" ", "").lower()
+
+        # Handle "12am" and "12pm"
+        if "12am" in time_str:
+            time_str = time_str.replace("12am", "00:00")
+        elif "12pm" in time_str:
+            time_str = time_str.replace("12pm", "12:00")
+
+        # Handle other "am" and "pm" cases
+        if "am" in time_str:
+            time_str = time_str.replace("am", "")
+            if ":" not in time_str:
+                time_str += ":00"
+        elif "pm" in time_str:
+            time_str = time_str.replace("pm", "")
+            if ":" not in time_str:
+                hour = int(time_str) + 12
+                time_str = str(hour) + ":00"
+            else:
+                parts = time_str.split(":")
+                hour = int(parts[0]) + 12
+                time_str = str(hour) + ":" + parts[1]
+
+        return datetime.datetime.strptime(time_str, '%H:%M').time()
