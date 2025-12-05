@@ -2,6 +2,7 @@ import os
 import django
 import random
 from faker import Faker
+from django.contrib.contenttypes.models import ContentType
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
@@ -25,6 +26,10 @@ def populate_reviews():
     dishes = Dish.objects.all()
     experiences = Experience.objects.all()
 
+    shop_content_type = ContentType.objects.get_for_model(Shop)
+    dish_content_type = ContentType.objects.get_for_model(Dish)
+    experience_content_type = ContentType.objects.get_for_model(Experience)
+
     review_comments = [
         "Absolutely delicious! A must-try when in Singapore.",
         "The flavours were authentic and the portions were generous.",
@@ -35,7 +40,7 @@ def populate_reviews():
 
     for tourist in tourists:
         for shop in shops:
-            if not Review.objects.filter(user=tourist, object_id=shop.pk).exists():
+            if not Review.objects.filter(user=tourist, content_type=shop_content_type, object_id=shop.pk).exists():
                 Review.objects.create(
                     user=tourist,
                     content_object=shop,
@@ -44,7 +49,7 @@ def populate_reviews():
                 )
 
         for dish in dishes:
-            if not Review.objects.filter(user=tourist, object_id=dish.pk).exists():
+            if not Review.objects.filter(user=tourist, content_type=dish_content_type, object_id=dish.pk).exists():
                 Review.objects.create(
                     user=tourist,
                     content_object=dish,
@@ -53,7 +58,7 @@ def populate_reviews():
                 )
 
         for experience in experiences:
-            if not Review.objects.filter(user=tourist, object_id=experience.pk).exists():
+            if not Review.objects.filter(user=tourist, content_type=experience_content_type, object_id=experience.pk).exists():
                 Review.objects.create(
                     user=tourist,
                     content_object=experience,

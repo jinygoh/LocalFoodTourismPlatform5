@@ -1,92 +1,149 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ dish.name }} | TasteLocal{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-        <div class="bg-background-dark rounded-lg shadow-lg overflow-hidden">
-            {% if dish.image %}
-                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" class="w-full h-64 object-cover">
-            {% endif %}
-            <div class="p-6">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h1 class="text-3xl font-bold text-text-dark mb-2">{{ dish.name }}</h1>
-                        <p class="text-lg text-primary mb-2">
-                            from
-                            <a href="{% url 'shop_detail' dish.shop.pk %}" class="hover:underline">{{ dish.shop.business_name }}</a>
-                        </p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-2xl font-bold text-primary">${{ dish.price }}</p>
-                        {% if average_rating %}
-                            <div class="flex items-center mt-2">
-                                <span class="text-yellow-400">
-                                    {% for i in "12345" %}
-                                        <i class="fas fa-star{% if forloop.counter > average_rating|floatformat:0 %}-half-alt{% endif %}"></i>
-                                    {% endfor %}
-                                </span>
-                                <span class="text-text-dark-muted ml-2">({{ average_rating|floatformat:1 }})</span>
-                            </div>
-                        {% endif %}
-                    </div>
+<section class="relative h-96">
+    {% if dish.image %}
+    <img class="w-full h-full object-cover" src="{{ dish.image.url }}" alt="{{ dish.name }}" />
+    {% else %}
+    <img class="w-full h-full object-cover" src="https://source.unsplash.com/800x600/?food,singapore,{{ dish.pk }}"
+        alt="{{ dish.name }}" />
+    {% endif %}
+    <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+</section>
+
+<div class="container mx-auto px-4 -mt-24 relative pb-24">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+        <!-- Left Column: Details -->
+        <div class="lg:col-span-2">
+            <div class="bg-card-dark rounded-xl p-6 md:p-8 border border-border-dark shadow-lg">
+                <div class="flex items-center gap-2 text-sm text-text-dark-muted">
+                    <a href="{% url 'shop_detail' dish.shop.pk %}" class="hover:text-primary">{{ dish.shop.business_name }}</a>
                 </div>
-
-                <p class="text-text-dark-muted mt-4">{{ dish.description }}</p>
-
-                <div class="mt-6">
+                <div class="flex justify-between items-start">
+                    <h1 class="text-4xl md:text-5xl font-black mt-2">{{ dish.name }}</h1>
                     {% if user.is_authenticated and user.is_tourist %}
-                    <form id="favorite-form" action="{% url 'toggle_favorite_api' 'dish' dish.pk %}" method="POST" class="inline-block">
-                        {% csrf_token %}
-                        <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition duration-300">
-                            {% if is_favorite %}
-                                <i class="fas fa-heart"></i> Remove from Favorites
-                            {% else %}
-                                <i class="far fa-heart"></i> Add to Favorites
-                            {% endif %}
+                        <button class="favorite-btn text-accent hover:text-red-500 transition-colors" data-model="dish" data-id="{{ dish.pk }}">
+                            <span class="material-symbols-outlined !text-4xl">
+                                {% if is_favorite %}
+                                    favorite
+                                {% else %}
+                                    favorite_border
+                                {% endif %}
+                            </span>
                         </button>
-                    </form>
                     {% endif %}
                 </div>
-            </div>
-        </div>
 
-        <div class="mt-8">
-            <h2 class="text-2xl font-bold text-text-dark mb-4">Reviews</h2>
-            {% if user.is_authenticated and user.is_tourist %}
-                <div class="bg-background-dark rounded-lg shadow-lg p-6 mb-8">
-                    <h3 class="text-xl font-bold text-text-dark mb-4">Leave a Review</h3>
+                <div class="flex items-center mt-4 gap-6">
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-primary !text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="font-bold text-lg">
+                            {% if average_rating %}
+                            {{ average_rating|floatformat:1 }}
+                            {% else %}
+                            New
+                            {% endif %}
+                        </span>
+                        <span class="text-sm text-text-dark-muted/80">({{ reviews|length }} reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold">About the Dish</h2>
+                <p class="mt-4 text-text-dark-muted leading-relaxed">{{ dish.description }}</p>
+            </div>
+
+            <!-- Location Map -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">Location</h2>
+                 <div class="h-[300px] rounded-xl overflow-hidden border border-border-dark">
+                    <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                        src="https://maps.google.com/maps?q={{ dish.shop.latitude }},{{ dish.shop.longitude }}&hl=es;z=14&amp;output=embed"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="mt-2 text-text-dark-muted">{{ dish.shop.location }}</p>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-6">Reviews</h2>
+
+                {% if reviews %}
+                <div class="space-y-6">
+                    {% for review in reviews %}
+                    <div class="bg-card-dark rounded-xl p-6 border border-border-dark">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-lg">{{ review.user.username }}</span>
+                            <div class="flex items-center text-primary">
+                                {% for i in "12345"|make_list %}
+                                <span class="material-symbols-outlined !text-lg"
+                                    style="font-variation-settings: 'FILL' {% if forloop.counter <= review.rating %}1{% else %}0{% endif %};">star</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-text-dark-muted">{{ review.comment }}</p>
+                        <p class="text-sm text-text-dark-muted mt-2">{{ review.created_at|date:"F d, Y" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-text-dark-muted">No reviews yet. Be the first to review!</p>
+                {% endif %}
+
+                {% if user.is_authenticated and user.is_tourist %}
+                <div class="mt-10 bg-card-dark rounded-xl p-6 border border-border-dark">
+                    <h3 class="text-xl font-bold mb-4">Write a Review</h3>
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-4">
-                            <label for="id_rating" class="block text-text-dark-muted mb-2">Rating</label>
+                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Rating</label>
                             {{ review_form.rating }}
                         </div>
                         <div class="mb-4">
-                            <label for="id_comment" class="block text-text-dark-muted mb-2">Comment</label>
+                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Comment</label>
                             {{ review_form.comment }}
                         </div>
-                        <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition duration-300">Submit Review</button>
+                        <button type="submit"
+                            class="px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+                            Submit Review
+                        </button>
                     </form>
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
+        </div>
 
-            {% for review in reviews %}
-                <div class="bg-background-dark rounded-lg shadow-lg p-6 mb-4">
-                    <div class="flex items-center mb-2">
-                        <p class="text-text-dark font-bold">{{ review.user.username }}</p>
-                        <span class="text-yellow-400 ml-4">
-                            {% for i in "12345" %}
-                                <i class="fas fa-star{% if forloop.counter > review.rating %}-o{% endif %}"></i>
-                            {% endfor %}
-                        </span>
-                    </div>
-                    <p class="text-text-dark-muted">{{ review.comment }}</p>
-                    <p class="text-sm text-text-dark-muted mt-2">{{ review.created_at|date:"F d, Y" }}</p>
+        <!-- Right Column: Shop Info Card -->
+        <div class="lg:col-span-1 mt-10 lg:mt-0">
+            <div class="sticky top-28 bg-card-dark rounded-xl p-6 border border-border-dark shadow-lg">
+                 <div class="mb-6">
+                    <p class="text-3xl font-bold">${{ dish.price }}</p>
                 </div>
-            {% empty %}
-                <p class="text-text-dark-muted">No reviews yet.</p>
-            {% endfor %}
+                <h2 class="text-2xl font-bold mb-4">From the Shop</h2>
+                <div class="flex items-center gap-4">
+                    {% if dish.shop.image %}
+                    <img class="w-16 h-16 object-cover rounded-lg" src="{{ dish.shop.image.url }}" alt="{{ dish.shop.business_name }}">
+                    {% else %}
+                     <img class="w-16 h-16 object-cover rounded-lg" src="https://source.unsplash.com/150x150/?restaurant,singapore&random={{ dish.shop.pk }}" alt="{{ dish.shop.business_name }}">
+                    {% endif %}
+                    <div>
+                        <h3 class="font-bold text-lg">{{ dish.shop.business_name }}</h3>
+                        <p class="text-text-dark-muted text-sm">{{ dish.shop.location }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'shop_detail' dish.shop.pk %}"
+                    class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
+                    <span class="truncate">View Shop</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

@@ -44,8 +44,8 @@
                         <span class="material-symbols-outlined text-primary !text-2xl"
                             style="font-variation-settings: 'FILL' 1;">star</span>
                         <span class="font-bold text-lg">
-                            {% if experience.average_rating %}
-                            {{ experience.average_rating|floatformat:1 }}
+                            {% if average_rating %}
+                            {{ average_rating|floatformat:1 }}
                             {% else %}
                             New
                             {% endif %}

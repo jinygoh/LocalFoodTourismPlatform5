@@ -93,7 +93,8 @@ def explore(request):
 
 def dish_detail(request, pk):
     dish = get_object_or_404(Dish, pk=pk)
-    reviews = Review.objects.filter(object_id=dish.pk).order_by('-created_at')
+    dish_content_type = ContentType.objects.get_for_model(Dish)
+    reviews = Review.objects.filter(content_type=dish_content_type, object_id=dish.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     review_form = ReviewForm()
     is_favorite = False
@@ -126,7 +127,8 @@ def dish_detail(request, pk):
 
 def shop_detail(request, pk):
     shop = get_object_or_404(Shop, pk=pk)
-    reviews = Review.objects.filter(object_id=shop.pk).order_by('-created_at')
+    shop_content_type = ContentType.objects.get_for_model(Shop)
+    reviews = Review.objects.filter(content_type=shop_content_type, object_id=shop.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     booking_form = BookingForm(shop=shop)
     is_favorite = False
@@ -179,10 +181,12 @@ def shop_detail(request, pk):
 
 def experience_detail(request, pk):
     experience = get_object_or_404(Experience, pk=pk)
-    reviews = Review.objects.filter(object_id=experience.pk).order_by('-created_at')
+    experience_content_type = ContentType.objects.get_for_model(Experience)
+    reviews = Review.objects.filter(content_type=experience_content_type, object_id=experience.pk).order_by('-created_at')
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     is_favorite = False
     if request.user.is_authenticated:
-        is_favorite = Favorite.objects.filter(user=request.user, object_id=experience.pk).exists()
+        is_favorite = Favorite.objects.filter(user=request.user, content_type=experience_content_type, object_id=experience.pk).exists()
     
     if request.method == 'POST' and 'rating' in request.POST:
         if not request.user.is_authenticated:
@@ -448,7 +452,7 @@ def profile_edit_view(request):
 @login_required
 def toggle_favorite_api(request, model_name, pk):
     if not request.user.is_tourist:
-        return JsonResponse({'status': 'error', 'message': 'Only tourists can favorite items.'}, status=4.03)
+        return JsonResponse({'status': 'error', 'message': 'Only tourists can favorite items.'}, status=403)
 
     try:
         model_map = {'shop': Shop, 'dish': Dish, 'experience': Experience}
