@@ -17,9 +17,11 @@ from .forms import CustomUserCreationForm, ExperienceForm, ShopProfileForm, User
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
     all_shops = Shop.objects.all()
+    featured_dishes = Dish.objects.order_by('?')[:4]
     return render(request, 'home.html', {
         'featured_experiences': featured_experiences,
-        'all_shops': all_shops
+        'all_shops': all_shops,
+        'featured_dishes': featured_dishes
     })
 
 def about(request):
@@ -129,6 +131,9 @@ def shop_detail(request, pk):
                 booking.status = 'confirmed'
                 booking.save()
                 return redirect('booking_confirmation', pk=booking.pk)
+            else:
+                # Re-render the page with the form errors
+                is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Shop), object_id=shop.pk).exists()
 
     return render(request, 'core/shop_detail.html', {
         'shop': shop,

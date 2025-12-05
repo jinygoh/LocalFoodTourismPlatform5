@@ -185,11 +185,27 @@
                         <div>
                             {{ field.label_tag }}
                             {{ field }}
-                            {% if field.errors %}
-                            <div class="text-red-500 text-sm mt-1">
-                                {{ field.errors }}
-                            </div>
-                            {% endif %}
+{% if booking_form.non_field_errors or booking_form.errors %}
+<div id="booking-error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-card-dark rounded-lg p-8 max-w-sm w-full">
+        <h3 class="text-xl font-bold mb-4">Booking Error</h3>
+        <div class="text-red-500 text-sm mb-4">
+            {% if booking_form.non_field_errors %}
+                {{ booking_form.non_field_errors }}
+            {% else %}
+                {% for field in booking_form %}
+                    {% if field.errors %}
+                        {{ field.label }}: {{ field.errors|striptags }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button onclick="document.getElementById('booking-error-modal').style.display='none'" class="px-4 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
+            Close
+        </button>
+    </div>
+</div>
+{% endif %}
                         </div>
                         {% endfor %}
                     </div>

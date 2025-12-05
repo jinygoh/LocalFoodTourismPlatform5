@@ -1,5 +1,12 @@
-{% if widget.is_initial %}{% if not widget.required %}
-<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
-<label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>{% endif %}<br>
+{% if widget.is_initial %}
+  <div class="flex items-center justify-between">
+    <div class="text-sm text-text-dark-muted">Current: <a href="{{ widget.value.url }}">{{ widget.value }}</a></div>
+    {% if not widget.required %}
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" class="hidden">
+        <label for="{{ widget.checkbox_id }}" class="text-sm text-red-500 hover:text-red-400 cursor-pointer font-medium">Delete</label>
+      </div>
+    {% endif %}
+  </div>
 {% endif %}
-<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} class="{% if not widget.is_initial %}mt-0{% else %}mt-2{% endif %}">

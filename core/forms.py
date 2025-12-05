@@ -93,6 +93,8 @@ class BookingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.shop = kwargs.pop('shop', None)
         super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
 
     def clean(self):
         cleaned_data = super().clean()
