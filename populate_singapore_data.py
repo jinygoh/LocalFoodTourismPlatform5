@@ -326,7 +326,7 @@ def populate(start, end):
         )
         if created:
             print(f"Created Shop: {s_data['name']}")
-            save_image_from_url(shop, f"{s_data['name']} singapore hawker stall storefront")
+            # save_image_from_url(shop, f"{s_data['name']} singapore hawker stall storefront")
         else:
              # Update existing shop
             shop.business_name = s_data['name']
@@ -353,7 +353,7 @@ def populate(start, end):
             )
             if created:
                 print(f"  Created Dish: {d_data['name']} for {shop.business_name}")
-                save_image_from_url(dish, f"{d_data['name']} from {shop.business_name}")
+                # save_image_from_url(dish, f"{d_data['name']} from {shop.business_name}")
 
     # Only create experiences and reviews on the final run to avoid duplicates
     if end >= len(shops_data):
@@ -395,7 +395,7 @@ def populate(start, end):
                 )
                 if created:
                     print(f"Created Experience: {e_data['title']}")
-                    save_image_from_url(experience, e_data['title'])
+                    # save_image_from_url(experience, e_data['title'])
 
                     experience.shops.add(vendor_shop)
                     for dish in vendor_shop.dishes.all():

@@ -31,6 +31,7 @@ def explore(request):
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     min_rating = request.GET.get('min_rating')
+    active_tab = request.GET.get('active_tab', 'dishes')
 
     experiences = Experience.objects.all()
     shops = Shop.objects.all()
@@ -44,6 +45,7 @@ def explore(request):
     if location:
         experiences = experiences.filter(vendor__location__icontains=location)
         shops = shops.filter(location__icontains=location)
+        dishes = dishes.filter(shop__location__icontains=location)
 
     if min_price:
         experiences = experiences.filter(price__gte=min_price)
@@ -75,6 +77,7 @@ def explore(request):
         'favorite_shops_ids': list(favorite_shops_ids),
         'favorite_dishes_ids': list(favorite_dishes_ids),
         'favorite_experiences_ids': list(favorite_experiences_ids),
+        'active_tab': active_tab,
     })
 
 def dish_detail(request, pk):
@@ -253,7 +256,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            if user.is_vendor:
+                return redirect('vendor_dashboard')
+            else:
+                return redirect('profile')
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})

@@ -23,3 +23,17 @@ ENV/
 .idea/
 *.swp
 *.swo
+
+# Verification artifacts
+/verification/
+*.html
+*.png
+verify_*.py
+playwright.log
+dish_filter_results.html
+tab_filter_results.html
+registration_error.html
+register_page.html
+search_results.html
+registration_error.png
+vendor_dashboard.png
