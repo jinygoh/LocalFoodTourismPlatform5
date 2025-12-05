@@ -110,7 +110,7 @@ body {
 
 /* Favorite Button */
 .favorite-btn.favorited {
-    color: var(--primary-color);
+    color: #FF0000; /* Red */
 }
 
 /* Hero Section (for Home) */
