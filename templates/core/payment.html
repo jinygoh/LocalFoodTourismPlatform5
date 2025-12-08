@@ -16,7 +16,7 @@
                 <div class="space-y-4">
                     <div class="flex justify-between">
                         <span class="text-text-dark-muted">Experience</span>
-                        <span class="font-medium text-right">{{ listing.title }}</span>
+                        <span class="font-medium text-right">{{ experience.title }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-text-dark-muted">Date</span>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-text-dark-muted">Price per person</span>
-                        <span class="font-medium">${{ listing.price }}</span>
+                        <span class="font-medium">${{ experience.price }}</span>
                     </div>
 
                     <div class="border-t border-border-dark pt-4 flex justify-between items-center">
@@ -42,7 +42,7 @@
             <div class="bg-card-dark p-6 rounded-xl border border-border-dark">
                 <h2 class="text-xl font-bold mb-6">Payment Details</h2>
 
-                <form method="post" action="{% url 'process_payment' listing.pk %}" class="space-y-6">
+                <form method="post" action="{% url 'process_payment' experience.pk %}" class="space-y-6">
                     {% csrf_token %}
                     <input type="hidden" name="date" value="{{ date }}">
                     <input type="hidden" name="guests" value="{{ guests }}">
