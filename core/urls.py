@@ -24,7 +24,10 @@ urlpatterns = [
     path('shop/profile/edit/', views.edit_vendor_profile, name='edit_vendor_profile'),
     path('shop/experiences/add/', views.add_listing, name='add_listing'),
     path('shop/experiences/edit/<int:pk>/', views.edit_listing, name='edit_listing'),
-    path('shop/delete/<int:pk>/', views.delete_listing, name='delete_listing'),
+    path('shop/experiences/delete/<int:pk>/', views.delete_listing, name='delete_listing'),
+    path('shop/dishes/add/', views.add_dish, name='add_dish'),
+    path('shop/dishes/edit/<int:pk>/', views.edit_dish, name='edit_dish'),
+    path('shop/dishes/delete/<int:pk>/', views.delete_dish, name='delete_dish'),
     path('experiences/<int:pk>/favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('api/toggle_favorite/<str:model_name>/<int:pk>/', views.toggle_favorite_api, name='toggle_favorite_api'),
 ]

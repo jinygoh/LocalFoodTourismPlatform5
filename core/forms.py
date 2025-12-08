@@ -7,7 +7,7 @@ from django.forms.widgets import ClearableFileInput
 class CustomClearableFileInput(ClearableFileInput):
     template_name = 'core/custom_clearable_file_input.html'
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Experience, Shop, UserProfile, Booking, Review
+from .models import User, Experience, Shop, UserProfile, Booking, Review, Dish
 import datetime
 
 class ReviewForm(forms.ModelForm):
@@ -85,10 +85,30 @@ class ExperienceForm(forms.ModelForm):
         model = Experience
         fields = ['title', 'description', 'price', 'image']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+
+class DishForm(forms.ModelForm):
+    class Meta:
+        model = Dish
+        fields = ['name', 'description', 'price', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+
 class ShopProfileForm(forms.ModelForm):
     class Meta:
         model = Shop
         fields = ['business_name', 'description', 'location', 'contact_number', 'opening_hours', 'image', 'dining_establishment_type']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
 
 class BookingForm(forms.ModelForm):
     class Meta:

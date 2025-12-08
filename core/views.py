@@ -21,7 +21,48 @@ from .forms import (
     TouristUserEditForm,
     TouristProfileEditForm,
     ReviewForm,
+    DishForm,
 )
+
+@login_required
+def add_dish(request):
+    if not request.user.is_vendor:
+        return redirect('home')
+
+    shop = request.user.shop_profile
+
+    if request.method == 'POST':
+        form = DishForm(request.POST, request.FILES)
+        if form.is_valid():
+            dish = form.save(commit=False)
+            dish.shop = shop
+            dish.save()
+            return redirect('vendor_dashboard')
+    else:
+        form = DishForm()
+    return render(request, 'core/add_dish.html', {'form': form, 'title': 'Add New Dish'})
+
+@login_required
+def edit_dish(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    if request.user != dish.shop.user:
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = DishForm(request.POST, request.FILES, instance=dish)
+        if form.is_valid():
+            form.save()
+            return redirect('vendor_dashboard')
+    else:
+        form = DishForm(instance=dish)
+    return render(request, 'core/add_dish.html', {'form': form, 'title': 'Edit Dish'})
+
+@login_required
+def delete_dish(request, pk):
+    dish = get_object_or_404(Dish, pk=pk)
+    if request.user == dish.shop.user:
+        dish.delete()
+    return redirect('vendor_dashboard')
 
 def home(request):
     featured_experiences = Experience.objects.all().order_by('-created_at')[:3]
@@ -336,6 +377,7 @@ def vendor_dashboard(request):
     })
     
     experiences = Experience.objects.filter(vendor=request.user.shop_profile)
+    dishes = Dish.objects.filter(shop=request.user.shop_profile)
 
     shop_type = ContentType.objects.get_for_model(Shop)
     experience_type = ContentType.objects.get_for_model(Experience)
@@ -348,6 +390,7 @@ def vendor_dashboard(request):
     
     return render(request, 'core/vendor_dashboard.html', {
         'experiences': experiences,
+        'dishes': dishes,
         'shop': request.user.shop_profile,
         'incoming_bookings': incoming_bookings
     })
