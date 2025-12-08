@@ -32,6 +32,7 @@ class Shop(models.Model):
     location = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=20)
     opening_hours = models.CharField(max_length=255, blank=True, null=True, help_text="e.g. Mon-Sun: 10am - 10pm")
+    opening_hours_structured = models.JSONField(blank=True, null=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     image = models.ImageField(upload_to='shops/', blank=True, null=True)

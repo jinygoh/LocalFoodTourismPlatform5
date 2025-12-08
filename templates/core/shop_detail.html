@@ -186,30 +186,34 @@
                             <div>
                                 {{ field.label_tag }}
                                 {{ field }}
-    {% if booking_form.non_field_errors or booking_form.errors %}
-    <div id="booking-error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-card-dark rounded-lg p-8 max-w-sm w-full">
-            <h3 class="text-xl font-bold mb-4">Booking Error</h3>
-            <div class="text-red-500 text-sm mb-4">
-                {% if booking_form.non_field_errors %}
-                    {{ booking_form.non_field_errors }}
-                {% else %}
-                    {% for field in booking_form %}
-                        {% if field.errors %}
-                            {{ field.label }}: {{ field.errors|striptags }}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <button onclick="document.getElementById('booking-error-modal').style.display='none'" class="px-4 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
-                Close
-            </button>
-        </div>
-    </div>
-    {% endif %}
                             </div>
                             {% endfor %}
                         </div>
+
+                        {% if booking_form.non_field_errors or booking_form.errors %}
+                        <div id="bookingErrorModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" style="display: flex;">
+                            <div class="bg-card-dark rounded-xl p-6 md:p-8 border border-border-dark shadow-lg max-w-md w-full">
+                                <h3 class="text-2xl font-bold text-red-500 mb-4">Booking Error</h3>
+                                <div class="modal-body text-text-dark-muted space-y-2">
+                                    {% if booking_form.non_field_errors %}
+                                        {% for error in booking_form.non_field_errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% for field in booking_form %}
+                                        {% if field.errors %}
+                                            <p><strong>{{ field.label }}:</strong> {{ field.errors|striptags }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="mt-6 text-right">
+                                    <button type="button" onclick="document.getElementById('bookingErrorModal').style.display='none'" class="px-6 py-2 bg-primary text-background-dark font-bold rounded-lg hover:bg-opacity-90 transition-opacity">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         <button type="submit"
                             class="mt-8 w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-secondary text-white text-lg font-bold hover:bg-opacity-90 transition-opacity">
                             <span class="truncate">Book Now</span>
@@ -242,5 +246,48 @@
         </div>
     </div>
 </div>
+
+{{ opening_hours_json|json_script:"opening-hours-data" }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const openingHoursData = JSON.parse(document.getElementById('opening-hours-data').textContent);
+    const dateInput = document.querySelector('input[name="date"]');
+    const timeInput = document.querySelector('input[name="time"]');
+
+    function updateFormStates() {
+        if (!dateInput.value) {
+            timeInput.disabled = true;
+            return;
+        }
+
+        // JavaScript's getUTCDay() is 0=Sun, 6=Sat. ISO weekday is 1=Mon, 7=Sun.
+        const selectedDate = new Date(dateInput.value);
+        const dayOfWeek = selectedDate.getUTCDay() === 0 ? 7 : selectedDate.getUTCDay();
+
+        const slotsToday = openingHoursData.filter(slot => slot.day_of_week === dayOfWeek);
+
+        if (slotsToday.length > 0) {
+            timeInput.disabled = false;
+            // For simplicity, use the earliest open and latest close time.
+            const openTimes = slotsToday.map(slot => slot.open_time).sort();
+            const closeTimes = slotsToday.map(slot => slot.close_time).sort();
+
+            timeInput.min = openTimes[0];
+            timeInput.max = closeTimes[closeTimes.length - 1];
+        } else {
+            timeInput.disabled = true;
+            timeInput.value = '';
+        }
+    }
+
+    if(dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0];
+        dateInput.addEventListener('change', updateFormStates);
+        // Initial check in case the date is pre-filled
+        updateFormStates();
+    }
+});
+</script>
 
 {% endblock %}

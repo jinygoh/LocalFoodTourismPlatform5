@@ -115,46 +115,20 @@ class BookingForm(forms.ModelForm):
             if booking_datetime < datetime.datetime.now():
                 raise ValidationError("You cannot book a date in the past.")
 
-        if self.shop and self.shop.opening_hours and time:
-            try:
-                opening_hours_str = self.shop.opening_hours.lower()
-                parts = re.split(r'\s*-\s*', opening_hours_str)
-                if len(parts) == 2:
-                    opening_time_str, closing_time_str = parts
-                    opening_time = self.convert_to_24_hour(opening_time_str)
-                    closing_time = self.convert_to_24_hour(closing_time_str)
+        if self.shop and time:
+            day_of_week = date.isoweekday() # Monday is 1 and Sunday is 7
+            is_open = False
 
-                    if not (opening_time <= time <= closing_time):
-                        raise ValidationError(f"The shop is not open at the selected time. Please book between {opening_time_str} and {closing_time_str}.")
-                else:
-                    raise ValidationError("Could not parse the opening hours. Please contact the shop.")
-            except Exception:
-                raise ValidationError("Could not parse the opening hours. Please contact the shop.")
+            if self.shop.opening_hours_structured:
+                for slot in self.shop.opening_hours_structured:
+                    if slot['day_of_week'] == day_of_week:
+                        open_time = datetime.datetime.strptime(slot['open_time'], '%H:%M').time()
+                        close_time = datetime.datetime.strptime(slot['close_time'], '%H:%M').time()
+                        if open_time <= time <= close_time:
+                            is_open = True
+                            break
+
+            if not is_open:
+                raise ValidationError("You must book a time during the shop's opening hours.")
 
         return cleaned_data
-
-    def convert_to_24_hour(self, time_str):
-        time_str = time_str.replace(" ", "").lower()
-
-        # Handle "12am" and "12pm"
-        if "12am" in time_str:
-            time_str = time_str.replace("12am", "00:00")
-        elif "12pm" in time_str:
-            time_str = time_str.replace("12pm", "12:00")
-
-        # Handle other "am" and "pm" cases
-        if "am" in time_str:
-            time_str = time_str.replace("am", "")
-            if ":" not in time_str:
-                time_str += ":00"
-        elif "pm" in time_str:
-            time_str = time_str.replace("pm", "")
-            if ":" not in time_str:
-                hour = int(time_str) + 12
-                time_str = str(hour) + ":00"
-            else:
-                parts = time_str.split(":")
-                hour = int(parts[0]) + 12
-                time_str = str(hour) + ":" + parts[1]
-
-        return datetime.datetime.strptime(time_str, '%H:%M').time()

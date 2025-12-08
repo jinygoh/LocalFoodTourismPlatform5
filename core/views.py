@@ -170,13 +170,22 @@ def shop_detail(request, pk):
             else:
                 # Re-render the page with the form errors
                 is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Shop), object_id=shop.pk).exists()
+                return render(request, 'core/shop_detail.html', {
+                    'shop': shop,
+                    'reviews': reviews,
+                    'average_rating': average_rating,
+                    'booking_form': booking_form,
+                    'is_favorite': is_favorite,
+                    'opening_hours_json': shop.opening_hours_structured
+                })
 
     return render(request, 'core/shop_detail.html', {
         'shop': shop,
         'reviews': reviews,
         'average_rating': average_rating,
         'booking_form': booking_form,
-        'is_favorite': is_favorite
+        'is_favorite': is_favorite,
+        'opening_hours_json': shop.opening_hours_structured
     })
 
 def experience_detail(request, pk):
