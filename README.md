@@ -87,13 +87,30 @@ Create an admin account to access the Django admin panel.
 python manage.py createsuperuser
 ```
 
-### 7. Populate Data with Singaporean Food Scene
-Run the `populate_singapore_data.py` script to fill the database with 30 real food stalls from Singapore's hawker centres, each with 5 dishes. This script will also generate AI images for all entries.
+### 7. Populate Data
+This project includes several scripts to populate the database with different datasets.
 
-**Note:** This process can take several minutes as it fetches and saves over 150 images.
+**a. Singaporean Food Scene (Recommended):**
+Run the `populate_singapore_data.py` script to fill the database with 30 real food stalls from Singapore's hawker centres, each with several dishes. This script uses an AI image generation service to create and download images for all shops, dishes, and experiences.
+
+**Note:** This process is time-consuming and may take **15-20 minutes** to complete as it fetches and saves over 150 images from an external service.
 ```bash
 python populate_singapore_data.py
 ```
+To speed up the process, you can populate the data in smaller batches using the `--start` and `--end` arguments. For example, to process the first 5 shops:
+```bash
+python populate_singapore_data.py --start 0 --end 5
+```
+
+**b. Test Data:**
+The `populate_test_data.py` script creates a smaller, more controlled set of test users (vendors and tourists), listings, and reviews. This is faster than the full Singapore dataset and useful for local testing.
+
+**c. Superuser:**
+To create a superuser for accessing the Django admin panel, run:
+```bash
+python create_superuser.py
+```
+This will create a user with the username `admin` and password `admin123`.
 
 ### 8. Run the Development Server
 Start the local server.
