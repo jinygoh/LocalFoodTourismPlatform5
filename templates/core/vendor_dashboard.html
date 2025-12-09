@@ -10,12 +10,21 @@
             <h1 class="text-2xl font-bold text-text-dark">Welcome, {{ request.user.username }}!</h1>
             <p class="text-sm text-text-dark-muted">Here's your business overview.</p>
         </div>
-        <div class="flex items-center gap-4">
-            <a href="{% url 'add_listing' %}"
+        <div x-data="{ open: false }" class="relative">
+            <button @click="open = !open"
                 class="flex items-center gap-2 text-sm font-semibold py-2 px-4 rounded-full bg-accent text-white hover:bg-opacity-90 transition-opacity">
                 <span class="material-symbols-outlined !text-base">add</span>
                 Add New Listing
-            </a>
+                <span class="material-symbols-outlined !text-base"
+                    :class="{'rotate-180': open}">expand_more</span>
+            </button>
+            <div x-show="open" @click.away="open = false"
+                class="absolute right-0 mt-2 w-48 bg-card-dark border border-border-dark rounded-lg shadow-lg z-20">
+                <a href="{% url 'add_dish' %}"
+                    class="block px-4 py-2 text-sm text-text-dark hover:bg-background-dark">Add Food</a>
+                <a href="{% url 'add_experience' %}"
+                    class="block px-4 py-2 text-sm text-text-dark hover:bg-background-dark">Add Experience</a>
+            </div>
         </div>
     </header>
 
@@ -54,7 +63,7 @@
                 </div>
             </div>
 
-            <!-- Manage Listings -->
+            <!-- Manage Food Listings -->
             <div class="bg-card-dark p-6 rounded-xl border border-border-dark">
                 <h2 class="text-xl font-bold mb-6">Manage Food Listings</h2>
                 <div class="overflow-x-auto">
@@ -67,25 +76,66 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-border-dark">
-                            {% for listing in experiences %}
+                            {% for dish in dishes %}
                             <tr>
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">
-                                    {{ listing.title }}
+                                    {{ dish.name }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted">
-                                    ${{ listing.price }}
+                                    ${{ dish.price }}
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm font-medium flex gap-3">
-                                    <a href="{% url 'edit_listing' listing.pk %}"
+                                    <a href="{% url 'edit_dish' dish.pk %}"
                                         class="text-primary hover:text-primary/80">Edit</a>
-                                    <a href="{% url 'delete_listing' listing.pk %}"
+                                    <a href="{% url 'delete_dish' dish.pk %}"
+                                        onclick="return confirm('Delete this dish?');"
+                                        class="text-secondary hover:text-secondary/80">Delete</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-4 text-center text-text-dark-muted">No food listings yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Experience Listings -->
+            <div class="bg-card-dark p-6 rounded-xl border border-border-dark">
+                <h2 class="text-xl font-bold mb-6">Manage Experience Listings</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-border-dark">
+                        <thead>
+                            <tr>
+                                <th class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-0">Item</th>
+                                <th class="px-3 py-3.5 text-left text-sm font-semibold">Price</th>
+                                <th class="px-3 py-3.5 text-left text-sm font-semibold">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border-dark">
+                            {% for experience in experiences %}
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">
+                                    {{ experience.title }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-text-dark-muted">
+                                    ${{ experience.price }}
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm font-medium flex gap-3">
+                                    <a href="{% url 'edit_experience' experience.pk %}"
+                                        class="text-primary hover:text-primary/80">Edit</a>
+                                    <a href="{% url 'delete_experience' experience.pk %}"
                                         onclick="return confirm('Delete this listing?');"
                                         class="text-secondary hover:text-secondary/80">Delete</a>
                                 </td>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="3" class="py-4 text-center text-text-dark-muted">No listings yet.</td>
+                                <td colspan="3" class="py-4 text-center text-text-dark-muted">No experience listings
+                                    yet.</td>
                             </tr>
                             {% endfor %}
                         </tbody>

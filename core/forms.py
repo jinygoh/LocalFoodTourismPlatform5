@@ -94,10 +94,20 @@ class ExperienceForm(forms.ModelForm):
         model = Experience
         fields = ['title', 'description', 'price', 'image']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
+
 class DishForm(forms.ModelForm):
     class Meta:
         model = Dish
         fields = ['name', 'description', 'price', 'image']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary'})
 
 class ShopProfileForm(forms.ModelForm):
     class Meta:
