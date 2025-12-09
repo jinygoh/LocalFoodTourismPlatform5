@@ -145,22 +145,12 @@
                     {% if user.is_tourist %}
                     <form method="post">
                         {% csrf_token %}
+                        {% for field in review_form %}
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Rating</label>
-                            <select name="rating" required
-                                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50">
-                                <option value="5">5 - Excellent</option>
-                                <option value="4">4 - Good</option>
-                                <option value="3">3 - Average</option>
-                                <option value="2">2 - Poor</option>
-                                <option value="1">1 - Terrible</option>
-                            </select>
+                            {{ field.label_tag }}
+                            {{ field }}
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-text-dark-muted mb-2">Comment</label>
-                            <textarea name="comment" rows="3" required
-                                class="w-full rounded bg-background-dark border-border-dark text-text-dark focus:ring-primary/50"></textarea>
-                        </div>
+                        {% endfor %}
                         <button type="submit"
                             class="px-6 py-2 bg-primary text-background-dark font-bold rounded hover:bg-opacity-90 transition-opacity">
                             Submit Review

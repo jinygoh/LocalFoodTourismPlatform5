@@ -15,9 +15,18 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['rating', 'comment']
         widgets = {
-            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
-            'comment': forms.Textarea(attrs={'rows': 4}),
+            'rating': forms.Select(choices=[(i, i) for i in range(1, 6)]),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['rating'].widget.attrs.update({
+            'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary',
+        })
+        self.fields['comment'].widget.attrs.update({
+            'class': 'form-input w-full rounded-lg border-border-dark bg-background-dark px-4 py-2.5 text-text-dark focus:border-primary focus:ring-primary',
+            'rows': 4,
+        })
 
 class TouristUserEditForm(forms.ModelForm):
     class Meta:

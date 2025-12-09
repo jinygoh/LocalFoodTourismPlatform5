@@ -10,6 +10,10 @@ from django.contrib.contenttypes.models import ContentType
 from .models import User, Experience, Booking, Shop, Review, Favorite, UserProfile, Dish
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 # Custom Forms
 from .forms import (
@@ -172,6 +176,7 @@ def shop_detail(request, pk):
     reviews = Review.objects.filter(content_type=shop_content_type, object_id=shop.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
     booking_form = BookingForm(shop=shop)
+    review_form = ReviewForm()
     is_favorite = False
     if request.user.is_authenticated and request.user.is_tourist:
         is_favorite = Favorite.objects.filter(user=request.user, content_type=ContentType.objects.get_for_model(Shop), object_id=shop.pk).exists()
@@ -180,20 +185,14 @@ def shop_detail(request, pk):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        if 'rating' in request.POST:
-            if not request.user.is_tourist:
-                messages.error(request, "Only tourists can leave a review.")
+        if 'rating' in request.POST: # Review form submission
+            review_form = ReviewForm(request.POST)
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.user = request.user
+                review.content_object = shop
+                review.save()
                 return redirect('shop_detail', pk=pk)
-
-            rating = request.POST.get('rating')
-            comment = request.POST.get('comment')
-            Review.objects.create(
-                user=request.user,
-                content_object=shop,
-                rating=rating,
-                comment=comment
-            )
-            return redirect('shop_detail', pk=pk)
 
         else:
             if not request.user.is_tourist:
@@ -225,6 +224,7 @@ def shop_detail(request, pk):
         'reviews': reviews,
         'average_rating': average_rating,
         'booking_form': booking_form,
+        'review_form': review_form,
         'is_favorite': is_favorite,
         'opening_hours_json': shop.opening_hours_structured
     })
@@ -234,33 +234,21 @@ def experience_detail(request, pk):
     experience_content_type = ContentType.objects.get_for_model(Experience)
     reviews = Review.objects.filter(content_type=experience_content_type, object_id=experience.pk).order_by('-created_at')
     average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    review_form = ReviewForm()
     is_favorite = False
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(user=request.user, content_type=experience_content_type, object_id=experience.pk).exists()
     
     if request.method == 'POST' and 'rating' in request.POST:
-        if not request.user.is_authenticated:
-            return redirect('login')
-
-        if request.user.is_vendor and experience.vendor.user == request.user:
-            messages.error(request, "You cannot review your own experience.")
-            return redirect('experience_detail', pk=pk)
-
-        if not request.user.is_tourist:
-            messages.error(request, "Only tourists can leave a review.")
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.content_object = experience
+            review.save()
             return redirect('experience_detail', pk=pk)
         
-        rating = request.POST.get('rating')
-        comment = request.POST.get('comment')
-        Review.objects.create(
-            user=request.user,
-            content_object=experience,
-            rating=rating,
-            comment=comment
-        )
-        return redirect('experience_detail', pk=pk)
-        
-    return render(request, 'core/experience_detail.html', {'experience': experience, 'reviews': reviews, 'is_favorite': is_favorite})
+    return render(request, 'core/experience_detail.html', {'experience': experience, 'reviews': reviews, 'review_form': review_form, 'is_favorite': is_favorite})
 
 @login_required
 def payment_page(request, pk):
@@ -318,15 +306,7 @@ def cancel_booking(request, pk):
 @login_required
 def profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-
-    if request.method == 'POST' and 'update_picture' in request.POST:
-        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        form = UserProfileForm(instance=user_profile)
-
+    form = UserProfileForm(instance=user_profile)
     bookings = Booking.objects.filter(user=request.user).order_by('-date')
 
     shop_content_type = ContentType.objects.get_for_model(Shop)
@@ -356,6 +336,17 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+
+            # Send welcome email
+            subject = 'Welcome to TasteLocal!'
+            html_message = render_to_string('registration/welcome_email.html', {'user': user})
+            plain_message = strip_tags(html_message)
+            from_email = settings.EMAIL_HOST_USER
+            to = user.email
+
+            send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+
+
             if user.is_vendor:
                 return redirect('vendor_dashboard')
             else:
