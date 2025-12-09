@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to TasteLocal</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        border-bottom: 3px solid #ff6b35;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+      .header h1 {
+        color: #ff6b35;
+        margin: 0;
+        font-size: 28px;
+      }
+      .content {
+        margin: 20px 0;
+      }
+      .content p {
+        margin: 15px 0;
+      }
+      .button {
+        display: inline-block;
+        background-color: #ff6b35;
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 20px 0;
+        font-weight: bold;
+      }
+      .footer {
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+        margin-top: 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+      }
+      .features {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+      .features ul {
+        list-style: none;
+        padding: 0;
+      }
+      .features li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .features li:last-child {
+        border-bottom: none;
+      }
+      .features li:before {
+        content: "✓ ";
+        color: #ff6b35;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Welcome to TasteLocal!</h1>
+      </div>
+
+      <div class="content">
+        <p>
+          Hi <strong>{{ user.get_full_name|default:user.username }}</strong>,
+        </p>
+
+        <p>
+          Thank you for joining TasteLocal, your gateway to authentic local
+          culinary experiences!
+        </p>
+
+        <p>
+          We're excited to have you on board. TasteLocal connects you with
+          unique food experiences and local vendors who are passionate about
+          sharing their culinary heritage.
+        </p>
+
+        <div class="features">
+          <p><strong>Here's what you can do with TasteLocal:</strong></p>
+          <ul>
+            <li>
+              Discover authentic local food shops and dining establishments
+            </li>
+            <li>Explore unique culinary experiences and food tours</li>
+            <li>Book your favorite dishes and reserve dining spots</li>
+            <li>
+              Share reviews and help other food enthusiasts find great places
+            </li>
+            <li>Build a personalized profile and save your favorite vendors</li>
+          </ul>
+        </div>
+
+        <p>
+          Your account is now active and ready to use. Log in anytime to start
+          exploring the flavors of our local food scene.
+        </p>
+
+        <div style="text-align: center">
+          <a href="https://tastelocal.com" class="button">Start Exploring</a>
+        </div>
+
+        <p>
+          If you have any questions or need assistance, please don't hesitate to
+          contact our support team.
+        </p>
+
+        <p>
+          Happy exploring!<br />
+          <strong>The TasteLocal Team</strong>
+        </p>
+      </div>
+
+      <div class="footer">
+        <p>&copy; 2025 TasteLocal. All rights reserved.</p>
+        <p>This is an automated message. Please do not reply to this email.</p>
+      </div>
+    </div>
+  </body>
+</html>
