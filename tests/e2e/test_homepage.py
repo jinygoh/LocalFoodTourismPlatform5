@@ -1,13 +1,11 @@
 import pytest
 from playwright.sync_api import Page, expect
+from django.urls import reverse
 
-def test_homepage_elements_are_visible(page: Page):
-    page.goto("http://127.0.0.1:8000/")
-
-    # Assert that the "Discover Culinary Spots Nearby" section is visible
-    discover_spots = page.locator("h2", has_text="Discover Culinary Spots Nearby")
-    expect(discover_spots).to_be_visible()
-
-    # Assert that the map is visible
-    map_element = page.locator("#map")
-    expect(map_element).to_be_visible()
+@pytest.mark.django_db
+def test_homepage_elements_are_visible(page: Page, live_server):
+    page.goto(live_server.url)
+    expect(page.get_by_text("TasteLocal")).to_be_visible()
+    expect(page.get_by_role("link", name="Explore")).to_be_visible()
+    expect(page.get_by_role("link", name="Login")).to_be_visible()
+    expect(page.get_by_role("link", name="Register")).to_be_visible()
