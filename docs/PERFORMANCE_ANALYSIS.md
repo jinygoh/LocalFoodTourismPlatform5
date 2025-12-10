@@ -34,10 +34,29 @@ Locust was installed, and a `locustfile.py` was created to define the user behav
 
 ### Locust
 
-1.  Start the Django development server: `python manage.py runserver`
-2.  In a separate terminal, start the Locust load test: `locust`
-3.  Open a web browser and navigate to `http://localhost:8089`.
-4.  Enter the number of users to simulate and the spawn rate, then start the test.
+1.  **Start the Target Server:** Ensure the Django development server is running.
+    ```bash
+    python manage.py runserver
+    ```
+    This server will be the target of our load test.
+
+2.  **Start Locust:** In a *separate* terminal, start the Locust service.
+    ```bash
+    locust
+    ```
+
+3.  **Open the Locust Web Interface:** Open your web browser and navigate to the Locust dashboard, which runs on its own server.
+    `http://localhost:8089`
+
+4.  **Configure and Start the Load Test:** You will see a "Start new load test" screen. Here’s what to enter for a baseline test:
+
+    *   **Number of users (peak concurrency):** This is the maximum number of users you want to simulate. A good starting point is **`100`**.
+    *   **Ramp up (users started/second):** This determines how quickly your users are created. To avoid overwhelming the server instantly, start with a gradual rate, such as **`10`**. This means Locust will add 10 new users every second until it reaches the 100-user peak.
+    *   **Host:** This is the most important field. You must provide the full URL of the application you are testing. For a local development server, this will be **`http://127.0.0.1:8000`**.
+
+    Leave the "Run time" field blank for a basic test that you stop manually.
+
+    Once configured, click the **"Start swarming"** button. Locust will begin simulating users, and you will see real-time statistics on the next page.
 
 ## 4. Performance Analysis and Findings
 
