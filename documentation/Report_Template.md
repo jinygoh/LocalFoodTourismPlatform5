@@ -459,6 +459,13 @@ Nilofar
     *   **Caching:** Implement a caching strategy for the `explore` page to reduce the number of database queries.
     *   **Image Optimization:** Compress all images to reduce their file size and improve page load times.
 
+*   **Performance Test Table:**
+| Test Case ID | Test Objective | Test Description | Expected Outcome | Actual Outcome | Status (Pass/Fail) | Remarks |
+|---|---|---|---|---|---|---|
+| PT001 | Test Home Page Load Time | Measure the response time of the home page (`/`) under a load of 10 concurrent users. | The page should load with a 0% failure rate and an acceptable response time. | The page loaded with a 0% failure rate and an average response time of 175ms. | Pass | Performance is excellent. |
+| PT002 | Test Explore Page Load Time | Measure the response time of the explore page (`/explore/`) under a load of 10 concurrent users. | The page should load with a 0% failure rate and an acceptable response time. | The page loaded with a 0% failure rate and an average response time of 246ms. | Pass | Performance is good. |
+| PT003 | Test Profile Page Load Time | Measure the response time of the user profile page (`/profile/`) under a load of 10 concurrent users. | The page should load with a 0% failure rate and an acceptable response time. | The page loaded with a 0% failure rate and an average response time of 238ms. | Pass | Performance is good. |
+
 ## 6.4 Issue Logs and Analysis
 
 | Issue ID | Description | Impact | Resolution | Date Resolved |

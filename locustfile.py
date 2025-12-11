@@ -5,10 +5,16 @@ class WebsiteUser(HttpUser):
 
     def on_start(self):
         """ on_start is called when a Locust start before any task is scheduled """
+        # First, we need to get the CSRF token. Django sets this in a cookie.
+        self.client.get("/login/")
+        csrftoken = self.client.cookies['csrftoken']
+
+        # Now we can log in with the CSRF token.
         self.client.post("/login/", {
             "username": "tourist_john",
-            "password": "TestPass123!"
-        })
+            "password": "TestPass123!",
+            "csrfmiddlewaretoken": csrftoken
+        }, headers={"X-CSRFToken": csrftoken, "Referer": self.client.base_url + "/login/"})
 
     @task
     def home_page(self):
