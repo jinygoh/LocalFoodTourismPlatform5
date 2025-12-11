@@ -10,7 +10,7 @@ Use the following credentials to log in and test the application. These users ar
 | :--- | :--- | :--- | :--- |
 | **Tourist** | `tourist_john` | `TestPass123!` | Test search, booking, and reviews. |
 | **Vendor** | `vendor_tina` | `TestPass123!` | Test profile management, listing creation, and booking management. |
-| **Admin** | `admin` | `TestPass123!` | Access Django Admin panel (if created). |
+| **Admin** | `admin` | `admin123` | Access Django Admin panel (if created). |
 
 ---
 
