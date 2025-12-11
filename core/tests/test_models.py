@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..models import User, Shop, Dish
+from core.models import User, Shop, Dish
 
 class UserModelTest(TestCase):
     def test_create_user(self):

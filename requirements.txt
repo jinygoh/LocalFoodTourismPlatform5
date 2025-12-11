@@ -1,9 +1,7 @@
-Django
-mysqlclient
-Pillow
-requests
-python-dotenv
-pytest-django
-django-debug-toolbar
-locust
-pytest-playwright
+Package           Version
+----------------- -------
+greenlet          3.2.4
+pip               25.3
+playwright        1.55.0
+pyee              13.0.0
+typing_extensions 4.15.0

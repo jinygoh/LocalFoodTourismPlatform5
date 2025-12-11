@@ -1,6 +1,6 @@
 from django.test import TestCase
-from ..forms import CustomUserCreationForm, ReviewForm, BookingForm
-from ..models import Shop, User
+from core.forms import CustomUserCreationForm, ReviewForm, BookingForm
+from core.models import User, Shop
 import datetime
 
 class CustomUserCreationFormTest(TestCase):
