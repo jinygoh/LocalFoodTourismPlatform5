@@ -1,1 +1,0 @@
--bash: /home/jules/.pyenv/versions/3.12.12/bin/pytest: No such file or directory
