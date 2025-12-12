@@ -1,3 +1,14 @@
+"""
+This is a standalone script to populate the database with a large, realistic dataset
+of Singaporean hawker stalls, restaurants, dishes, and experiences.
+
+It is designed to be run from the command line and can process the data in chunks
+to avoid timeouts, especially during the image download phase. The script fetches
+images from an external AI image generation service (Pollinations.ai).
+
+The script is idempotent, using `get_or_create` and `update` to avoid creating
+duplicate data on subsequent runs.
+"""
 import os
 import django
 import random
@@ -7,27 +18,47 @@ import time
 import argparse
 from django.core.files.base import ContentFile
 
+# --- Django Setup ---
+# This block is necessary to run the script in a standalone context.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
+# --- Model Imports ---
 from core.models import User, Shop, Dish, Experience, Review
 
 def save_image_from_url(model_instance, prompt):
+    """
+    Fetches an image from an AI generation API based on a prompt and saves it
+    to a given model instance's ImageField.
+
+    Args:
+        model_instance: The Django model instance to attach the image to (e.g., a Shop or Dish).
+        prompt (str): The text prompt to send to the image generation API.
+    """
+    # Construct a detailed prompt for better image results.
     full_prompt = f"high quality photo of {prompt}, singapore food, delicious, 4k, realistic"
+    # URL-encode the prompt to handle special characters.
     encoded_prompt = urllib.parse.quote(full_prompt)
+    # Construct the full API URL.
     url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=800&height=600&nologo=true&seed={random.randint(1, 100000)}"
 
     print(f"Fetching: {prompt}...")
 
+    # --- Retry Logic ---
+    # The image service can be unreliable, so we attempt to download up to 3 times.
     for attempt in range(3):
         try:
+            # Set a user-agent header to mimic a browser.
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            # Open the URL with a 60-second timeout.
             with urllib.request.urlopen(req, timeout=60) as response:
                 image_content = response.read()
 
+            # Create a URL-safe filename from the prompt.
             safe_name = "".join([c if c.isalnum() else "_" for c in prompt])[:30]
             filename = f"{safe_name}_{model_instance.pk}.jpg"
 
+            # Save the downloaded image content to the model's ImageField.
             model_instance.image.save(filename, ContentFile(image_content), save=True)
             print(f"✅ Saved: {filename}")
             return # Exit the function on success
@@ -42,19 +73,19 @@ def save_image_from_url(model_instance, prompt):
 
 
 def populate(start, end):
+    """
+    The main function to populate the database.
+
+    Args:
+        start (int): The starting index of the `shops_data` list to process.
+        end (int): The ending index of the `shops_data` list to process.
+    """
     print("Populating database with real Singaporean food data...")
     print(f"Processing shops from index {start} to {end}")
 
-    # Create test users
-    tourist_user, created = User.objects.get_or_create(username='tourist_john', defaults={'is_tourist': True})
-    if created:
-        tourist_user.set_password('TestPass123!')
-        tourist_user.save()
-
-    vendor_user, created = User.objects.get_or_create(username='vendor_tina', defaults={'is_vendor': True})
-    if created:
-        vendor_user.set_password('TestPass123!')
-        vendor_user.save()
+    # --- Hardcoded Data ---
+    # This extensive list contains real-world data for hawker stalls, restaurants,
+    # dishes, and experiences in Singapore.
 
     shops_data = [
         {"name": "Tian Tian Hainanese Chicken Rice", "desc": "Famous for its tender chicken and fragrant rice.", "dining_establishment_type": "hawker_centre", "contact": "9691 4852", "hours": "Tue to Sun: 10am - 8pm", "location": "Maxwell Food Centre, 1 Kadayanallur St, #01-10/11, Singapore 069184", "lat": 1.2803, "lon": 103.8449},
