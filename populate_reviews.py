@@ -1,11 +1,25 @@
+"""
+This is a standalone script to populate the database with a random assortment of reviews
+for existing Shops and Dishes.
+
+The script is designed to make the site feel more active and lived-in by:
+1.  Fetching all existing tourist users.
+2.  Fetching all existing shops and dishes.
+3.  For each tourist, creating a random number of reviews for a random sample of
+    shops and dishes.
+
+This script is idempotent; it uses `get_or_create` to ensure that it will not
+create a duplicate review from the same user for the same item.
+"""
 import os
 import django
 import random
 
-# Setup Django environment
+# --- Django Setup ---
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TasteLocal.settings')
 django.setup()
 
+# --- Model Imports ---
 from core.models import User, Shop, Dish, Review
 from django.contrib.contenttypes.models import ContentType
 
@@ -15,10 +29,14 @@ def populate_reviews():
     """
     print("Populating reviews...")
 
+    # --- Data Fetching ---
+    # Get all users who are marked as tourists.
     tourists = User.objects.filter(is_tourist=True)
+    # Get all shops and dishes from the database.
     shops = Shop.objects.all()
     dishes = Dish.objects.all()
 
+    # A list of generic review comments to be used randomly.
     review_comments = [
         "Absolutely amazing! A must-try.",
         "The food was delicious, and the service was excellent.",
@@ -32,13 +50,20 @@ def populate_reviews():
         "An unforgettable experience."
     ]
 
+    # Get the ContentType objects for Shop and Dish models.
+    # This is necessary for creating reviews with a GenericForeignKey.
     shop_content_type = ContentType.objects.get_for_model(Shop)
     dish_content_type = ContentType.objects.get_for_model(Dish)
 
+    # --- Review Creation Loop ---
     for tourist in tourists:
-        # Each tourist reviews 2-5 shops
+        # For each tourist, create reviews for a random sample of shops.
         if shops:
-            for shop in random.sample(list(shops), k=random.randint(2, min(5, len(shops)))):
+            # `random.sample` selects a unique, random subset of shops to review.
+            num_reviews = random.randint(2, min(5, len(shops)))
+            for shop in random.sample(list(shops), k=num_reviews):
+                # `get_or_create` prevents creating a review if one already exists
+                # from this user for this shop.
                 Review.objects.get_or_create(
                     user=tourist,
                     content_type=shop_content_type,
@@ -48,11 +73,12 @@ def populate_reviews():
                         'comment': random.choice(review_comments)
                     }
                 )
-                print(f"Added review from {tourist.username} for shop {shop.business_name}")
+                print(f"Added/verified review from {tourist.username} for shop '{shop.business_name}'")
 
-        # Each tourist reviews 3-7 dishes
+        # For each tourist, create reviews for a random sample of dishes.
         if dishes:
-            for dish in random.sample(list(dishes), k=random.randint(3, min(7, len(dishes)))):
+            num_reviews = random.randint(3, min(7, len(dishes)))
+            for dish in random.sample(list(dishes), k=num_reviews):
                 Review.objects.get_or_create(
                     user=tourist,
                     content_type=dish_content_type,
@@ -62,7 +88,8 @@ def populate_reviews():
                         'comment': random.choice(review_comments)
                     }
                 )
-                print(f"Added review from {tourist.username} for dish {dish.name}")
+                print(f"Added/verified review from {tourist.username} for dish '{dish.name}'")
 
+# --- Script Execution ---
 if __name__ == "__main__":
     populate_reviews()
